@@ -1,10 +1,12 @@
 package com.joeyliao.linknoteresource.generic.interceptor;
 
+import com.joeyliao.linknoteresource.generic.enums.Target;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,24 +20,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Slf4j
 public class TagInterceptor implements HandlerInterceptor {
 
+  @Autowired
+  AuthorizationHandler authorizationHandler;
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
-    log.info("執行Tag preHandle");
-    RestTemplate restTemplate = new RestTemplate();
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("Authorization", "Bearer" );
-    headers.setContentType(MediaType.APPLICATION_JSON);
-
-    HttpEntity requestEntity = new HttpEntity(headers);
-
-    ResponseEntity<Boolean> res = restTemplate.exchange(
-        "https://localhost:8080/api/auth/notebook",
-        HttpMethod.POST,
-        requestEntity,
-        Boolean.class
-    );
-    return res.getBody();
+    return authorizationHandler.checkAccessPermission(request, Target.TAG);
   }
 }
