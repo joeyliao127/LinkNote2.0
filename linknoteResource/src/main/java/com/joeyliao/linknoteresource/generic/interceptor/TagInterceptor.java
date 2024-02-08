@@ -25,6 +25,6 @@ public class TagInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
-    return authorizationHandler.checkAccessPermission(request, Target.TAG);
+    return authorizationHandler.checkAccessPermission(request,response, Target.TAG);
   }
 }

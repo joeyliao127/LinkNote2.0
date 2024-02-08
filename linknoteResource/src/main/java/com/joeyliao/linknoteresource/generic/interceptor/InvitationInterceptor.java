@@ -18,6 +18,6 @@ public class InvitationInterceptor implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
     log.info("執行Invitation preHandle");
-    return authorizationHandler.checkAccessPermission(request, Target.INVITATION);
+    return authorizationHandler.checkAccessPermission(request,response, Target.INVITATION);
   }
 }

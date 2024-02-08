@@ -7,6 +7,6 @@ import org.springframework.http.HttpMethod;
 
 @Data
 public class AuthRequestBody {
-    private Integer notebookId;
-    private HttpMethod httpMethod;
+    private String notebookId;
+    private Behavior behavior;
 }

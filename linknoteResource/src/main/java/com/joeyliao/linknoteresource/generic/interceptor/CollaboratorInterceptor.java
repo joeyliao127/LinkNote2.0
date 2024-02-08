@@ -19,6 +19,6 @@ public class CollaboratorInterceptor implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
     log.info("執行collaborator preHandle");
-    return authorizationHandler.checkAccessPermission(request, Target.COLLABORATOR);
+    return authorizationHandler.checkAccessPermission(request,response, Target.COLLABORATOR);
   }
 }

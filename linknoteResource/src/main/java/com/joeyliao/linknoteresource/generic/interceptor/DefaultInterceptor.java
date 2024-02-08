@@ -15,7 +15,7 @@ public class DefaultInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
-    log.info("執行collaborator preHandle");
+    log.info("執行Default preHandle");
     throw new BadRequestException("Bad Request");
   }
 }

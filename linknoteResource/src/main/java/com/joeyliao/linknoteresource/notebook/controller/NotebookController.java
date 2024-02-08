@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,24 +22,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Slf4j
 public class NotebookController {
+
   @Autowired
   NotebookService notebookService;
 
   @GetMapping("/api/notebooks")
   public ResponseEntity<String> getNotebooks(
-      @RequestParam(defaultValue = "0") @Min(0) Integer offset,
-      @RequestParam(defaultValue = "1") @Max(20) @Min(0) Integer limit,
-      @RequestParam(defaultValue = "null") String keyword,
-      @RequestParam Boolean coNotebook
-  ){
+  ) {
+//
+//    GetNotebooksParamsDto params = new GetNotebooksParamsDto();
+//    params.setLimit(limit);
+//    params.setOffset(offset);
+//    params.setKeyword(keyword);
+//    params.setCoNotebook(coNotebook);
+    return ResponseEntity.status(HttpStatus.OK).body("/api/notebooks測試成功");
+  }
 
-    GetNotebooksParamsDto params = new GetNotebooksParamsDto();
-    params.setLimit(limit);
-    params.setOffset(offset);
-    params.setKeyword(keyword);
-    params.setCoNotebook(coNotebook);
-    return ResponseEntity.status(HttpStatus.OK).body("測試成功");
+  @GetMapping("/api/notebooks/{notebookId}")
+  public ResponseEntity<String> getNotebook(
+      @PathVariable String notebookId
+  ) {
+    log.info("顯示path變數notebookId：" + notebookId);
+//
+//    GetNotebooksParamsDto params = new GetNotebooksParamsDto();
+//    params.setLimit(limit);
+//    params.setOffset(offset);
+//    params.setKeyword(keyword);
+//    params.setCoNotebook(coNotebook);
+    return ResponseEntity.status(HttpStatus.OK).body("/api/notebooks/{notebookId}測試成功");
   }
 //
 //  @GetMapping("/api/notebooks/{notebookId}/notes")

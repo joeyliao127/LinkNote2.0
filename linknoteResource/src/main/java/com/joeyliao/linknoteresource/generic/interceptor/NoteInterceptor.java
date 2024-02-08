@@ -18,6 +18,6 @@ public class NoteInterceptor implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
     log.info("執行Note preHandle");
-    return authorizationHandler.checkAccessPermission(request, Target.NOTE);
+    return authorizationHandler.checkAccessPermission(request,response, Target.NOTE);
   }
 }
