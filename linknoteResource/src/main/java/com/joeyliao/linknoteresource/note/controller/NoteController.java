@@ -20,6 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NoteController {
 
-
-
+  @GetMapping("/api/notebooks/{notebookId}/notes/{noteId}")
+  public ResponseEntity<Object> getNoteByNoteId(
+      @RequestHeader String Authorization,
+      @PathVariable String notebookId,
+      @PathVariable String noteId
+  ){
+   return ResponseEntity.status(200).body(Map.of("result","取得notes成功！"));
+  }
 }

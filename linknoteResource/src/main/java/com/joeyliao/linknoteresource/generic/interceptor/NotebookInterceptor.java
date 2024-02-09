@@ -22,11 +22,6 @@ public class NotebookInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
-    Boolean result = authorizationHandler.checkAccessPermission(request, response, Target.NOTEBOOK);
-    if(!result){
-      response.setStatus(401);
-      return false;
-    }
-    return true;
+    return authorizationHandler.checkAccessPermission(request, response, Target.NOTEBOOK);
   }
 }

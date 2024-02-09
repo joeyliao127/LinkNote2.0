@@ -37,21 +37,20 @@ public class NotebookController {
 //    params.setOffset(offset);
 //    params.setKeyword(keyword);
 //    params.setCoNotebook(coNotebook);
-    return ResponseEntity.status(HttpStatus.OK).body("/api/notebooks測試成功");
+    return ResponseEntity.status(HttpStatus.OK).body("成功取得/api/notebooks");
   }
 
   @GetMapping("/api/notebooks/{notebookId}")
   public ResponseEntity<String> getNotebook(
       @PathVariable String notebookId
   ) {
-    log.info("顯示path變數notebookId：" + notebookId);
 //
 //    GetNotebooksParamsDto params = new GetNotebooksParamsDto();
 //    params.setLimit(limit);
 //    params.setOffset(offset);
 //    params.setKeyword(keyword);
 //    params.setCoNotebook(coNotebook);
-    return ResponseEntity.status(HttpStatus.OK).body("/api/notebooks/{notebookId}測試成功");
+    return ResponseEntity.status(HttpStatus.OK).body("成功取得/api/notebooks/{notebookId}");
   }
 //
 //  @GetMapping("/api/notebooks/{notebookId}/notes")
