@@ -73,7 +73,7 @@ public class NotebookServiceImpl implements NotebookService {
       responsePo.setNextPage(false);
       return responsePo;
     }
-    if (responsePo.getNotebooks().size() == po.getLimit()) {
+    if (responsePo.getNotebooks().size() == po.getLimit() + 1) {
       responsePo.setNextPage(true);
       responsePo.getNotebooks().remove(responsePo.getNotebooks().size() - 1);
     } else {
