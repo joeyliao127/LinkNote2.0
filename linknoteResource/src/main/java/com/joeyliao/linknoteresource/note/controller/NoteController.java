@@ -26,6 +26,7 @@ public class NoteController {
       @PathVariable String notebookId,
       @PathVariable String noteId
   ){
+
    return ResponseEntity.status(200).body(Map.of("result","取得notes成功！"));
   }
 }
