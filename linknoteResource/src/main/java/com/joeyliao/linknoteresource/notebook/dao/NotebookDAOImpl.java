@@ -9,11 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Slf4j
 public class NotebookDAOImpl implements NotebookDAO {
 
   @Autowired
@@ -57,24 +59,25 @@ public class NotebookDAOImpl implements NotebookDAO {
     String sql = null;
     if (isCoNotebook) {
       sql = """
-          SELECT n.id, n.name, n.description FROM notebooks n
-          JOIN notebooks_users_role nur ON n.id = nur.notebookId
+          SELECT n.id, n.name, n.description FROM notebooks n 
+          JOIN notebooks_users_role nur ON n.id = nur.notebookId 
           WHERE nur.userId = :userId 
           """;
 
     } else {
       sql = """
-          SELECT n.id, n.name, n.description FROM notebooks n
-          WHERE n.id = :notebookId 
+          SELECT n.id, n.name, n.description FROM notebooks n 
+          JOIN users u ON n.userId = u.id  
+          WHERE n.userId = :userId 
           """;
     }
     if (!Objects.equals(po.getKeyword(), "null")) {
-      sql += "name like %:keyword% ";
+      sql += "AND n.name like :keyword ";
     }
     sql += "LIMIT :limit OFFSET :offset ";
-
     Map<String, Object> map = new HashMap<>();
     map.put("userId", po.getUserId());
+    map.put("keyword", "%" + po.getKeyword() + "%");
     map.put("offset", po.getOffset());
     map.put("limit", po.getLimit() + 1);
 

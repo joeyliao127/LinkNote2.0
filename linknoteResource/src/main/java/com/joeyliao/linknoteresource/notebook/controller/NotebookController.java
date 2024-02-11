@@ -45,7 +45,7 @@ public class NotebookController {
   public ResponseEntity<Object> getNotebooks(
       @RequestHeader String Authorization,
       @RequestParam(defaultValue = "0") @Min(0) Integer offset,
-      @RequestParam(defaultValue = "1") @Max(20) @Min(0) Integer limit,
+      @RequestParam(defaultValue = "1") @Max(20) @Min(1) Integer limit,
       @RequestParam(defaultValue = "null") String keyword
   ) {
     AllNotebookRequestPo po = setAllNotebookPoParams(Authorization, offset, limit, keyword);
