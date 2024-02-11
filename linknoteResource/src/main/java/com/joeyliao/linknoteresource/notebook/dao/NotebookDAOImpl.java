@@ -1,5 +1,6 @@
 package com.joeyliao.linknoteresource.notebook.dao;
 
+import com.joeyliao.linknoteresource.generic.enums.Role;
 import com.joeyliao.linknoteresource.notebook.dto.NotebooksDTO;
 import com.joeyliao.linknoteresource.notebook.po.AllNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.CreateNotebookRequestPo;
@@ -22,7 +23,7 @@ public class NotebookDAOImpl implements NotebookDAO {
   NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
   @Override
-  public Integer createNotebook(CreateNotebookRequestPo po, String id) {
+  public void createNotebook(CreateNotebookRequestPo po, String id) {
     String sql = """
         INSERT INTO notebooks(id, name, description, userId)
         VALUES (:id ,:name, :description, :userId);
@@ -32,7 +33,8 @@ public class NotebookDAOImpl implements NotebookDAO {
     map.put("name", po.getName());
     map.put("description", po.getDescription());
     map.put("userId", po.getUserId());
-    return namedParameterJdbcTemplate.update(sql, map);
+    namedParameterJdbcTemplate.update(sql, map);
+    setNotebookUserRoleAsOwner(id, po.getUserId());
   }
 
   @Override
@@ -47,12 +49,25 @@ public class NotebookDAOImpl implements NotebookDAO {
 
   @Override
   public Integer updateNotebook(UpdateNotebookPo po) {
-    return null;
+    String sql = """
+        UPDATE notebooks SET name = :name,description = :description
+        WHERE id = :notebookId;
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("notebookId", po.getNotebookId());
+    map.put("name", po.getName());
+    map.put("description", po.getDescription());
+    return namedParameterJdbcTemplate.update(sql, map);
   }
 
   @Override
   public Integer deleteNotebook(String notebookId) {
-    return null;
+    String sql = """
+        DELETE FROM notebooks WHERE id = :id;
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("id", notebookId);
+    return namedParameterJdbcTemplate.update(sql, map);
   }
 
   private List<NotebooksDTO> getNotebooksCollation(AllNotebookRequestPo po, Boolean isCoNotebook) {
@@ -87,5 +102,26 @@ public class NotebookDAOImpl implements NotebookDAO {
     log.info("list長度：" + list.size());
     log.info("list內容：" + list.get(0));
     return namedParameterJdbcTemplate.query(sql, map, new AllNotebooksRowMapper());
+  }
+
+  private void setNotebookUserRoleAsOwner(String notebookId, String userId){
+    String sql = """
+        INSERT INTO notebooks_users_role(notebookId, userId, roleId)
+        VALUES (:notebookId, :userId, :role);
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("notebookId", notebookId);
+    map.put("userId", userId);
+    map.put("role", roleMap(Role.OWNER));
+    namedParameterJdbcTemplate.update(sql, map);
+  }
+
+  private Integer roleMap(Role role){
+    Map<Role, Integer> map = new HashMap<>();
+    map.put(Role.OWNER, 1);
+    map.put(Role.COLLABORATOR, 2);
+    map.put(Role.MEMBER, 3);
+    map.put(Role.GUEST, 4);
+    return map.get(role);
   }
 }

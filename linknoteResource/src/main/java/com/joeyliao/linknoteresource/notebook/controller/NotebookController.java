@@ -7,6 +7,7 @@ import com.joeyliao.linknoteresource.notebook.service.NotebookService;
 import com.joeyliao.linknoteresource.token.service.TokenService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,7 @@ public class NotebookController {
   ) {
     AllNotebookRequestPo po = setAllNotebookPoParams(Authorization, offset, limit, keyword);
     return ResponseEntity.status(HttpStatus.OK)
-        .body(Map.of("result", true,
-            "notebooks", notebookService.getAllNotebooks(po)));
+        .body(notebookService.getAllNotebooks(po));
   }
 
   @GetMapping("/api/coNotebooks")
@@ -63,23 +63,20 @@ public class NotebookController {
   ) {
 
     AllNotebookRequestPo po = setAllNotebookPoParams(Authorization, offset, limit, keyword);
-    return ResponseEntity.status(200).body(Map.of(
-            "result", true,
-            "notebooks", notebookService.getCoNotebooks(po)
-        )
-    );
+    return ResponseEntity.status(200).body(notebookService.getCoNotebooks(po));
   }
 
   @PutMapping("/api/notebooks/{notebookId}")
   public ResponseEntity<Object> updateNotebook(
-      @PathVariable String notebookId,
+      @PathVariable @NotNull String notebookId,
       @RequestBody UpdateNotebookPo po
   ) {
+    po.setNotebookId(notebookId);
     notebookService.updateNotebook(po);
     return ResponseEntity.status(200).body(Map.of("result", true));
   }
 
-  @DeleteMapping("/api/notebook/{notebookId}")
+  @DeleteMapping("/api/notebooks/{notebookId}")
   public ResponseEntity<Object> deleteNotebook(
       @PathVariable String notebookId
   ) {

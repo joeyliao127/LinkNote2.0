@@ -5,10 +5,9 @@ import com.joeyliao.linknoteresource.notebook.po.AllNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.CreateNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.UpdateNotebookPo;
 import java.util.List;
-import org.springframework.data.relational.core.sql.In;
 
 public interface NotebookDAO {
-  Integer createNotebook(CreateNotebookRequestPo po, String id);
+  void createNotebook(CreateNotebookRequestPo po, String id);
 
   List<NotebooksDTO> getAllNotebooks(AllNotebookRequestPo po);
 
