@@ -1,5 +1,9 @@
 package com.joeyliao.linknoteresource.collaborator.controller;
 
+import com.joeyliao.linknoteresource.collaborator.po.CreateCollaboratorPo;
+import com.joeyliao.linknoteresource.collaborator.po.DeleteCollaboratorPo;
+import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsRequestPo;
+import com.joeyliao.linknoteresource.collaborator.service.CollaboratorService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -20,5 +24,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CollaboratorController {
 
+  @Autowired
+  CollaboratorService collaboratorService;
+  @GetMapping("/api/notebooks/{notebookId}/collaborators")
+  public ResponseEntity<Object> getCollaborators(
+      @PathVariable String notebookId
+  ){
+    GetCollaboratorsRequestPo po = new GetCollaboratorsRequestPo();
+    po.setNotebookId(notebookId);
+    return ResponseEntity.status(200).body(collaboratorService.getCollaborators(po));
+  }
 
+  @PostMapping("/api/notebooks/{notebookId}/collaborators")
+  public ResponseEntity<Object> createCollaborator(
+      @PathVariable String notebookId,
+      @RequestBody CreateCollaboratorPo po
+  ){
+    po.setNotebookId(notebookId);
+    collaboratorService.createCollaborator(po);
+    return ResponseEntity.status(200).body(Map.of("result", true));
+  };
+
+  @DeleteMapping("/api/notebooks/{notebookId}/collaborators")
+  public ResponseEntity<Object> deleteCollaborator(
+      @PathVariable String notebookId,
+      @RequestParam @Valid String userId
+  ){
+    DeleteCollaboratorPo po = new DeleteCollaboratorPo();
+    po.setNotebookId(notebookId);
+    po.setUserId(userId);
+    collaboratorService.deleteCollaborator(po);
+    return ResponseEntity.status(200).body(Map.of("result", true));
+  }
 }

@@ -63,7 +63,7 @@ public class InvitationServiceImpl implements InvitationService {
 
   @Override
   public void deleteInvitation(DeleteInvitationPo po) {
-
+    invitationDAO.deleteInvitation(po);
   }
 
   private Boolean hasNextPage(List list, Integer limit){

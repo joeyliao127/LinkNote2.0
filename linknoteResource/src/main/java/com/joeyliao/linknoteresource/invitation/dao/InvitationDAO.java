@@ -2,6 +2,7 @@ package com.joeyliao.linknoteresource.invitation.dao;
 
 import com.joeyliao.linknoteresource.invitation.dto.InvitationDTO;
 import com.joeyliao.linknoteresource.invitation.po.CreateInvitationPo;
+import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface InvitationDAO {
   List<InvitationDTO> getSentInvitation(GetInvitationRequestPo po);
 
   List<InvitationDTO> getReceivedInvitation(GetInvitationRequestPo po);
+
+  void deleteInvitation(DeleteInvitationPo po);
 }

@@ -42,7 +42,7 @@ public class AppConfig implements WebMvcConfigurer {
             , "/api/invitations/sent-invitations"
             , "/api/invitations/received-invitations");
     registry.addInterceptor(collaboratorInterceptor)
-        .addPathPatterns("/api/notebooks/*/collaborators/**");
+        .addPathPatterns("/api/notebooks/*/collaborators");
     registry.addInterceptor(notebookInterceptor).addPathPatterns("/api/notebooks/**", "/api/coNotebooks");
     registry.addInterceptor(defaultInterceptor).addPathPatterns("*")
         .excludePathPatterns("/", "notebooks", "notes");

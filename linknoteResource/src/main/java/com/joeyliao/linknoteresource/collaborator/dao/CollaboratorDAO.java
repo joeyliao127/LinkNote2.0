@@ -1,5 +1,17 @@
-package com.joeyliao.linknoteresource.notebook.dao;
+package com.joeyliao.linknoteresource.collaborator.dao;
+
+import com.joeyliao.linknoteresource.collaborator.dto.CollaboratorsDTO;
+import com.joeyliao.linknoteresource.collaborator.po.CreateCollaboratorPo;
+import com.joeyliao.linknoteresource.collaborator.po.DeleteCollaboratorPo;
+import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsRequestPo;
+import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsResponsePo;
+import java.util.List;
 
 public interface CollaboratorDAO {
 
+  List<CollaboratorsDTO> getCollaborators(GetCollaboratorsRequestPo po);
+
+  void deleteCollaborator(DeleteCollaboratorPo po);
+
+  void createCollaborator(CreateCollaboratorPo po);
 }
