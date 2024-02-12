@@ -16,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -24,7 +25,7 @@ import org.springframework.web.servlet.HandlerMapping;
 public class AuthorizationHandler {
 
   public Boolean checkAccessPermission(HttpServletRequest request, HttpServletResponse response,
-      Target target) {
+      Target target) throws BadRequestException {
     log.info("=================執行Notebook preHandle=================");
 
     Map pathVariables = (Map) request.getAttribute(
@@ -48,7 +49,13 @@ public class AuthorizationHandler {
     log.info("Authorization: " + Authorization);
     log.info("請求resource路徑：" + request.getRequestURI());
     log.info("發送auth request為：" + url);
-    return sendAccessPermissionRequest(url, httpEntity, response);
+    Boolean result = sendAccessPermissionRequest(url, httpEntity, response);
+    if(result){
+      return true;
+    }else{
+      response.setStatus(401);
+      return false;
+    }
   }
 
   private Behavior behaviorMapping(HttpMethod httpMethod) {

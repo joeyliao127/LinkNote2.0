@@ -38,8 +38,8 @@ public class NotebookController {
       @RequestHeader String Authorization,
       @RequestBody CreateNotebookRequestPo po
   ) {
-    notebookService.createNotebook(po, Authorization);
-    return ResponseEntity.status(200).body(Map.of("result", true));
+    String notebookId = notebookService.createNotebook(po, Authorization);
+    return ResponseEntity.status(200).body(Map.of("result", true, "notebookId", notebookId));
   }
 
   @GetMapping("/api/notebooks")

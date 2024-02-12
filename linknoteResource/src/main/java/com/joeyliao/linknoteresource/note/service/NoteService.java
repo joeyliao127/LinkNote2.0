@@ -10,7 +10,7 @@ import com.joeyliao.linknoteresource.note.po.updateNotePo;
 
 public interface NoteService {
 
-  void createNote(CreateNotePo po);
+  String createNote(CreateNotePo po);
 
   GetNotesResponsePo getNotes(GetNotesRequestPo po);
 

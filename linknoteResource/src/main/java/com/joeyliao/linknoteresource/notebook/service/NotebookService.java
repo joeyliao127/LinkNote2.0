@@ -7,7 +7,7 @@ import com.joeyliao.linknoteresource.notebook.po.UpdateNotebookPo;
 
 public interface NotebookService {
 
-  void createNotebook(CreateNotebookRequestPo po, String authorization);
+  String createNotebook(CreateNotebookRequestPo po, String authorization);
 
   AllNotebookResponsePo getAllNotebooks(AllNotebookRequestPo po);
 

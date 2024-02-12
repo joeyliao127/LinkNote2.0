@@ -30,12 +30,13 @@ public class NotebookServiceImpl implements NotebookService {
 
   @Transactional
   @Override
-  public void createNotebook(CreateNotebookRequestPo po, String authorization) {
+  public String createNotebook(CreateNotebookRequestPo po, String authorization) {
     po.setUserId(tokenService.parserJWTToken(authorization)
         .get("userId", String.class));
     String id = "NB" + uuidGeneratorService.generateUUID(Target.NOTEBOOK);
     log.info("Notebook產生的UUID為：" + id);
     notebookDAO.createNotebook(po, id);
+    return id;
   }
 
   @Override

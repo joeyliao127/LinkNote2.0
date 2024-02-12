@@ -35,23 +35,21 @@ public class NoteController {
   @PostMapping("/api/notebooks/{notebookId}/notes")
   public ResponseEntity<Object> createNote(
       @PathVariable @NotBlank String notebookId,
-      @RequestHeader @NotNull String Authorization,
       @RequestBody @Valid CreateNotePo po
   ) {
     po.setNotebookId(notebookId);
-    noteService.createNote(po);
-    return ResponseEntity.status(200).body(Map.of("result", true));
+    String noteId = noteService.createNote(po);
+    return ResponseEntity.status(200).body(Map.of("result", true, "noteId", noteId));
   }
 
   @GetMapping("/api/notebooks/{notebookId}/notes")
   public ResponseEntity<Object> getNotesByNotebookId(
-      @RequestHeader String Authorization,
       @PathVariable String notebookId,
       @RequestParam(defaultValue = "0") @Min(0) Integer offset,
       @RequestParam(defaultValue = "1") @Max(20) @Min(1) Integer limit,
       @RequestParam(defaultValue = "null") String tag,
-      @RequestParam(defaultValue = "false") Boolean star,
-      @RequestParam(defaultValue = "true") Boolean sortDesc,
+      @RequestParam(defaultValue = "false") String star,
+      @RequestParam(defaultValue = "true") String sortDesc,
       @RequestParam(defaultValue = "null") String keyword
   ) {
     GetNotesRequestPo po = new GetNotesRequestPo();
@@ -59,9 +57,9 @@ public class NoteController {
     po.setOffset(offset);
     po.setLimit(limit);
     po.setTag(tag);
-    po.setStar(star.equals("true"));
+    po.setStar(star);
     po.setKeyword(keyword);
-    po.setSortDesc(sortDesc.equals("true"));
+    po.setSortDesc(sortDesc);
     return ResponseEntity.status(200).body(noteService.getNotes(po));
   }
 

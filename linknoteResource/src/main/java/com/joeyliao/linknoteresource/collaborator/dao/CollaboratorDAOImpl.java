@@ -1,6 +1,5 @@
 package com.joeyliao.linknoteresource.collaborator.dao;
 
-import com.joeyliao.linknoteresource.collaborator.dao.CollaboratorDAO;
 import com.joeyliao.linknoteresource.collaborator.dto.CollaboratorsDTO;
 import com.joeyliao.linknoteresource.collaborator.po.CreateCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.DeleteCollaboratorPo;
@@ -27,6 +26,6 @@ public class CollaboratorDAOImpl implements CollaboratorDAO {
 
   @Override
   public void createCollaborator(CreateCollaboratorPo po) {
-    
+
   }
 }

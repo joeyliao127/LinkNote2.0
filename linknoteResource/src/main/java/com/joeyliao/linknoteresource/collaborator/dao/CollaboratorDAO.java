@@ -4,7 +4,6 @@ import com.joeyliao.linknoteresource.collaborator.dto.CollaboratorsDTO;
 import com.joeyliao.linknoteresource.collaborator.po.CreateCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.DeleteCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsRequestPo;
-import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsResponsePo;
 import java.util.List;
 
 public interface CollaboratorDAO {

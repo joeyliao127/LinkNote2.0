@@ -8,7 +8,7 @@ public class GetNotesRequestPo {
   private Integer offset;
   private Integer limit;
   private String tag;
-  private Boolean star;
-  private Boolean sortDesc;
+  private String star;
+  private String sortDesc;
   private String keyword;
 }

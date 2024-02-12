@@ -7,12 +7,13 @@ import com.joeyliao.linknoteresource.note.po.GetNoteRequestPo;
 import com.joeyliao.linknoteresource.note.po.GetNotesRequestPo;
 import com.joeyliao.linknoteresource.note.po.GetNotesResponsePo;
 import com.joeyliao.linknoteresource.note.po.updateNotePo;
+import java.util.List;
 
 public interface NoteDAO {
 
   void createNotes(CreateNotePo po);
 
-  GetNotesResponsePo getNotes(GetNotesRequestPo po);
+  List<NoteDTO> getNotes(GetNotesRequestPo po);
 
   NoteDTO getNote(GetNoteRequestPo po);
 

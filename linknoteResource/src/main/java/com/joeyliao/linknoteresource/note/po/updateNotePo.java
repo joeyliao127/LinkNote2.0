@@ -1,9 +1,11 @@
 package com.joeyliao.linknoteresource.note.po;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class updateNotePo {
+  @NotBlank
   private String name;
   private String question;
   private String content;

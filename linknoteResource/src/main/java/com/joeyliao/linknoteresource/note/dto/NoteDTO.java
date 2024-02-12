@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class NoteDTO {
+  private String noteId;
   private String name;
   private String question;
   private String content;
