@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 public class NoteDTO {
-  String name;
-  String question;
-  String content;
-  String keypoint;
-  Timestamp createDate;
-  Boolean star;
+  private String name;
+  private String question;
+  private String content;
+  private String keypoint;
+  private Timestamp createDate;
+  private Boolean star;
 }

@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class GetNotesResponsePo {
-  List<NoteDTO> notes;
-  Boolean nextPage;
+  private List<NoteDTO> notes;
+  private Boolean nextPage;
 }

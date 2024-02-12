@@ -5,5 +5,5 @@ import lombok.Data;
 
 @Data
 public class GetNoteResponsePo {
-  NoteDTO note;
+  private NoteDTO note;
 }

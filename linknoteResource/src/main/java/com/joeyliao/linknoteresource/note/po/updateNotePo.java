@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class updateNotePo {
-  String name;
-  String question;
-  String content;
-  String keypoint;
-  Boolean star;
-  String noteId;
+  private String name;
+  private String question;
+  private String content;
+  private String keypoint;
+  private Boolean star;
+  private String noteId;
 }

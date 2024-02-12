@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class DeleteNotebookTagRequestPo {
-  String tagId;
+  private String tagId;
 }

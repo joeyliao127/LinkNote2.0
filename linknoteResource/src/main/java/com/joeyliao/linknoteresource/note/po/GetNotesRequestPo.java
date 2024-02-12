@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class GetNotesRequestPo {
-  String notebookId;
-  Integer offset;
-  Integer limit;
-  String tag;
-  Boolean star;
-  Boolean sortDesc;
-  String keyword;
+  private String notebookId;
+  private Integer offset;
+  private Integer limit;
+  private String tag;
+  private Boolean star;
+  private Boolean sortDesc;
+  private String keyword;
 }

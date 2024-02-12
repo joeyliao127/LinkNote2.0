@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class CreateNotePo {
-  String notebookId;
-  String name;
-  String question;
-  String content;
-  String keypoint;
-  Boolean star;
+  private String notebookId;
+  private String name;
+  private String question;
+  private String content;
+  private String keypoint;
+  private Boolean star;
 }

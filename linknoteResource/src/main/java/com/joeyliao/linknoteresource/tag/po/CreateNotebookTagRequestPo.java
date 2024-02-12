@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class CreateNotebookTagRequestPo {
-  String notebookId;
+  private String notebookId;
   @NotBlank
-  String name;
+  private String name;
 }

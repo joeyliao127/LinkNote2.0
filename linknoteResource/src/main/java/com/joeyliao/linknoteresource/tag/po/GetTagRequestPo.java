@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class GetTagRequestPo {
-  String noteId;
+  private String noteId;
 }

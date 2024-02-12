@@ -1,12 +1,9 @@
 package com.joeyliao.linknoteresource.notebook.po;
 
+import com.joeyliao.linknoteresource.generic.po.PaginationPo;
 import lombok.Data;
 
 @Data
-public class AllNotebookRequestPo {
+public class AllNotebookRequestPo extends PaginationPo {
   private String userId;
-  private Integer limit;
-  private Integer offset;
-  private String keyword;
-  private Boolean orderByDesc;
 }

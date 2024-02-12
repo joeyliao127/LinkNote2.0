@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class GetNoteRequestPo {
-  String notebookId;
-  String noteId;
+  private String notebookId;
+  private String noteId;
 }

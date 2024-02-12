@@ -6,5 +6,5 @@ import lombok.Data;
 
 @Data
 public class GetTagResponsePo {
-  List<TagDTO> tags;
+  private List<TagDTO> tags;
 }

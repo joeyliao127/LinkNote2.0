@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class AllNotebookResponsePo {
-  List<NotebooksDTO> notebooks;
-  Boolean nextPage;
+  private List<NotebooksDTO> notebooks;
+  private Boolean nextPage;
 }

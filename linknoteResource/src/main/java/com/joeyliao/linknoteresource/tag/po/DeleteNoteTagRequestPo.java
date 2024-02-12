@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class DeleteNoteTagRequestPo {
-  String tagId;
-  String noteId;
+  private String tagId;
+  private String noteId;
 }
