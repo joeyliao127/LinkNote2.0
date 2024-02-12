@@ -1,9 +1,11 @@
 package com.joeyliao.linknoteresource.generic.interceptor;
 
+import com.joeyliao.linknoteresource.token.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,7 +17,8 @@ public class DefaultInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
-    log.info("執行Default preHandle");
+    log.warn("==========DenyAllHandler==========");
+    log.info("接收到未知請求");
     throw new BadRequestException("Bad Request");
   }
 }

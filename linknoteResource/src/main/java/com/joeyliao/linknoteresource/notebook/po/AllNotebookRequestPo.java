@@ -5,5 +5,6 @@ import lombok.Data;
 
 @Data
 public class AllNotebookRequestPo extends PaginationPo {
+  private String Authorization;
   private String userId;
 }

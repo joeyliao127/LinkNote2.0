@@ -35,7 +35,7 @@ public class InvitationController {
   }
 
   @Validated
-  @GetMapping("/api/user/sent-invitation")
+  @GetMapping("/api/invitations/sent-invitations")
   public ResponseEntity<Object> getSentInvitation(
       @RequestHeader String Authorization,
       @RequestParam String keyword,
@@ -48,7 +48,7 @@ public class InvitationController {
     return ResponseEntity.status(200).body(invitationService.getSentInvitation(po));
   }
 
-  @GetMapping("/api/user/received-invitation")
+  @GetMapping("/api/invitations/received-invitations")
   public ResponseEntity<Object> getReceivedInvitation(
       @RequestHeader String Authorization,
       @RequestParam String keyword,

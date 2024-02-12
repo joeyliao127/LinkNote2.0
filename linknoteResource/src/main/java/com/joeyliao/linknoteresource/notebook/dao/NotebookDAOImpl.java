@@ -97,10 +97,7 @@ public class NotebookDAOImpl implements NotebookDAO {
     map.put("offset", po.getOffset());
     map.put("limit", po.getLimit() + 1);
     log.info("userId: " + po.getUserId());
-    log.info("最終取得的sql:\n" + sql);
     List<NotebooksDTO> list = namedParameterJdbcTemplate.query(sql, map, new AllNotebooksRowMapper());
-    log.info("list長度：" + list.size());
-    log.info("list內容：" + list.get(0));
     return namedParameterJdbcTemplate.query(sql, map, new AllNotebooksRowMapper());
   }
 

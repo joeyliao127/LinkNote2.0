@@ -89,12 +89,10 @@ public class NotebookController {
       Integer offset,
       Integer limit,
       String keyword) {
-    String userId = tokenService.parserJWTToken(Authorization).get("userId", String.class);
     AllNotebookRequestPo params = new AllNotebookRequestPo();
-    params.setUserId(userId);
+    params.setAuthorization(Authorization);
     params.setLimit(limit);
     params.setOffset(offset);
-    params.setUserId(userId);
     params.setKeyword(keyword);
     return params;
   }

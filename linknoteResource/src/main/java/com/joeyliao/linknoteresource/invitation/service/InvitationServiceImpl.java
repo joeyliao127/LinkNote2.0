@@ -50,7 +50,6 @@ public class InvitationServiceImpl implements InvitationService {
 
   @Override
   public GetReceivedInvitationResponsePo getReceivedInvitation(GetInvitationRequestPo po) {
-    tokenService.verifyToken(po.getAuthorization());
     List<InvitationDTO> list = invitationDAO.getReceivedInvitation(po);
     GetReceivedInvitationResponsePo responsePo = new GetReceivedInvitationResponsePo();
     if(hasNextPage(list, po.getLimit())){
@@ -74,6 +73,4 @@ public class InvitationServiceImpl implements InvitationService {
       return false;
     }
   }
-
-
 }

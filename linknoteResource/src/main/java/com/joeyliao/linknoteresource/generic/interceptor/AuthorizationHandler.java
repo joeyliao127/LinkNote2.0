@@ -63,22 +63,28 @@ public class AuthorizationHandler {
   private Boolean sendAccessPermissionRequest(String url, HttpEntity httpEntity,
       HttpServletResponse response) {
     RestTemplate restTemplate = new RestTemplate();
-    ResponseEntity<Boolean> result = restTemplate.exchange(url, HttpMethod.POST, httpEntity,
-        Boolean.class);
-    log.info("請求結果：" + result.getBody());
-    log.info("=================結束Notebook preHandle=================");
-    if (Boolean.TRUE.equals(result.getBody())) {
-      return true;
-    } else {
+    ResponseEntity<Boolean> result;
+    try {
+      result = restTemplate.exchange(url, HttpMethod.POST, httpEntity,
+          Boolean.class);
+      return result.getBody();
+    } catch (Exception e) {
       log.warn("access deny");
       response.setStatus(401);
       return false;
+    } finally {
+      log.info("=================結束Notebook preHandle=================");
     }
   }
 
   private String setURL(String requestURL, String Authorization, HttpServletResponse response,
       Target target) {
-    if (requestURL.equals("/api/notebooks")) {
+    Map<String, String> map = new HashMap();
+    map.put("/api/invitations/received-invitations", "/api/invitations/received-invitations");
+    map.put("/api/notebooks", "/api/notebooks");
+    map.put("/api/coNotebooks", "/api/coNotebooks");
+    map.put("/api/invitations/sent-invitations", "/api/invitations/sent-invitations");
+    if (map.containsKey(requestURL)) {
       if (Authorization == null) {
         //如果沒有token又想執行GET或CREATE，直接return false。
         response.setStatus(400);

@@ -31,7 +31,6 @@ public class NotebookServiceImpl implements NotebookService {
   @Transactional
   @Override
   public void createNotebook(CreateNotebookRequestPo po, String authorization) {
-    tokenService.verifyToken(authorization);
     po.setUserId(tokenService.parserJWTToken(authorization)
         .get("userId", String.class));
     String id = "NB" + uuidGeneratorService.generateUUID(Target.NOTEBOOK);
@@ -41,11 +40,15 @@ public class NotebookServiceImpl implements NotebookService {
 
   @Override
   public AllNotebookResponsePo getAllNotebooks(AllNotebookRequestPo po) {
+    po.setUserId(tokenService.parserJWTToken
+        (po.getAuthorization()).get("userId", String.class));
     return getNotebooks(po, false);
   }
 
   @Override
   public AllNotebookResponsePo getCoNotebooks(AllNotebookRequestPo po) {
+    po.setUserId(tokenService.parserJWTToken
+        (po.getAuthorization()).get("userId", String.class));
     return getNotebooks(po, true);
   }
 
