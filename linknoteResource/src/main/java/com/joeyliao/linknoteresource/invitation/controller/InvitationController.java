@@ -43,7 +43,7 @@ public class InvitationController {
   @GetMapping("/api/invitations/sent-invitations")
   public ResponseEntity<Object> getSentInvitation(
       @RequestHeader String Authorization,
-      @RequestParam String keyword,
+      @RequestParam(required = false) String keyword,
       @RequestParam(defaultValue = "true") Boolean sortDesc,
       @RequestParam(defaultValue = "1") @Min(1) @Max(20) Integer limit,
       @RequestParam(defaultValue = "0") @Min(0) Integer offset
@@ -56,7 +56,7 @@ public class InvitationController {
   @GetMapping("/api/invitations/received-invitations")
   public ResponseEntity<Object> getReceivedInvitation(
       @RequestHeader String Authorization,
-      @RequestParam String keyword,
+      @RequestParam(required = false)String keyword,
       @RequestParam(defaultValue = "true") Boolean sortDesc,
       @RequestParam(defaultValue = "1") @Min(1) @Max(20) Integer limit,
       @RequestParam(defaultValue = "0") @Min(0) Integer offset

@@ -5,10 +5,6 @@ import lombok.Data;
 
 @Data
 public class ReceivedInvitationDTO extends InvitationDTO {
-
-  private Integer invitationId;
-  private String message;
-  private String notebook;
-  private Timestamp Date;
-
+  private String inviterName;
+  private String inviterEmail;
 }

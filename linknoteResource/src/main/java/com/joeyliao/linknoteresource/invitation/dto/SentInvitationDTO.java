@@ -5,5 +5,6 @@ import lombok.Data;
 
 @Data
 public class SentInvitationDTO extends InvitationDTO{
-  private String invitee;
+  private String inviteeName;
+  private String inviteeEmail;
 }

@@ -6,4 +6,5 @@ import lombok.Data;
 @Data
 public class GetInvitationRequestPo extends PaginationPo {
   private String Authorization;
+  private String userEmail;
 }

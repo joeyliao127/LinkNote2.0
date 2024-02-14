@@ -10,6 +10,7 @@ import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
 import com.joeyliao.linknoteresource.invitation.po.GetReceivedInvitationResponsePo;
 import com.joeyliao.linknoteresource.invitation.po.GetSentInvitationResponsePo;
+import com.joeyliao.linknoteresource.invitation.po.InvitationResponsePo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class InvitationServiceImpl implements InvitationService {
     log.info("invitee email: " + po.getInviteeEmail());
     verifyEmailIsExist(po.getInviteeEmail());
     verifyInvitationNotExist(po);
-    po.setInviterEmail(getInviterEmail(po.getAuthorization()));
+    po.setInviterEmail(getUserInfoByToken(po.getAuthorization()).getEmail());
     invitationDAO.createInvitation(po);
   }
 
@@ -66,47 +67,44 @@ public class InvitationServiceImpl implements InvitationService {
     }
   }
 
-  private String getInviterEmail(String authorization) {
+  private UserInfo getUserInfoByToken(String authorization) {
     String url = "http://" + authenticationServerPath + "/api/user/info";
     HttpHeaders headers = new HttpHeaders();
     headers.set("Authorization", authorization);
     HttpEntity<String> httpEntity = new HttpEntity<>(headers);
     UserInfo userInfo = restTemplate.exchange(url, HttpMethod.GET, httpEntity, UserInfo.class)
         .getBody();
-    return userInfo.getEmail();
+    return userInfo;
   }
 
   @Override
   public GetSentInvitationResponsePo getSentInvitation(GetInvitationRequestPo po) {
+    po.setLimit(po.getLimit() + 1);
+    po.setUserEmail(getUserInfoByToken(po.getAuthorization()).getEmail());
     List<SentInvitationDTO> list = invitationDAO.getSentInvitation(po);
     GetSentInvitationResponsePo responsePo = new GetSentInvitationResponsePo();
-    if (hasNextPage(list, po.getLimit())) {
-      list.remove(list.size() - 1);
-      responsePo.setNextPage(true);
-    } else {
-      responsePo.setNextPage(false);
-    }
+    responsePo.setInvitations(list);
+    setResponsePo(list, po.getLimit(), responsePo);
     return responsePo;
   }
 
   @Override
   public GetReceivedInvitationResponsePo getReceivedInvitation(GetInvitationRequestPo po) {
+    po.setLimit(po.getLimit() + 1);
+    po.setUserEmail(getUserInfoByToken(po.getAuthorization()).getEmail());
     List<ReceivedInvitationDTO> list = invitationDAO.getReceivedInvitation(po);
     GetReceivedInvitationResponsePo responsePo = new GetReceivedInvitationResponsePo();
-    if (hasNextPage(list, po.getLimit())) {
-      list.remove(list.size() - 1);
-      responsePo.setNextPage(true);
-    } else {
-      responsePo.setNextPage(false);
-    }
+    responsePo.setInvitations(list);
+    setResponsePo(list, po.getLimit(), responsePo);
     return responsePo;
   }
 
-  private Boolean hasNextPage(List list, Integer limit) {
-    if ((list.size() - 1) == limit) {
-      return true;
+  private void setResponsePo(List list, Integer limit, InvitationResponsePo po) {
+    if ((list.size()) == limit) {
+      list.remove(list.size() -1);
+      po.setNextPage(true);
     } else {
-      return false;
+      po.setNextPage(false);
     }
   }
 

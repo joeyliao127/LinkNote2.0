@@ -6,6 +6,8 @@ import com.joeyliao.linknoteresource.invitation.dto.SentInvitationDTO;
 import com.joeyliao.linknoteresource.invitation.po.CreateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
+import com.joeyliao.linknoteresource.invitation.rowmapper.ReceivedInvitationRowMapper;
+import com.joeyliao.linknoteresource.invitation.rowmapper.SentInvitationRowMapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +42,36 @@ public class InvitationDAOImpl implements InvitationDAO {
 
   @Override
   public List<SentInvitationDTO> getSentInvitation(GetInvitationRequestPo po) {
-    return null;
+    String sql = """
+        SELECT u.username as inviteeName, u.email as inviteeEmail
+        , n.id as notebookId, n.name as notebookName
+        , i.id as invitationId, i.message, i.date as createDate
+        FROM invitations i JOIN users u ON i.inviteeEmail = u.email
+        JOIN notebooks n ON i.notebookId = n.id
+        WHERE i.inviterEmail = :inviterEmail limit :limit offset :offset
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("inviterEmail", po.getUserEmail());
+    map.put("limit", po.getLimit());
+    map.put("offset", po.getOffset());
+    return namedParameterJdbcTemplate.query(sql, map, new SentInvitationRowMapper());
   }
 
   @Override
   public List<ReceivedInvitationDTO> getReceivedInvitation(GetInvitationRequestPo po) {
-    return null;
+    String sql = """
+        SELECT u.username as inviterName, u.email as inviterEmail
+             , n.id as notebookId, n.name as notebookName
+             , i.id as invitationId, i.message, i.date as createDate
+        FROM invitations i JOIN users u ON i.inviterEmail = u.email
+                           JOIN notebooks n ON i.notebookId = n.id
+        WHERE i.inviteeEmail = :inviteeEmail limit :limit offset :offset
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("inviteeEmail", po.getUserEmail());
+    map.put("limit", po.getLimit());
+    map.put("offset", po.getOffset());
+    return namedParameterJdbcTemplate.query(sql, map, new ReceivedInvitationRowMapper());
   }
 
   @Override

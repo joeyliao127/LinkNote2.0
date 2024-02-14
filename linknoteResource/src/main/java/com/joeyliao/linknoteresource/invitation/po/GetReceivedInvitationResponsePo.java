@@ -5,7 +5,6 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class GetReceivedInvitationResponsePo {
+public class GetReceivedInvitationResponsePo extends InvitationResponsePo {
   private List<ReceivedInvitationDTO> invitations;
-  private Boolean nextPage;
 }
