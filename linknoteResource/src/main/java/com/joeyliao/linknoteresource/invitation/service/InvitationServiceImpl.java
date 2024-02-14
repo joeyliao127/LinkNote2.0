@@ -2,6 +2,8 @@ package com.joeyliao.linknoteresource.invitation.service;
 
 import com.joeyliao.linknoteresource.invitation.dao.InvitationDAO;
 import com.joeyliao.linknoteresource.invitation.dto.InvitationDTO;
+import com.joeyliao.linknoteresource.invitation.dto.ReceivedInvitationDTO;
+import com.joeyliao.linknoteresource.invitation.dto.SentInvitationDTO;
 import com.joeyliao.linknoteresource.invitation.exception.InvitationAlreadyExistException;
 import com.joeyliao.linknoteresource.invitation.po.CreateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
@@ -10,6 +12,7 @@ import com.joeyliao.linknoteresource.invitation.po.GetReceivedInvitationResponse
 import com.joeyliao.linknoteresource.invitation.po.GetSentInvitationResponsePo;
 import com.joeyliao.linknoteresource.invitation.service.InvitationService;
 import com.joeyliao.linknoteresource.token.service.TokenService;
+import com.joeyliao.linknoteresource.user.userdao.UserDAO;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +27,12 @@ public class InvitationServiceImpl implements InvitationService {
   @Autowired
   TokenService tokenService;
 
+  @Autowired
+  UserDAO userDAO;
+
   @Override
   public void createInvitation(CreateInvitationPo po) {
+    需要check Email是否存在。
     //回傳invitation id，如果有代表已經發出邀請。
     List<Integer> list = invitationDAO.checkInvitationNotExist(po.getInviteeId(), po.getNotebookId());
     if(!list.isEmpty()){
@@ -37,7 +44,7 @@ public class InvitationServiceImpl implements InvitationService {
   @Override
   public GetSentInvitationResponsePo getSentInvitation(GetInvitationRequestPo po) {
     tokenService.verifyToken(po.getAuthorization());
-    List<InvitationDTO> list =  invitationDAO.getSentInvitation(po);
+    List<SentInvitationDTO> list =  invitationDAO.getSentInvitation(po);
     GetSentInvitationResponsePo responsePo = new GetSentInvitationResponsePo();
     if(hasNextPage(list, po.getLimit())){
       list.remove(list.size() -1 );
@@ -50,7 +57,7 @@ public class InvitationServiceImpl implements InvitationService {
 
   @Override
   public GetReceivedInvitationResponsePo getReceivedInvitation(GetInvitationRequestPo po) {
-    List<InvitationDTO> list = invitationDAO.getReceivedInvitation(po);
+    List<ReceivedInvitationDTO> list = invitationDAO.getReceivedInvitation(po);
     GetReceivedInvitationResponsePo responsePo = new GetReceivedInvitationResponsePo();
     if(hasNextPage(list, po.getLimit())){
       list.remove(list.size() -1 );

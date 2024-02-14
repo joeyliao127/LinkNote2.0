@@ -1,6 +1,8 @@
 package com.joeyliao.linknoteresource.invitation.dao;
 
 import com.joeyliao.linknoteresource.invitation.dto.InvitationDTO;
+import com.joeyliao.linknoteresource.invitation.dto.ReceivedInvitationDTO;
+import com.joeyliao.linknoteresource.invitation.dto.SentInvitationDTO;
 import com.joeyliao.linknoteresource.invitation.po.CreateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
@@ -8,7 +10,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class InvitationImpl implements InvitationDAO {
+public class InvitationDAOImpl implements InvitationDAO {
 
   @Override
   public void createInvitation(CreateInvitationPo po) {
@@ -21,12 +23,12 @@ public class InvitationImpl implements InvitationDAO {
   }
 
   @Override
-  public List<InvitationDTO> getSentInvitation(GetInvitationRequestPo po) {
+  public List<SentInvitationDTO> getSentInvitation(GetInvitationRequestPo po) {
     return null;
   }
 
   @Override
-  public List<InvitationDTO> getReceivedInvitation(GetInvitationRequestPo po) {
+  public List<ReceivedInvitationDTO> getReceivedInvitation(GetInvitationRequestPo po) {
     return null;
   }
 

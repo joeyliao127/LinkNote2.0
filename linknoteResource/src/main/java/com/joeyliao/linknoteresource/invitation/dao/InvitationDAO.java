@@ -1,6 +1,8 @@
 package com.joeyliao.linknoteresource.invitation.dao;
 
 import com.joeyliao.linknoteresource.invitation.dto.InvitationDTO;
+import com.joeyliao.linknoteresource.invitation.dto.ReceivedInvitationDTO;
+import com.joeyliao.linknoteresource.invitation.dto.SentInvitationDTO;
 import com.joeyliao.linknoteresource.invitation.po.CreateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
@@ -12,9 +14,9 @@ public interface InvitationDAO {
 
   List<Integer> checkInvitationNotExist(String inviteeId, String notebookId);
 
-  List<InvitationDTO> getSentInvitation(GetInvitationRequestPo po);
+  List<SentInvitationDTO> getSentInvitation(GetInvitationRequestPo po);
 
-  List<InvitationDTO> getReceivedInvitation(GetInvitationRequestPo po);
+  List<ReceivedInvitationDTO> getReceivedInvitation(GetInvitationRequestPo po);
 
   void deleteInvitation(DeleteInvitationPo po);
 }
