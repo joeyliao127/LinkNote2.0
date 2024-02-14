@@ -4,9 +4,11 @@ import com.joeyliao.linknoteresource.invitation.po.CreateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
 import com.joeyliao.linknoteresource.invitation.service.InvitationService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.util.Map;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,10 +29,12 @@ public class InvitationController {
 
   @PostMapping("/api/notebooks/{notebookId}/invitations")
   public ResponseEntity<Object> createInvitation(
-      @PathVariable String notebookId
-  ) {
-    CreateInvitationPo po = new CreateInvitationPo();
+      @PathVariable String notebookId,
+      @RequestHeader String Authorization,
+      @RequestBody @Valid CreateInvitationPo po
+  ) throws BadRequestException {
     po.setNotebookId(notebookId);
+    po.setAuthorization(Authorization);
     invitationService.createInvitation(po);
     return ResponseEntity.status(200).body(Map.of("result", true));
   }

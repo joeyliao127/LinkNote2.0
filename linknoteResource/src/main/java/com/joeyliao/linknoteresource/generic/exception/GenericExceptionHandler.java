@@ -1,5 +1,6 @@
 package com.joeyliao.linknoteresource.generic.exception;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Map;
 import org.apache.coyote.BadRequestException;

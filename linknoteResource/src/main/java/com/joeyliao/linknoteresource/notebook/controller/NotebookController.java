@@ -4,7 +4,6 @@ import com.joeyliao.linknoteresource.notebook.po.AllNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.CreateNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.UpdateNotebookPo;
 import com.joeyliao.linknoteresource.notebook.service.NotebookService;
-import com.joeyliao.linknoteresource.token.service.TokenService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -29,9 +28,6 @@ public class NotebookController {
 
   @Autowired
   NotebookService notebookService;
-
-  @Autowired
-  TokenService tokenService;
 
   @PostMapping("/api/notebooks")
   public ResponseEntity<Object> createNotebook(

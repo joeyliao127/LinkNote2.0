@@ -35,15 +35,28 @@ public class AppConfig implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(tagInterceptor).addPathPatterns("/api/notebooks/**/notes/**/tags/**");
-    registry.addInterceptor(noteInterceptor).addPathPatterns("/api/notebooks/*/notes/**");
+    registry.addInterceptor(tagInterceptor)
+        .addPathPatterns("/api/notebooks/*/notes/**/tags/**");
+
+    registry.addInterceptor(noteInterceptor)
+        .addPathPatterns("/api/notebooks/*/notes/**");
+
     registry.addInterceptor(invitationInterceptor)
-        .addPathPatterns("/api/notebooks/*/invitations/**"
+        .addPathPatterns("/api/notebooks/*/invitations"
             , "/api/invitations/sent-invitations"
             , "/api/invitations/received-invitations");
+
     registry.addInterceptor(collaboratorInterceptor)
         .addPathPatterns("/api/notebooks/*/collaborators");
-    registry.addInterceptor(notebookInterceptor).addPathPatterns("/api/notebooks/**", "/api/coNotebooks");
+
+    registry.addInterceptor(notebookInterceptor).addPathPatterns("/api/notebooks/**", "/api/coNotebooks")
+        .excludePathPatterns(
+            "/api/notebooks/*/invitations",
+            "/api/notebooks/*/notes/**/",
+            "/api/notebooks/**/notes/**/tags/**",
+            "/api/notebooks/*/collaborators"
+        );
+
     registry.addInterceptor(defaultInterceptor).addPathPatterns("*")
         .excludePathPatterns("/", "notebooks", "notes");
 

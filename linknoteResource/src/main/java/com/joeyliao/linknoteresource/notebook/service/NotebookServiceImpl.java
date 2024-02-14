@@ -1,19 +1,22 @@
 package com.joeyliao.linknoteresource.notebook.service;
 
 import com.joeyliao.linknoteresource.generic.enums.Target;
+import com.joeyliao.linknoteresource.generic.po.UserInfo;
 import com.joeyliao.linknoteresource.generic.uuidgenerator.service.UUIDGeneratorService;
 import com.joeyliao.linknoteresource.notebook.dao.NotebookDAO;
-import com.joeyliao.linknoteresource.notebook.dto.NotebooksDTO;
 import com.joeyliao.linknoteresource.notebook.po.AllNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.AllNotebookResponsePo;
 import com.joeyliao.linknoteresource.notebook.po.CreateNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.UpdateNotebookPo;
-import com.joeyliao.linknoteresource.token.service.TokenService;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j
@@ -23,16 +26,13 @@ public class NotebookServiceImpl implements NotebookService {
   NotebookDAO notebookDAO;
 
   @Autowired
-  TokenService tokenService;
-
-  @Autowired
   UUIDGeneratorService uuidGeneratorService;
 
   @Transactional
   @Override
   public String createNotebook(CreateNotebookRequestPo po, String authorization) {
-    po.setUserId(tokenService.parserJWTToken(authorization)
-        .get("userId", String.class));
+    UserInfo userInfo = getUserInfo(authorization);
+    po.setUserId(userInfo.getUserId());
     String id = "NB" + uuidGeneratorService.generateUUID(Target.NOTEBOOK);
     log.info("Notebook產生的UUID為：" + id);
     notebookDAO.createNotebook(po, id);
@@ -41,15 +41,16 @@ public class NotebookServiceImpl implements NotebookService {
 
   @Override
   public AllNotebookResponsePo getAllNotebooks(AllNotebookRequestPo po) {
-    po.setUserId(tokenService.parserJWTToken
-        (po.getAuthorization()).get("userId", String.class));
+    UserInfo userInfo = getUserInfo(po.getAuthorization());
+    log.info("getAllNotebooks: username為" + userInfo.getUsername());
+    po.setUserId(userInfo.getUserId());
     return getNotebooks(po, false);
   }
 
   @Override
   public AllNotebookResponsePo getCoNotebooks(AllNotebookRequestPo po) {
-    po.setUserId(tokenService.parserJWTToken
-        (po.getAuthorization()).get("userId", String.class));
+    UserInfo userInfo = getUserInfo(po.getAuthorization());
+    po.setUserId(userInfo.getUserId());
     return getNotebooks(po, true);
   }
 
@@ -84,5 +85,16 @@ public class NotebookServiceImpl implements NotebookService {
       responsePo.setNextPage(false);
     }
     return responsePo;
+  }
+
+  private UserInfo getUserInfo(String Authorization){
+    RestTemplate restTemplate = new RestTemplate();
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Authorization", Authorization);
+    HttpEntity<UserInfo> requestEntity = new HttpEntity<>(headers);
+    String url = "http://localhost:8080/api/user/info";
+    ResponseEntity<UserInfo> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,UserInfo.class);
+    UserInfo body = response.getBody();
+    return response.getBody();
   }
 }
