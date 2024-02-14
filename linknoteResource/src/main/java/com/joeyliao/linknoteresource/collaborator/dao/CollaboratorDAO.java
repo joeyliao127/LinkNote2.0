@@ -12,5 +12,5 @@ public interface CollaboratorDAO {
 
   void deleteCollaborator(DeleteCollaboratorPo po);
 
-  void createCollaborator(CreateCollaboratorPo po);
+  void createCollaborator(String inviteeEmail, String notebookId);
 }

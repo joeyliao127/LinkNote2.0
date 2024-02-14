@@ -73,8 +73,11 @@ public class InvitationController {
   public ResponseEntity<Object> updateInvitation(
       @PathVariable String notebookId,
       @RequestHeader String Authorization,
-      @RequestBody UpdateInvitationPo po
+      @RequestBody @Valid UpdateInvitationPo po
   ){
+    po.setNotebookId(notebookId);
+    po.setAuthorization(Authorization);
+    invitationService.updateInvitation(po);
     return ResponseEntity.status(200).body(Map.of("result", true));
   }
 

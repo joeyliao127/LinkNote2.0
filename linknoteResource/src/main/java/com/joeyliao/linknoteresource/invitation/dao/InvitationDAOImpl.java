@@ -6,6 +6,7 @@ import com.joeyliao.linknoteresource.invitation.dto.SentInvitationDTO;
 import com.joeyliao.linknoteresource.invitation.po.CreateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
+import com.joeyliao.linknoteresource.invitation.po.UpdateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.rowmapper.CheckInvitationRowMapper;
 import com.joeyliao.linknoteresource.invitation.rowmapper.ReceivedInvitationRowMapper;
 import com.joeyliao.linknoteresource.invitation.rowmapper.SentInvitationRowMapper;
@@ -59,7 +60,7 @@ public class InvitationDAOImpl implements InvitationDAO {
         , i.id as invitationId, i.message, i.date as createDate
         FROM invitations i JOIN users u ON i.inviteeEmail = u.email
         JOIN notebooks n ON i.notebookId = n.id
-        WHERE i.inviterEmail = :inviterEmail limit :limit offset :offset
+        WHERE i.inviterEmail = :inviterEmail AND i.isPending = 1 limit :limit offset :offset
         """;
     Map<String, Object> map = new HashMap<>();
     map.put("inviterEmail", po.getUserEmail());
@@ -76,7 +77,7 @@ public class InvitationDAOImpl implements InvitationDAO {
              , i.id as invitationId, i.message, i.date as createDate
         FROM invitations i JOIN users u ON i.inviterEmail = u.email
                            JOIN notebooks n ON i.notebookId = n.id
-        WHERE i.inviteeEmail = :inviteeEmail limit :limit offset :offset
+        WHERE i.inviteeEmail = :inviteeEmail AND i.isPending = 1 limit :limit offset :offset
         """;
     Map<String, Object> map = new HashMap<>();
     map.put("inviteeEmail", po.getUserEmail());
@@ -95,5 +96,18 @@ public class InvitationDAOImpl implements InvitationDAO {
     map.put("inviterEmail", po.getUserEmail());
     map.put("notebookId", po.getNotebookId());
     namedParameterJdbcTemplate.update(sql ,map);
+  }
+
+  @Override
+  public void updateInvitation(UpdateInvitationPo po) {
+    String sql = """
+        UPDATE invitations SET isPending = 0, isAccept = :isAccept
+        WHERE notebookId = :notebookId AND inviteeEmail = :inviteeEmail
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("inviteeEmail", po.getInviteeId());
+    map.put("notebookId", po.getNotebookId());
+    map.put("isAccept", po.getIsAccept());
+    namedParameterJdbcTemplate.update(sql,map);
   }
 }

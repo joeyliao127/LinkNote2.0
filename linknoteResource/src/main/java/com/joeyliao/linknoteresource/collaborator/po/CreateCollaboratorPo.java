@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class CreateCollaboratorPo {
   @NotBlank
-  private String email;
+  private String inviteeEmail;
   private String notebookId;
 }

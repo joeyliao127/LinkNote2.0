@@ -35,15 +35,6 @@ public class CollaboratorController {
     return ResponseEntity.status(200).body(collaboratorService.getCollaborators(po));
   }
 
-  @PostMapping("/api/notebooks/{notebookId}/collaborators")
-  public ResponseEntity<Object> createCollaborator(
-      @PathVariable String notebookId,
-      @RequestBody CreateCollaboratorPo po
-  ){
-    po.setNotebookId(notebookId);
-    collaboratorService.createCollaborator(po);
-    return ResponseEntity.status(200).body(Map.of("result", true));
-  };
 
   @DeleteMapping("/api/notebooks/{notebookId}/collaborators")
   public ResponseEntity<Object> deleteCollaborator(

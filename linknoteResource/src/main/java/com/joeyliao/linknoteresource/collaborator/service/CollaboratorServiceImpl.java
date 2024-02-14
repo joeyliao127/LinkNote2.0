@@ -32,7 +32,7 @@ public class CollaboratorServiceImpl implements CollaboratorService {
   }
 
   @Override
-  public void createCollaborator(CreateCollaboratorPo po) {
-    collaboratorDAO.createCollaborator(po);
+  public void createCollaborator(String inviteeEmail, String notebookId) {
+    collaboratorDAO.createCollaborator(inviteeEmail, notebookId);
   }
 }

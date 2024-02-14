@@ -1,5 +1,6 @@
 package com.joeyliao.linknoteresource.invitation.service;
 
+import com.joeyliao.linknoteresource.collaborator.service.CollaboratorService;
 import com.joeyliao.linknoteresource.generic.po.UserInfo;
 import com.joeyliao.linknoteresource.invitation.dao.InvitationDAO;
 import com.joeyliao.linknoteresource.invitation.dto.ReceivedInvitationDTO;
@@ -11,6 +12,7 @@ import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
 import com.joeyliao.linknoteresource.invitation.po.GetReceivedInvitationResponsePo;
 import com.joeyliao.linknoteresource.invitation.po.GetSentInvitationResponsePo;
 import com.joeyliao.linknoteresource.invitation.po.InvitationResponsePo;
+import com.joeyliao.linknoteresource.invitation.po.UpdateInvitationPo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -32,6 +35,9 @@ public class InvitationServiceImpl implements InvitationService {
 
   @Autowired
   InvitationDAO invitationDAO;
+
+  @Autowired
+  CollaboratorService collaboratorService;
 
   @Value("${authenticationServer}")
   private String authenticationServerPath;
@@ -114,6 +120,14 @@ public class InvitationServiceImpl implements InvitationService {
     }
   }
 
+  @Override
+  @Transactional
+  public void updateInvitation(UpdateInvitationPo po) {
+    po.setInviteeId(getUserInfoByToken(po.getAuthorization()).getUserId());
+    invitationDAO.updateInvitation(po);
+    collaboratorService.createCollaborator(po.getInviteeId(), po.getNotebookId());
+  }
+
 
   @Override
   public void deleteInvitation(DeleteInvitationPo po) {
@@ -121,6 +135,8 @@ public class InvitationServiceImpl implements InvitationService {
     po.setUserEmail(email);
     invitationDAO.deleteInvitation(po);
   }
+
+
 
 
 }
