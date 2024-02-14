@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -40,14 +41,19 @@ public class InvitationServiceImpl implements InvitationService {
 
   @Override
   public void createInvitation(CreateInvitationPo po) throws BadRequestException {
-    log.info("auth path:" + authenticationServerPath);
-    log.info("invitee email: " + po.getInviteeEmail());
+    if(checkInvitationIsExist(po)){
+      return;
+    }
     verifyEmailIsExist(po.getInviteeEmail());
     verifyInvitationNotExist(po);
     po.setInviterEmail(getUserInfoByToken(po.getAuthorization()).getEmail());
     invitationDAO.createInvitation(po);
   }
 
+  private Boolean checkInvitationIsExist(CreateInvitationPo po){
+    List<Integer> list = invitationDAO.checkInvitationNotExist(po);
+    return list != null;
+  }
   private void verifyEmailIsExist(String email) throws BadRequestException {
     String url = "http://localhost:8080/api/auth/user/email?email=" + email;
     log.info("請求驗證email的路徑：" + url);

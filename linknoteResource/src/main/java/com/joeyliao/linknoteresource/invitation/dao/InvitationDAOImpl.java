@@ -6,6 +6,7 @@ import com.joeyliao.linknoteresource.invitation.dto.SentInvitationDTO;
 import com.joeyliao.linknoteresource.invitation.po.CreateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
+import com.joeyliao.linknoteresource.invitation.rowmapper.CheckInvitationRowMapper;
 import com.joeyliao.linknoteresource.invitation.rowmapper.ReceivedInvitationRowMapper;
 import com.joeyliao.linknoteresource.invitation.rowmapper.SentInvitationRowMapper;
 import java.util.HashMap;
@@ -37,7 +38,17 @@ public class InvitationDAOImpl implements InvitationDAO {
 
   @Override
   public List<Integer> checkInvitationNotExist(CreateInvitationPo po) {
-    return null;
+    String sql = """
+        SELECT id FROM invitations
+        WHERE inviteeEmail = :inviteeEmail
+        AND notebookId = :notebookId
+        AND isPending = 1
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("inviteeEmail", po.getInviteeEmail());
+    map.put("notebookId", po.getNotebookId());
+    return namedParameterJdbcTemplate.query(sql ,map, new CheckInvitationRowMapper());
+
   }
 
   @Override

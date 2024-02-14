@@ -3,6 +3,7 @@ package com.joeyliao.linknoteresource.invitation.controller;
 import com.joeyliao.linknoteresource.invitation.po.CreateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.DeleteInvitationPo;
 import com.joeyliao.linknoteresource.invitation.po.GetInvitationRequestPo;
+import com.joeyliao.linknoteresource.invitation.po.UpdateInvitationPo;
 import com.joeyliao.linknoteresource.invitation.service.InvitationService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,6 +67,15 @@ public class InvitationController {
         Authorization, keyword, sortDesc, limit, offset);
     po.setAuthorization(Authorization);
     return ResponseEntity.status(200).body(invitationService.getReceivedInvitation(po));
+  }
+
+  @PutMapping("/api/notebooks/{notebookId}/invitations")
+  public ResponseEntity<Object> updateInvitation(
+      @PathVariable String notebookId,
+      @RequestHeader String Authorization,
+      @RequestBody UpdateInvitationPo po
+  ){
+    return ResponseEntity.status(200).body(Map.of("result", true));
   }
 
   @DeleteMapping("/api/notebooks/{notebookId}/invitations")
