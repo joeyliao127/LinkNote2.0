@@ -76,6 +76,13 @@ public class InvitationDAOImpl implements InvitationDAO {
 
   @Override
   public void deleteInvitation(DeleteInvitationPo po) {
-
+    String sql = """
+        DELETE FROM invitations 
+        WHERE inviterEmail = :inviterEmail AND notebookId = :notebookId
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("inviterEmail", po.getUserEmail());
+    map.put("notebookId", po.getNotebookId());
+    namedParameterJdbcTemplate.update(sql ,map);
   }
 }

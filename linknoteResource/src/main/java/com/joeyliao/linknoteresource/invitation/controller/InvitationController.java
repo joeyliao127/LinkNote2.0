@@ -67,14 +67,14 @@ public class InvitationController {
     return ResponseEntity.status(200).body(invitationService.getReceivedInvitation(po));
   }
 
-  @DeleteMapping("/api/notebooks/{notebookId}/invitations/{invitationId}")
+  @DeleteMapping("/api/notebooks/{notebookId}/invitations")
   public ResponseEntity<Object> deleteInvitation(
       @PathVariable String notebookId,
-      @PathVariable String invitationId
+      @RequestHeader String Authorization
   ){
     DeleteInvitationPo po = new DeleteInvitationPo();
     po.setNotebookId(notebookId);
-    po.setInvitationId(invitationId);
+    po.setAuthorization(Authorization);
     invitationService.deleteInvitation(po);
     return ResponseEntity.status(200).body(Map.of("result", true));
   }

@@ -111,6 +111,8 @@ public class InvitationServiceImpl implements InvitationService {
 
   @Override
   public void deleteInvitation(DeleteInvitationPo po) {
+    String email = getUserInfoByToken(po.getAuthorization()).getEmail();
+    po.setUserEmail(email);
     invitationDAO.deleteInvitation(po);
   }
 

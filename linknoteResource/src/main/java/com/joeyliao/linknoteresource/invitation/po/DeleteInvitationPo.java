@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class DeleteInvitationPo {
-  String notebookId;
-  String invitationId;
+  private String notebookId;
+  private String invitationId;
+  private String userEmail;
+  private String Authorization;
 }
