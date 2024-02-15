@@ -57,7 +57,7 @@ public class InvitationDAOImpl implements InvitationDAO {
     String sql = """
         SELECT u.username as inviteeName, u.email as inviteeEmail
         , n.id as notebookId, n.name as notebookName
-        , i.id as invitationId, i.message, i.date as createDate
+        , i.message, i.date as createDate
         FROM invitations i JOIN users u ON i.inviteeEmail = u.email
         JOIN notebooks n ON i.notebookId = n.id
         WHERE i.inviterEmail = :inviterEmail AND i.isPending = 1 limit :limit offset :offset
@@ -74,7 +74,7 @@ public class InvitationDAOImpl implements InvitationDAO {
     String sql = """
         SELECT u.username as inviterName, u.email as inviterEmail
              , n.id as notebookId, n.name as notebookName
-             , i.id as invitationId, i.message, i.date as createDate
+             , i.message, i.date as createDate
         FROM invitations i JOIN users u ON i.inviterEmail = u.email
                            JOIN notebooks n ON i.notebookId = n.id
         WHERE i.inviteeEmail = :inviteeEmail AND i.isPending = 1 limit :limit offset :offset

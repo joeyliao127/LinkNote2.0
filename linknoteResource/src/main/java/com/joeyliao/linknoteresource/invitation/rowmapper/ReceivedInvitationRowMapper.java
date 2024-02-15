@@ -11,7 +11,6 @@ public class ReceivedInvitationRowMapper implements RowMapper<ReceivedInvitation
   @Override
   public ReceivedInvitationDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
     ReceivedInvitationDTO dto = new ReceivedInvitationDTO();
-    dto.setInvitationId(rs.getInt("invitationId"));
     dto.setInviterName(rs.getString("inviterName"));
     dto.setInviterEmail(rs.getString("inviterEmail"));
     dto.setNotebookId(rs.getString("notebookId"));

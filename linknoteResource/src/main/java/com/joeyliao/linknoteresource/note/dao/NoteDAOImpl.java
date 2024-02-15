@@ -99,9 +99,14 @@ public class NoteDAOImpl implements NoteDAO {
   public void updateNote(updateNotePo po) {
     Map<String, Object> map = new HashMap<>();
     String sql = """
-        UPDATE notes SET name = :name 
+        UPDATE notes SET id = :id 
         """;
-    map.put("name", po.getName());
+    map.put("id", po.getNoteId());
+
+    if(po.getName() != null){
+      sql += ",name = :name";
+      map.put("name", po.getName());
+    }
     if(po.getQuestion() != null){
       sql += ",question = :question ";
       map.put("question", po.getQuestion());
@@ -126,7 +131,6 @@ public class NoteDAOImpl implements NoteDAO {
     }
     sql += "WHERE id = :noteId";
     map.put("noteId", po.getNoteId());
-    log.info("拼完的sql:\n" + sql);
     namedParameterJdbcTemplate.update(sql, map);
   }
 

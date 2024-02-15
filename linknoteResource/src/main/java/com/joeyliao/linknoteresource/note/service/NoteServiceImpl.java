@@ -35,6 +35,8 @@ public class NoteServiceImpl implements NoteService {
 
   @Override
   public GetNotesResponsePo getNotes(GetNotesRequestPo po) {
+    //limit加1是為了判斷若query後的資料比數跟limit + 1一樣，代表有nextPage
+    // 因此返回notes資料時要移除最後一項。
     po.setLimit(po.getLimit() + 1);
     GetNotesResponsePo responsePo = new GetNotesResponsePo();
     List<NoteDTO> list = noteDAO.getNotes(po);

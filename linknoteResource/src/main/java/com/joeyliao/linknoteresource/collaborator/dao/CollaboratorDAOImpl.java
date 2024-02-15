@@ -4,6 +4,7 @@ import com.joeyliao.linknoteresource.collaborator.dto.CollaboratorsDTO;
 import com.joeyliao.linknoteresource.collaborator.po.CreateCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.DeleteCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsRequestPo;
+import com.joeyliao.linknoteresource.collaborator.rowmapper.GetCollaboratorRowMapper;
 import com.joeyliao.linknoteresource.generic.enums.Role;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,17 @@ public class CollaboratorDAOImpl implements CollaboratorDAO {
   NamedParameterJdbcTemplate namedParameterJdbcTemplate;
   @Override
   public List<CollaboratorsDTO> getCollaborators(GetCollaboratorsRequestPo po) {
-    return null;
+    String sql = """
+        SELECT u.username as name, u.email as email 
+        FROM notebooks_users_role nur
+        JOIN users u ON nur.userId = u.id
+        JOIN notebooks n ON nur.notebookId = n.id
+        WHERE n.id = :notebookId AND nur.roleId = :roleId
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("notebookId", po.getNotebookId());
+    map.put("roleId", roleMapper(Role.COLLABORATOR));
+    return namedParameterJdbcTemplate.query(sql, map, new GetCollaboratorRowMapper());
   }
 
   @Override

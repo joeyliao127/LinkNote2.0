@@ -10,7 +10,6 @@ public class SentInvitationRowMapper implements RowMapper<SentInvitationDTO> {
   @Override
   public SentInvitationDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
     SentInvitationDTO dto = new SentInvitationDTO();
-    dto.setInvitationId(rs.getInt("invitationId"));
     dto.setInviteeName(rs.getString("inviteeName"));
     dto.setInviteeEmail(rs.getString("inviteeEmail"));
     dto.setNotebookId(rs.getString("notebookId"));

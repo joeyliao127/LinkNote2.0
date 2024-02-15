@@ -65,7 +65,6 @@ public class NoteController {
 
   @GetMapping("/api/notebooks/{notebookId}/notes/{noteId}")
   public ResponseEntity<Object> getNoteByNoteId(
-      @RequestHeader String Authorization,
       @PathVariable String notebookId,
       @PathVariable String noteId
   ) {
