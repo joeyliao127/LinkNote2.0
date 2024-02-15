@@ -5,6 +5,7 @@ import com.joeyliao.linknoteresource.collaborator.dto.CollaboratorsDTO;
 import com.joeyliao.linknoteresource.collaborator.po.DeleteCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsRequestPo;
 import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsResponsePo;
+import com.joeyliao.linknoteresource.collaborator.po.NotebookOwnerDTO;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ public class CollaboratorServiceImpl implements CollaboratorService {
   public GetCollaboratorsResponsePo getCollaborators(GetCollaboratorsRequestPo po) {
     GetCollaboratorsResponsePo responsePo = new GetCollaboratorsResponsePo();
     List<CollaboratorsDTO> list = collaboratorDAO.getCollaborators(po);
+    NotebookOwnerDTO dto = collaboratorDAO.getNotebookOwner(po.getNotebookId());
     responsePo.setCollaborators(list);
+    responsePo.setOwner(dto);
     return responsePo;
   }
 

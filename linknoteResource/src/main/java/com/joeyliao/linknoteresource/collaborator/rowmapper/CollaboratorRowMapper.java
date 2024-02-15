@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
-public class GetCollaboratorRowMapper implements RowMapper<CollaboratorsDTO> {
+public class CollaboratorRowMapper implements RowMapper<CollaboratorsDTO> {
 
   @Override
   public CollaboratorsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {

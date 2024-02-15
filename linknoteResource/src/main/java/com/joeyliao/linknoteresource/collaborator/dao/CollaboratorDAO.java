@@ -4,6 +4,7 @@ import com.joeyliao.linknoteresource.collaborator.dto.CollaboratorsDTO;
 import com.joeyliao.linknoteresource.collaborator.po.CreateCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.DeleteCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsRequestPo;
+import com.joeyliao.linknoteresource.collaborator.po.NotebookOwnerDTO;
 import java.util.List;
 
 public interface CollaboratorDAO {
@@ -13,4 +14,6 @@ public interface CollaboratorDAO {
   void deleteCollaborator(DeleteCollaboratorPo po);
 
   void createCollaborator(String inviteeEmail, String notebookId);
+
+  NotebookOwnerDTO getNotebookOwner(String notebookId);
 }

@@ -1,10 +1,11 @@
 package com.joeyliao.linknoteresource.collaborator.dao;
 
 import com.joeyliao.linknoteresource.collaborator.dto.CollaboratorsDTO;
-import com.joeyliao.linknoteresource.collaborator.po.CreateCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.DeleteCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsRequestPo;
-import com.joeyliao.linknoteresource.collaborator.rowmapper.GetCollaboratorRowMapper;
+import com.joeyliao.linknoteresource.collaborator.po.NotebookOwnerDTO;
+import com.joeyliao.linknoteresource.collaborator.rowmapper.CollaboratorRowMapper;
+import com.joeyliao.linknoteresource.collaborator.rowmapper.NotebookOwnerRowMapper;
 import com.joeyliao.linknoteresource.generic.enums.Role;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ public class CollaboratorDAOImpl implements CollaboratorDAO {
     Map<String, Object> map = new HashMap<>();
     map.put("notebookId", po.getNotebookId());
     map.put("roleId", roleMapper(Role.COLLABORATOR));
-    return namedParameterJdbcTemplate.query(sql, map, new GetCollaboratorRowMapper());
+    return namedParameterJdbcTemplate.query(sql, map, new CollaboratorRowMapper());
   }
 
   @Override
@@ -57,6 +58,20 @@ public class CollaboratorDAOImpl implements CollaboratorDAO {
     map.put("notebookId", notebookId);
     map.put("roleId", roleMapper(Role.COLLABORATOR));
     namedParameterJdbcTemplate.update(sql, map);
+  }
+
+  @Override
+  public NotebookOwnerDTO getNotebookOwner(String notebookId) {
+    String sql = """
+        SELECT u.username as username, u.email as email 
+        FROM notebooks n
+        JOIN users u ON n.userId = u.id
+        WHERE n.id = :notebookId
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("notebookId", notebookId);
+    List<NotebookOwnerDTO> dtos = namedParameterJdbcTemplate.query(sql, map, new NotebookOwnerRowMapper());
+    return dtos.get(0);
   }
 
   private Integer roleMapper(Role role){
