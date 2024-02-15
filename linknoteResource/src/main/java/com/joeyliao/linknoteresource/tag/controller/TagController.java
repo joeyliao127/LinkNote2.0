@@ -4,7 +4,7 @@ import com.joeyliao.linknoteresource.tag.po.CreateNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
-import com.joeyliao.linknoteresource.tag.po.GetTagRequestPo;
+import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.service.TagService;
 import jakarta.validation.Valid;
 import java.util.Map;
@@ -33,9 +33,8 @@ public class TagController {
     return ResponseEntity.status(200).body(Map.of("result", true));
   }
 
-  @PostMapping("/api/notebooks/{notebookId}/tags/{noteId}")
+  @PostMapping("/api/notebooks/{notebookId}/notes/{noteId}/tags")
   public ResponseEntity<Object> createNoteTag(
-      @PathVariable String notebookId,
       @RequestBody @Valid CreateNoteTagRequestPo po,
       @PathVariable String noteId) {
     po.setNoteId(noteId);
@@ -43,13 +42,19 @@ public class TagController {
     return ResponseEntity.status(200).body(Map.of("result", true));
   }
 
+  @GetMapping("/api/notebooks/{notebookId}/tags")
+  public ResponseEntity<Object> getNotebookTags(
+      @PathVariable String notebookId
+  ) {
+    tagService.getNotebookTags(notebookId);
+    return ResponseEntity.status(200).body(Map.of("result", true));
+  }
+
   @GetMapping("/api/notebooks/{notebookId}/notes/{noteId}/tags")
-  public ResponseEntity<Object> getAllTags(
+  public ResponseEntity<Object> getNoteTags(
       @PathVariable String noteId
       ) {
-    GetTagRequestPo po = new GetTagRequestPo();
-    po.setNoteId(noteId);
-    return ResponseEntity.status(200).body(tagService.getTags(po));
+    return ResponseEntity.status(200).body(tagService.getNoteTags(noteId));
   }
   @DeleteMapping("/api/notebooks/{notebookId}/tags/{tagId}")
   public ResponseEntity<Object> deleteNotebookTag(

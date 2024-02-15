@@ -6,5 +6,5 @@ import lombok.Data;
 
 @Data
 public class GetCollaboratorsResponsePo {
-  private List<CollaboratorsDTO> list;
+  private List<CollaboratorsDTO> collaborators;
 }

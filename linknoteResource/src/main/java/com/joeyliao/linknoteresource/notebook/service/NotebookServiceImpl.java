@@ -33,7 +33,7 @@ public class NotebookServiceImpl implements NotebookService {
   public String createNotebook(CreateNotebookRequestPo po, String authorization) {
     UserInfo userInfo = getUserInfo(authorization);
     po.setUserId(userInfo.getUserId());
-    String id = "NB" + uuidGeneratorService.generateUUID(Target.NOTEBOOK);
+    String id = uuidGeneratorService.generateUUID(Target.NOTEBOOK);
     log.info("Notebook產生的UUID為：" + id);
     notebookDAO.createNotebook(po, id);
     return id;

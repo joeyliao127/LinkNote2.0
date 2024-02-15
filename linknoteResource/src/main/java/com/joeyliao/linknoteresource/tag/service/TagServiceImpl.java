@@ -1,11 +1,13 @@
 package com.joeyliao.linknoteresource.tag.service;
 
+import com.joeyliao.linknoteresource.generic.enums.Target;
+import com.joeyliao.linknoteresource.generic.uuidgenerator.service.UUIDGeneratorService;
 import com.joeyliao.linknoteresource.tag.dao.TagDAO;
 import com.joeyliao.linknoteresource.tag.po.CreateNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
-import com.joeyliao.linknoteresource.tag.po.GetTagRequestPo;
+import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetTagResponsePo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,21 @@ public class TagServiceImpl implements TagService {
   @Autowired
   TagDAO tagDAO;
 
+  @Autowired
+  UUIDGeneratorService uuidGeneratorService;
   @Override
-  public GetTagResponsePo getTags(GetTagRequestPo po) {
-    return tagDAO.getTags(po);
+  public GetTagResponsePo getNotebookTags(String notebookId) {
+    return tagDAO.getNotebookTags(notebookId);
+  }
+
+  @Override
+  public GetTagResponsePo getNoteTags(String noteId) {
+    return tagDAO.getNoteTags(noteId);
   }
 
   @Override
   public void createNotebookTag(CreateNotebookTagRequestPo po) {
+    po.setTagId(uuidGeneratorService.generateUUID(Target.TAG));
     tagDAO.createNotebookTag(po);
   }
 

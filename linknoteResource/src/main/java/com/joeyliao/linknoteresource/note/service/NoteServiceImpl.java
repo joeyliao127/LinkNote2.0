@@ -28,7 +28,7 @@ public class NoteServiceImpl implements NoteService {
 
   @Override
   public String createNote(CreateNotePo po) {
-    po.setNoteId("N" + uuidGeneratorService.generateUUID(Target.NOTE));
+    po.setNoteId(uuidGeneratorService.generateUUID(Target.NOTE));
     noteDAO.createNotes(po);
     return po.getNoteId();
   }

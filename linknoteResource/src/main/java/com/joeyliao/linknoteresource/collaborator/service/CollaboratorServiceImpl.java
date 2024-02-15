@@ -2,7 +2,6 @@ package com.joeyliao.linknoteresource.collaborator.service;
 
 import com.joeyliao.linknoteresource.collaborator.dao.CollaboratorDAO;
 import com.joeyliao.linknoteresource.collaborator.dto.CollaboratorsDTO;
-import com.joeyliao.linknoteresource.collaborator.po.CreateCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.DeleteCollaboratorPo;
 import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsRequestPo;
 import com.joeyliao.linknoteresource.collaborator.po.GetCollaboratorsResponsePo;
@@ -22,7 +21,7 @@ public class CollaboratorServiceImpl implements CollaboratorService {
   public GetCollaboratorsResponsePo getCollaborators(GetCollaboratorsRequestPo po) {
     GetCollaboratorsResponsePo responsePo = new GetCollaboratorsResponsePo();
     List<CollaboratorsDTO> list = collaboratorDAO.getCollaborators(po);
-    responsePo.setList(list);
+    responsePo.setCollaborators(list);
     return responsePo;
   }
 
