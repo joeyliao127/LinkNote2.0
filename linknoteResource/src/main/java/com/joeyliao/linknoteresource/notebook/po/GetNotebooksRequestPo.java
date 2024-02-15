@@ -4,7 +4,7 @@ import com.joeyliao.linknoteresource.generic.po.PaginationPo;
 import lombok.Data;
 
 @Data
-public class AllNotebookRequestPo extends PaginationPo {
+public class GetNotebooksRequestPo extends PaginationPo {
   private String Authorization;
   private String userId;
 }

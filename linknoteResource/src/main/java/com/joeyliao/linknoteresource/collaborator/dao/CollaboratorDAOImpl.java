@@ -60,19 +60,6 @@ public class CollaboratorDAOImpl implements CollaboratorDAO {
     namedParameterJdbcTemplate.update(sql, map);
   }
 
-  @Override
-  public NotebookOwnerDTO getNotebookOwner(String notebookId) {
-    String sql = """
-        SELECT u.username as username, u.email as email 
-        FROM notebooks n
-        JOIN users u ON n.userId = u.id
-        WHERE n.id = :notebookId
-        """;
-    Map<String, Object> map = new HashMap<>();
-    map.put("notebookId", notebookId);
-    List<NotebookOwnerDTO> dtos = namedParameterJdbcTemplate.query(sql, map, new NotebookOwnerRowMapper());
-    return dtos.get(0);
-  }
 
   private Integer roleMapper(Role role){
     Map<Role, Integer> map = new HashMap<>();

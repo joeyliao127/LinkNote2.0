@@ -1,6 +1,6 @@
 package com.joeyliao.linknoteresource.notebook.controller;
 
-import com.joeyliao.linknoteresource.notebook.po.AllNotebookRequestPo;
+import com.joeyliao.linknoteresource.notebook.po.GetNotebooksRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.CreateNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.UpdateNotebookPo;
 import com.joeyliao.linknoteresource.notebook.service.NotebookService;
@@ -45,9 +45,9 @@ public class NotebookController {
       @RequestParam(defaultValue = "1") @Max(20) @Min(1) Integer limit,
       @RequestParam(defaultValue = "null") String keyword
   ) {
-    AllNotebookRequestPo po = setAllNotebookPoParams(Authorization, offset, limit, keyword);
+    GetNotebooksRequestPo po = setAllNotebookPoParams(Authorization, offset, limit, keyword);
     return ResponseEntity.status(HttpStatus.OK)
-        .body(notebookService.getAllNotebooks(po));
+        .body(notebookService.getNotebooks(po));
   }
 
   @GetMapping("/api/coNotebooks")
@@ -58,7 +58,7 @@ public class NotebookController {
       @RequestParam(defaultValue = "null") String keyword
   ) {
 
-    AllNotebookRequestPo po = setAllNotebookPoParams(Authorization, offset, limit, keyword);
+    GetNotebooksRequestPo po = setAllNotebookPoParams(Authorization, offset, limit, keyword);
     return ResponseEntity.status(200).body(notebookService.getCoNotebooks(po));
   }
 
@@ -80,12 +80,12 @@ public class NotebookController {
     return ResponseEntity.status(200).body(Map.of("result", true));
   }
 
-  private AllNotebookRequestPo setAllNotebookPoParams(
+  private GetNotebooksRequestPo setAllNotebookPoParams(
       String Authorization,
       Integer offset,
       Integer limit,
       String keyword) {
-    AllNotebookRequestPo params = new AllNotebookRequestPo();
+    GetNotebooksRequestPo params = new GetNotebooksRequestPo();
     params.setAuthorization(Authorization);
     params.setLimit(limit);
     params.setOffset(offset);

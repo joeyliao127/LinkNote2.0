@@ -1,8 +1,10 @@
 package com.joeyliao.linknoteresource.notebook.dao;
 
+import com.joeyliao.linknoteresource.collaborator.po.NotebookOwnerDTO;
+import com.joeyliao.linknoteresource.collaborator.rowmapper.NotebookOwnerRowMapper;
 import com.joeyliao.linknoteresource.generic.enums.Role;
 import com.joeyliao.linknoteresource.notebook.dto.NotebooksDTO;
-import com.joeyliao.linknoteresource.notebook.po.AllNotebookRequestPo;
+import com.joeyliao.linknoteresource.notebook.po.GetNotebooksRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.CreateNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.UpdateNotebookPo;
 import com.joeyliao.linknoteresource.notebook.rowmapper.AllNotebooksRowMapper;
@@ -38,12 +40,12 @@ public class NotebookDAOImpl implements NotebookDAO {
   }
 
   @Override
-  public List<NotebooksDTO> getAllNotebooks(AllNotebookRequestPo po) {
+  public List<NotebooksDTO> getNotebooks(GetNotebooksRequestPo po) {
     return getNotebooksCollation(po, false);
   }
 
   @Override
-  public List<NotebooksDTO> getAllCoNotebook(AllNotebookRequestPo po) {
+  public List<NotebooksDTO> getCoNotebooks(GetNotebooksRequestPo po) {
     return getNotebooksCollation(po, true);
   }
 
@@ -70,7 +72,7 @@ public class NotebookDAOImpl implements NotebookDAO {
     return namedParameterJdbcTemplate.update(sql, map);
   }
 
-  private List<NotebooksDTO> getNotebooksCollation(AllNotebookRequestPo po, Boolean isCoNotebook) {
+  private List<NotebooksDTO> getNotebooksCollation(GetNotebooksRequestPo po, Boolean isCoNotebook) {
     String sql = null;
     if (isCoNotebook) {
       log.info("查詢coNotebooks");
@@ -120,5 +122,19 @@ public class NotebookDAOImpl implements NotebookDAO {
     map.put(Role.MEMBER, 3);
     map.put(Role.GUEST, 4);
     return map.get(role);
+  }
+
+  @Override
+  public NotebookOwnerDTO getNotebookOwner(String notebookId) {
+    String sql = """
+        SELECT u.username as username, u.email as email 
+        FROM notebooks n
+        JOIN users u ON n.userId = u.id
+        WHERE n.id = :notebookId
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("notebookId", notebookId);
+    List<NotebookOwnerDTO> dtos = namedParameterJdbcTemplate.query(sql, map, new NotebookOwnerRowMapper());
+    return dtos.get(0);
   }
 }

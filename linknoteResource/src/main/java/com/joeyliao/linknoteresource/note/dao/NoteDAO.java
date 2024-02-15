@@ -1,5 +1,6 @@
 package com.joeyliao.linknoteresource.note.dao;
 
+import com.joeyliao.linknoteresource.collaborator.po.NotebookOwnerDTO;
 import com.joeyliao.linknoteresource.note.dto.NoteDTO;
 import com.joeyliao.linknoteresource.note.po.CreateNotePo;
 import com.joeyliao.linknoteresource.note.po.DeleteNotePo;
@@ -20,4 +21,5 @@ public interface NoteDAO {
   void updateNote(updateNotePo po);
 
   void deleteNote(DeleteNotePo po);
+
 }

@@ -4,10 +4,11 @@ import com.joeyliao.linknoteresource.generic.enums.Target;
 import com.joeyliao.linknoteresource.generic.po.UserInfo;
 import com.joeyliao.linknoteresource.generic.uuidgenerator.service.UUIDGeneratorService;
 import com.joeyliao.linknoteresource.notebook.dao.NotebookDAO;
-import com.joeyliao.linknoteresource.notebook.po.AllNotebookRequestPo;
-import com.joeyliao.linknoteresource.notebook.po.AllNotebookResponsePo;
+import com.joeyliao.linknoteresource.notebook.po.GetNotebooksRequestPo;
+import com.joeyliao.linknoteresource.notebook.po.GetNotebooksResponsePo;
 import com.joeyliao.linknoteresource.notebook.po.CreateNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.UpdateNotebookPo;
+import com.joeyliao.linknoteresource.tag.dao.TagDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -26,6 +27,9 @@ public class NotebookServiceImpl implements NotebookService {
   NotebookDAO notebookDAO;
 
   @Autowired
+  TagDAO tagDAO;
+
+  @Autowired
   UUIDGeneratorService uuidGeneratorService;
 
   @Transactional
@@ -40,15 +44,15 @@ public class NotebookServiceImpl implements NotebookService {
   }
 
   @Override
-  public AllNotebookResponsePo getAllNotebooks(AllNotebookRequestPo po) {
+  public GetNotebooksResponsePo getNotebooks(GetNotebooksRequestPo po) {
     UserInfo userInfo = getUserInfo(po.getAuthorization());
-    log.info("getAllNotebooks: username為" + userInfo.getUsername());
+    log.info("getNotebooks: username為" + userInfo.getUsername());
     po.setUserId(userInfo.getUserId());
     return getNotebooks(po, false);
   }
 
   @Override
-  public AllNotebookResponsePo getCoNotebooks(AllNotebookRequestPo po) {
+  public GetNotebooksResponsePo getCoNotebooks(GetNotebooksRequestPo po) {
     UserInfo userInfo = getUserInfo(po.getAuthorization());
     po.setUserId(userInfo.getUserId());
     return getNotebooks(po, true);
@@ -64,14 +68,14 @@ public class NotebookServiceImpl implements NotebookService {
     notebookDAO.deleteNotebook(notebookId);
   }
 
-  private AllNotebookResponsePo getNotebooks(AllNotebookRequestPo po, Boolean isCoNotebook) {
-    AllNotebookResponsePo responsePo = new AllNotebookResponsePo();
+  private GetNotebooksResponsePo getNotebooks(GetNotebooksRequestPo po, Boolean isCoNotebook) {
+    GetNotebooksResponsePo responsePo = new GetNotebooksResponsePo();
     if (isCoNotebook) {
       log.info("coNotebook查詢");
-      responsePo.setNotebooks(notebookDAO.getAllCoNotebook(po));
+      responsePo.setNotebooks(notebookDAO.getCoNotebooks(po));
     } else {
       log.info("notebook查詢");
-      responsePo.setNotebooks(notebookDAO.getAllNotebooks(po));
+      responsePo.setNotebooks(notebookDAO.getNotebooks(po));
     }
 
     if (responsePo.getNotebooks().isEmpty()) {

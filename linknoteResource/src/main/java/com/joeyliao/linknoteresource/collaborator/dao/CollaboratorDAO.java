@@ -15,5 +15,4 @@ public interface CollaboratorDAO {
 
   void createCollaborator(String inviteeEmail, String notebookId);
 
-  NotebookOwnerDTO getNotebookOwner(String notebookId);
 }

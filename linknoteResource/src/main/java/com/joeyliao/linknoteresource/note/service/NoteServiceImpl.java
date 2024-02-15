@@ -11,6 +11,8 @@ import com.joeyliao.linknoteresource.note.po.GetNoteResponsePo;
 import com.joeyliao.linknoteresource.note.po.GetNotesRequestPo;
 import com.joeyliao.linknoteresource.note.po.GetNotesResponsePo;
 import com.joeyliao.linknoteresource.note.po.updateNotePo;
+import com.joeyliao.linknoteresource.tag.dao.TagDAO;
+import com.joeyliao.linknoteresource.tag.service.TagService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class NoteServiceImpl implements NoteService {
 
   @Autowired
   NoteDAO noteDAO;
+
+  @Autowired
+  TagDAO tagDAO;
 
   @Autowired
   UUIDGeneratorService uuidGeneratorService;
@@ -47,6 +52,7 @@ public class NoteServiceImpl implements NoteService {
       responsePo.setNextPage(false);
     }
     responsePo.setNotes(list);
+    responsePo.setTags(tagDAO.getNotebookTags(po.getNotebookId()));
     return responsePo;
   }
 
@@ -54,6 +60,7 @@ public class NoteServiceImpl implements NoteService {
   public GetNoteResponsePo getNote(GetNoteRequestPo po) {
     GetNoteResponsePo responsePo = new GetNoteResponsePo();
     responsePo.setNote(noteDAO.getNote(po));
+    responsePo.setTags(tagDAO.getNoteTags(po.getNoteId()));
     return responsePo;
   }
 

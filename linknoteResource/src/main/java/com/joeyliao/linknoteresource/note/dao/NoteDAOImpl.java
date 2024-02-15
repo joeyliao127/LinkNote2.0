@@ -1,5 +1,7 @@
 package com.joeyliao.linknoteresource.note.dao;
 
+import com.joeyliao.linknoteresource.collaborator.po.NotebookOwnerDTO;
+import com.joeyliao.linknoteresource.collaborator.rowmapper.NotebookOwnerRowMapper;
 import com.joeyliao.linknoteresource.note.dto.NoteDTO;
 import com.joeyliao.linknoteresource.note.po.CreateNotePo;
 import com.joeyliao.linknoteresource.note.po.DeleteNotePo;
@@ -143,4 +145,6 @@ public class NoteDAOImpl implements NoteDAO {
     map.put("noteId", po.getNoteId());
     namedParameterJdbcTemplate.update(sql, map);
   }
+
+
 }
