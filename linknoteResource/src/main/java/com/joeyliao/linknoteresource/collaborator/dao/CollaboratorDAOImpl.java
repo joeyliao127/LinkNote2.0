@@ -35,7 +35,15 @@ public class CollaboratorDAOImpl implements CollaboratorDAO {
 
   @Override
   public void deleteCollaborator(DeleteCollaboratorPo po) {
-
+    String sql = """
+        DELETE n FROM notebooks_users_role n
+            JOIN users u ON n.userId = u.id
+        WHERE u.email = :email AND n.notebookId = :notebookId
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("email", po.getUserEmail());
+    map.put("notebookId", po.getNotebookId());
+    namedParameterJdbcTemplate.update(sql, map);
   }
 
   @Override

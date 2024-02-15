@@ -39,11 +39,11 @@ public class CollaboratorController {
   @DeleteMapping("/api/notebooks/{notebookId}/collaborators")
   public ResponseEntity<Object> deleteCollaborator(
       @PathVariable String notebookId,
-      @RequestParam @Valid String userId
+      @RequestParam @Valid String userEmail
   ){
     DeleteCollaboratorPo po = new DeleteCollaboratorPo();
     po.setNotebookId(notebookId);
-    po.setUserId(userId);
+    po.setUserEmail(userEmail);
     collaboratorService.deleteCollaborator(po);
     return ResponseEntity.status(200).body(Map.of("result", true));
   }

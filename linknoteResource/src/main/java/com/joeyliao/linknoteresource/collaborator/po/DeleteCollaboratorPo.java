@@ -7,5 +7,5 @@ import lombok.Data;
 public class DeleteCollaboratorPo {
   private String notebookId;
   @NotBlank
-  private String userId;
+  private String userEmail;
 }
