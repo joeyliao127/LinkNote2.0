@@ -46,8 +46,7 @@ public class TagController {
   public ResponseEntity<Object> getNotebookTags(
       @PathVariable String notebookId
   ) {
-    tagService.getNotebookTags(notebookId);
-    return ResponseEntity.status(200).body(Map.of("result", true));
+    return ResponseEntity.status(200).body(tagService.getNotebookTags(notebookId));
   }
 
   @GetMapping("/api/notebooks/{notebookId}/notes/{noteId}/tags")

@@ -36,10 +36,13 @@ public class AppConfig implements WebMvcConfigurer {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(tagInterceptor)
-        .addPathPatterns("/api/notebooks/*/notes/**/tags/**");
+        .addPathPatterns(
+            "/api/notebooks/*/notes/**/tags"
+            ,"/api/notebooks/*/tags");
 
     registry.addInterceptor(noteInterceptor)
-        .addPathPatterns("/api/notebooks/*/notes/**");
+        .addPathPatterns("/api/notebooks/*/notes/**")
+        .excludePathPatterns("/api/notebooks/*/notes/**/tags");
 
     registry.addInterceptor(invitationInterceptor)
         .addPathPatterns("/api/notebooks/*/invitations"
@@ -53,7 +56,8 @@ public class AppConfig implements WebMvcConfigurer {
         .excludePathPatterns(
             "/api/notebooks/*/invitations",
             "/api/notebooks/*/notes/**/",
-            "/api/notebooks/**/notes/**/tags/**",
+            "/api/notebooks/*/tags",
+            "/api/notebooks/**/notes/**/tags",
             "/api/notebooks/*/collaborators"
         );
 

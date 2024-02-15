@@ -1,5 +1,7 @@
 package com.joeyliao.linknoteresource.tag.dao;
 
+import com.joeyliao.linknoteresource.tag.TagsRowMapper;
+import com.joeyliao.linknoteresource.tag.dto.TagDTO;
 import com.joeyliao.linknoteresource.tag.po.CreateNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNoteTagRequestPo;
@@ -7,6 +9,7 @@ import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetTagResponsePo;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +48,28 @@ public class TagDAOImpl implements TagDAO {
   }
 
   @Override
-  public GetTagResponsePo getNotebookTags(String po) {
-    return null;
+  public List<TagDTO> getNotebookTags(String notebookId) {
+    String sql = """
+        SELECT t.id, t.name FROM tags t
+        JOIN notebooks n ON t.notebookId = n.id
+        WHERE t.notebookId = :notebookId
+        """;
+    Map<String, String> map = new HashMap<>();
+    map.put("notebookId", notebookId);
+    return namedParameterJdbcTemplate.query(sql, map, new TagsRowMapper());
   }
 
   @Override
-  public GetTagResponsePo getNoteTags(String noteId) {
-    return null;
+  public List<TagDTO> getNoteTags(String noteId) {
+    String sql = """
+        SELECT t.id, t.name FROM tags t
+        JOIN notes_tags nt ON nt.tagId = t.id
+        JOIN notes n ON nt.noteId = n.id
+        WHERE n.id = :noteId
+        """;
+    Map<String, String> map = new HashMap<>();
+    map.put("noteId", noteId);
+    return namedParameterJdbcTemplate.query(sql, map, new TagsRowMapper());
   }
 
   @Override

@@ -24,12 +24,16 @@ public class TagServiceImpl implements TagService {
   UUIDGeneratorService uuidGeneratorService;
   @Override
   public GetTagResponsePo getNotebookTags(String notebookId) {
-    return tagDAO.getNotebookTags(notebookId);
+    GetTagResponsePo po = new GetTagResponsePo();
+    po.setTags(tagDAO.getNotebookTags(notebookId));
+    return po;
   }
 
   @Override
   public GetTagResponsePo getNoteTags(String noteId) {
-    return tagDAO.getNoteTags(noteId);
+    GetTagResponsePo po = new GetTagResponsePo();
+    po.setTags(tagDAO.getNoteTags(noteId));
+    return po;
   }
 
   @Override
