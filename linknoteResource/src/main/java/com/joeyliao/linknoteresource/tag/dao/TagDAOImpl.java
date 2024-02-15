@@ -73,12 +73,26 @@ public class TagDAOImpl implements TagDAO {
   }
 
   @Override
-  public void deleteNoteTag(DeleteNoteTagRequestPo po) {
-
+  public void deleteNotebookTag(DeleteNotebookTagRequestPo po) {
+    String sql = """
+        DELETE FROM tags WHERE id = :tagId;
+        """;
+    Map<String, String> map = new HashMap<>();
+    map.put("tagId", po.getTagId());
+    namedParameterJdbcTemplate.update(sql, map);
   }
 
   @Override
-  public void deleteNotebookTag(DeleteNotebookTagRequestPo po) {
-
+  public void deleteNoteTag(DeleteNoteTagRequestPo po) {
+    String sql = """
+        DELETE FROM notes_tags 
+        WHERE noteId = :noteId AND tagId = :tagId
+        """;
+    Map<String, String> map = new HashMap<>();
+    map.put("noteId", po.getNoteId());
+    map.put("tagId", po.getTagId());
+    namedParameterJdbcTemplate.update(sql, map);
   }
+
+
 }

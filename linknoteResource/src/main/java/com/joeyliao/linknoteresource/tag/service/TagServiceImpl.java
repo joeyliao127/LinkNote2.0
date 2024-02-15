@@ -37,9 +37,11 @@ public class TagServiceImpl implements TagService {
   }
 
   @Override
-  public void createNotebookTag(CreateNotebookTagRequestPo po) {
-    po.setTagId(uuidGeneratorService.generateUUID(Target.TAG));
+  public String createNotebookTag(CreateNotebookTagRequestPo po) {
+    String tagId = uuidGeneratorService.generateUUID(Target.TAG);
+    po.setTagId(tagId);
     tagDAO.createNotebookTag(po);
+    return tagId;
   }
 
   @Override

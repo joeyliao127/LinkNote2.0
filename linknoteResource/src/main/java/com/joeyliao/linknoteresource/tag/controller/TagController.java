@@ -7,14 +7,17 @@ import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.service.TagService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,8 +32,7 @@ public class TagController {
     @RequestBody @Valid CreateNotebookTagRequestPo po
   ) {
     po.setNotebookId(notebookId);
-    tagService.createNotebookTag(po);
-    return ResponseEntity.status(200).body(Map.of("result", true));
+    return ResponseEntity.status(200).body(Map.of("tagId", tagService.createNotebookTag(po)));
   }
 
   @PostMapping("/api/notebooks/{notebookId}/notes/{noteId}/tags")
@@ -55,20 +57,20 @@ public class TagController {
       ) {
     return ResponseEntity.status(200).body(tagService.getNoteTags(noteId));
   }
-  @DeleteMapping("/api/notebooks/{notebookId}/tags/{tagId}")
+  @Validated
+  @DeleteMapping("/api/notebooks/{notebookId}/tags")
   public ResponseEntity<Object> deleteNotebookTag(
-      @PathVariable String tagId,
-      @PathVariable String notebookId) {
+      @RequestParam @NotBlank String tagId) {
     DeleteNotebookTagRequestPo po = new DeleteNotebookTagRequestPo();
     po.setTagId(tagId);
     tagService.deleteNotebookTag(po);
     return ResponseEntity.status(200).body(Map.of("result", true));
   }
 
-  @DeleteMapping("/api/notebooks/{notebookId}/notes/{noteId}/tags/{tagId}")
+  @Validated
+  @DeleteMapping("/api/notebooks/{notebookId}/notes/{noteId}/tags")
   public ResponseEntity<Object> deleteNoteTag(
-      @PathVariable String tagId,
-      @PathVariable String notebookId,
+      @RequestParam @NotBlank String tagId,
       @PathVariable String noteId) {
     DeleteNoteTagRequestPo po = new DeleteNoteTagRequestPo();
     po.setTagId(tagId);

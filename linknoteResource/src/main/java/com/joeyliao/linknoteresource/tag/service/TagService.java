@@ -13,7 +13,7 @@ public interface TagService {
 
   GetTagResponsePo getNoteTags(String noteId);
 
-  void createNotebookTag(CreateNotebookTagRequestPo po);
+  String createNotebookTag(CreateNotebookTagRequestPo po);
 
   void createNoteTag(CreateNoteTagRequestPo po);
   
