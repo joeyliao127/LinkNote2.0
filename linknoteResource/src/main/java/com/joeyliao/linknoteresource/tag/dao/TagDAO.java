@@ -3,6 +3,7 @@ package com.joeyliao.linknoteresource.tag.dao;
 import com.joeyliao.linknoteresource.tag.dto.TagDTO;
 import com.joeyliao.linknoteresource.tag.po.CreateNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagRequestPo;
+import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
@@ -24,4 +25,5 @@ public interface TagDAO {
   void deleteNotebookTag(DeleteNotebookTagRequestPo po);
 
 
+  void createNotebookTags(CreateNotebookTagsRequestPo tagPo);
 }

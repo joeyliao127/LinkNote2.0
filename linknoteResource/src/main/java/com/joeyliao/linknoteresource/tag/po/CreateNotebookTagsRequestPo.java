@@ -1,12 +1,13 @@
 package com.joeyliao.linknoteresource.tag.po;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Data;
 
 @Data
-public class CreateNotebookTagRequestPo {
-  private String notebookId;
+public class CreateNotebookTagsRequestPo {
   private String tagId;
-  @NotBlank
-  private String name;
+  private String notebookId;
+  private List<TagPo> tags;
 }

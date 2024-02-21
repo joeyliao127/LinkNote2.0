@@ -1,7 +1,8 @@
-package com.joeyliao.linknote.templates;
+package com.joeyliao.linknoteresource.templates;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @Controller
@@ -17,8 +18,8 @@ public class templatesController {
     return "notebooks";
   }
 
-  @GetMapping("/notes")
-  public String notes(){
+  @GetMapping("/notebooks/{notebookId}/notes/{noteId}")
+  public String notes(@PathVariable String noteId, @PathVariable String notebookId){
     return "notes";
   }
 }

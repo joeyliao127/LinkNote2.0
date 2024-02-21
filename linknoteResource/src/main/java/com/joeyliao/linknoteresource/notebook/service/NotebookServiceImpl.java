@@ -9,6 +9,9 @@ import com.joeyliao.linknoteresource.notebook.po.GetNotebooksResponsePo;
 import com.joeyliao.linknoteresource.notebook.po.CreateNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.UpdateNotebookPo;
 import com.joeyliao.linknoteresource.tag.dao.TagDAO;
+import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagRequestPo;
+import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagsRequestPo;
+import com.joeyliao.linknoteresource.tag.service.TagService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -27,7 +30,7 @@ public class NotebookServiceImpl implements NotebookService {
   NotebookDAO notebookDAO;
 
   @Autowired
-  TagDAO tagDAO;
+  TagService tagService;
 
   @Autowired
   UUIDGeneratorService uuidGeneratorService;
@@ -40,6 +43,10 @@ public class NotebookServiceImpl implements NotebookService {
     String id = uuidGeneratorService.generateUUID(Target.NOTEBOOK);
     log.info("Notebook產生的UUID為：" + id);
     notebookDAO.createNotebook(po, id);
+    CreateNotebookTagsRequestPo tagPo = new CreateNotebookTagsRequestPo();
+    tagPo.setTags(po.getTags());
+    tagPo.setNotebookId(id);
+    tagService.createNotebookTags(tagPo);
     return id;
   }
 

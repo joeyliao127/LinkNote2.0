@@ -2,6 +2,7 @@ package com.joeyliao.linknoteresource.tag.service;
 
 import com.joeyliao.linknoteresource.tag.po.CreateNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagRequestPo;
+import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
@@ -20,4 +21,6 @@ public interface TagService {
   void deleteNoteTag(DeleteNoteTagRequestPo po);
 
   void deleteNotebookTag(DeleteNotebookTagRequestPo po);
+
+  void createNotebookTags(CreateNotebookTagsRequestPo tagPo);
 }

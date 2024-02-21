@@ -25,6 +25,5 @@ public class NotebookInterceptor implements HandlerInterceptor {
     Boolean verifyResult = authorizationHandler.checkAccessPermission(request, response, Target.NOTEBOOK);
     log.info("Notebook驗證結果為：" + verifyResult);
     return verifyResult;
-
   }
 }

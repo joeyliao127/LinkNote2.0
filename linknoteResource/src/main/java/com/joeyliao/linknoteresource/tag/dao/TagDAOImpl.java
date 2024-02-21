@@ -4,15 +4,18 @@ import com.joeyliao.linknoteresource.tag.TagsRowMapper;
 import com.joeyliao.linknoteresource.tag.dto.TagDTO;
 import com.joeyliao.linknoteresource.tag.po.CreateNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagRequestPo;
+import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetTagResponsePo;
+import com.joeyliao.linknoteresource.tag.po.TagPo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -80,6 +83,23 @@ public class TagDAOImpl implements TagDAO {
     Map<String, String> map = new HashMap<>();
     map.put("tagId", po.getTagId());
     namedParameterJdbcTemplate.update(sql, map);
+  }
+
+  @Override
+  public void createNotebookTags(CreateNotebookTagsRequestPo tagPo) {
+    String sql = """
+        INSERT INTO tags(id, name, notebookId)
+        VALUES (:id, :name, :notebookId);
+        """;
+    List<TagPo> tags = tagPo.getTags();
+    MapSqlParameterSource[] parameterSources = new MapSqlParameterSource[tagPo.getTags().size()];
+    for (int i = 0; i < tagPo.getTags().size(); i++) {
+      parameterSources[i] = new MapSqlParameterSource();
+      parameterSources[i].addValue("name", tags.get(i).getName());
+      parameterSources[i].addValue("id", tags.get(i).getTagId());
+      parameterSources[i].addValue("notebookId", tagPo.getNotebookId());
+    }
+    namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
   }
 
   @Override
