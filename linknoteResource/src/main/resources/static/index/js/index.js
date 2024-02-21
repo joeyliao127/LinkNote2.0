@@ -62,7 +62,7 @@ function register() {
 }
 
 async function fetchRegisterEndpoint(username, email, password) {
-  const endpoint = "/api/user/register";
+  const endpoint = ":8080/api/user/register";
   const requestBody = { username, email, password };
   const request = {
     method: "POST",
@@ -102,7 +102,7 @@ function signInBtnListener() {
   signinBtn.addEventListener("click", async () => {
     const email = document.querySelector("#signin-email").value;
     const password = document.querySelector("#signin-password").value;
-    const endpoint = "/api/user/auth";
+    const endpoint = "localhost:8080/api/auth/user/signin";
     const reqBody = { email: email, password: password };
     console.log(`email: ${email}, ps:${password}`);
     const checkInput = validateEmailFormatAndPasswordNotNull(email, password);
@@ -134,7 +134,7 @@ function signInBtnListener() {
 }
 
 async function verifyUserByToken(token) {
-  const response = await fetch("/api/user/auth", {
+  const response = await fetch(":8080/api/auth/user/token", {
     headers: {
       Authorization: "Bearer " + token,
       "Content-Type": "application/json",
