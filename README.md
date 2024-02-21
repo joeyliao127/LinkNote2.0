@@ -1290,6 +1290,3 @@ Response Body
   }
 }
 ```
-
-- [x] GET note 需要返回 note 擁有的 tags
-- [x] GET notebook 時有哪些 tag 一起返回。

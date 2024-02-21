@@ -1,13 +1,17 @@
-let errMsg = document.querySelector("#signin-error-msg");
-async function init() {
-  const token = localStorage.getItem("token");
-  if (token) {
-    verifyUserByToken(token);
-    window.location.href = "/notebooks";
-  }
+function main() {
+  init();
   switchFormBtn();
   register();
   signInBtnListener();
+}
+
+async function init() {
+  if (localStorage.getItem("token")) {
+    const result = await AuthenticationHandler.verifyUserToken();
+    if (result) {
+      location.href = "/notebooks";
+    }
+  }
 }
 
 function switchFormBtn() {
@@ -27,66 +31,81 @@ function switchFormBtn() {
   });
 }
 
-function clearErrorMsg() {
-  setTimeout(() => {
-    document.querySelector("#signup-error-msg").textContent = "";
-  }, 5000);
-}
-
-function validateEmailFormat(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
 function register() {
   const signUpBtn = document.querySelector(".signup-ctn .form-ctn button");
-  signUpBtn.addEventListener("click", async () => {
+  signUpBtn.addEventListener("click", signupBtnCallback);
+  async function signupBtnCallback() {
     const email = document.querySelector("#signup-email").value;
     const username = document.querySelector("#username").value;
     const password = document.querySelector("#signup-password").value;
     const confirmPassword = document.querySelector("#confirmPassword").value;
-    if (!validateEmailFormat(email)) {
-      document.querySelector("#signup-error-msg").textContent =
-        "Please enter the correct format for your email. ";
-      clearErrorMsg();
+    if (!AuthenticationHandler.validateEmailFormat(email)) {
+      errorMsgHandler("Please enter the correct format for your email. ");
       return 0;
     }
     if (password != confirmPassword) {
-      document.querySelector("#signup-error-msg").textContent =
-        "Please ensure that your passwords match.";
-      clearErrorMsg();
+      errorMsgHandler("Please ensure that your passwords match.");
       return 0;
     }
     await fetchRegisterEndpoint(username, email, password);
-  });
+  }
+
+  async function fetchRegisterEndpoint(username, email, password) {
+    const requestPath = ":8080/api/user/register";
+    const requestBody = { username, email, password };
+    const response = await FetchDataHandler.fetchDataWithRequestBody(
+      requestPath,
+      "POST",
+      requestBody
+    );
+    const data = await response.json();
+
+    if (response.status == 201) {
+      localStorage.setItem("token", data.token);
+      window.alert("Success!");
+      window.location.href = "/notebooks";
+    } else if (response.status == 400) {
+      document.querySelector("#signup-error-msg").textContent =
+        "Email already exist.";
+      console.log(`Error msg: ${data.message}`);
+    } else {
+      document.querySelector("#signup-error-msg").textContent =
+        "Email already exist.";
+      console.log(`Error msg: ${data.message}`);
+    }
+  }
 }
 
-async function fetchRegisterEndpoint(username, email, password) {
-  const endpoint = ":8080/api/user/register";
-  const requestBody = { username, email, password };
-  const request = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestBody),
-  };
+function signInBtnListener() {
+  const signinBtn = document.querySelector(".signin-ctn button");
+  signinBtn.addEventListener("click", signinBtnCallback);
 
-  const response = await fetch(endpoint, request);
-  const data = await response.json();
-  console.log(`token = ${data.token}`);
-  if (response.status == 201) {
-    localStorage.setItem("token", data.token);
-    window.alert("Success!");
-    window.location.href = "/notebooks";
-  } else if (response.status == 400) {
-    document.querySelector("#signup-error-msg").textContent =
-      "Email already exist.";
-    console.log(`Error msg: ${data.message}`);
-  } else {
-    document.querySelector("#signup-error-msg").textContent =
-      "Email already exist.";
-    console.log(`Error msg: ${data.message}`);
+  async function signinBtnCallback() {
+    const email = document.querySelector("#signin-email").value;
+    const password = document.querySelector("#signin-password").value;
+    const requestBody = { email: email, password: password };
+    const checkInput = validateEmailFormatAndPasswordNotNull(email, password);
+
+    if (!checkInput) {
+      errorMsgHandler(
+        "Please enter the correct format for your email and password can not be null "
+      );
+    }
+
+    const response = await FetchDataHandler.fetchDataWithRequestBody(
+      ":8080/api/auth/user/signin",
+      "POST",
+      requestBody
+    );
+
+    const data = await response.json();
+    console.log(data);
+    if (data.result) {
+      localStorage.setItem("token", data.token);
+      window.location.href = "/notebooks";
+    } else {
+      errorMsgHandler("Email or password incorrect. ");
+    }
   }
 }
 
@@ -97,56 +116,12 @@ function validateEmailFormatAndPasswordNotNull(email, password) {
   return emailRegex.test(email) && password;
 }
 
-function signInBtnListener() {
-  const signinBtn = document.querySelector(".signin-ctn button");
-  signinBtn.addEventListener("click", async () => {
-    const email = document.querySelector("#signin-email").value;
-    const password = document.querySelector("#signin-password").value;
-    const endpoint = "localhost:8080/api/auth/user/signin";
-    const reqBody = { email: email, password: password };
-    console.log(`email: ${email}, ps:${password}`);
-    const checkInput = validateEmailFormatAndPasswordNotNull(email, password);
-    if (!checkInput) {
-      errMsg.textContent =
-        "Please enter the correct format for your email and password can not be null ";
-      return 0;
-    }
-    try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(reqBody),
-      });
-      const data = await response.json();
-      console.log(data);
-      if (data.result) {
-        localStorage.setItem("token", data.token);
-        window.location.href = "/notebooks";
-      } else {
-        errMsg.textContent = "Email or password incorrect. ";
-      }
-    } catch (e) {
-      console.log(`網路或Server異常: ${e}`);
-    }
-  });
+function errorMsgHandler(message) {
+  let errMsg = document.querySelector("#signin-error-msg");
+  errMsg.textContent = message;
+  setTimeout(() => {
+    document.querySelector("#signup-error-msg").textContent = "";
+  }, 5000);
 }
 
-async function verifyUserByToken(token) {
-  const response = await fetch(":8080/api/auth/user/token", {
-    headers: {
-      Authorization: "Bearer " + token,
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-  });
-  const verifyResult = await response.json();
-  console.log(`token驗證結果：`);
-  console.log(verifyResult);
-  if (verifyResult) {
-    localStorage.removeItem("token");
-    window.location.href = "/";
-  }
-}
-init();
+main();
