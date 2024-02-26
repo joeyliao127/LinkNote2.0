@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>notebook</title>
-</head>
-<body>
-<p>Hi Notebooks</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>notebook</title>
+  </head>
+  <body>
+    <p>Hi Notebooks</p>
+    <button onclick="removeToken()">Remove token then back to homepage</button>
+    <script>
+      function removeToken() {
+        localStorage.clear();
+        location.href = "/";
+      }
+    </script>
+  </body>
 </html>

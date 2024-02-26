@@ -1,7 +1,6 @@
 class FetchDataHandler {
-  constructor() {}
-
   static fetchPath = "http://localhost";
+  constructor() {}
 
   static setRequestHeader = function (method, requestBody) {
     if (!requestBody) {
@@ -17,13 +16,12 @@ class FetchDataHandler {
     };
   };
 
-  static async fetchData(path, method) {
+  static async fetchData(path, method, requestBody) {
     let fullPath = this.fetchPath + path;
-    return await fetch(fullPath, this.setRequestHeader(method));
-  }
-
-  static async fetchDataWithRequestBody(path, method, requestBody) {
-    let fullPath = this.fetchPath + path;
-    return await fetch(fullPath, this.setRequestHeader(method, requestBody));
+    if (requestBody) {
+      return await fetch(fullPath, this.setRequestHeader(method, requestBody));
+    } else {
+      return await fetch(fullPath, this.setRequestHeader(method));
+    }
   }
 }

@@ -53,7 +53,7 @@ function register() {
   async function fetchRegisterEndpoint(username, email, password) {
     const requestPath = ":8080/api/user/register";
     const requestBody = { username, email, password };
-    const response = await FetchDataHandler.fetchDataWithRequestBody(
+    const response = await FetchDataHandler.fetchData(
       requestPath,
       "POST",
       requestBody
@@ -92,7 +92,7 @@ function signInBtnListener() {
       );
     }
 
-    const response = await FetchDataHandler.fetchDataWithRequestBody(
+    const response = await FetchDataHandler.fetchData(
       ":8080/api/auth/user/signin",
       "POST",
       requestBody

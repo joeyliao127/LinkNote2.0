@@ -21,9 +21,7 @@ class AuthenticationHandler {
       localStorage.removeItem("token");
       location.href = "/";
     }
-    {
-      return true;
-    }
+    return true;
   }
 
   static validateEmailFormat(email) {
