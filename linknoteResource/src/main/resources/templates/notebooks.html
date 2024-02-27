@@ -7,15 +7,7 @@
     <title>notebook</title>
   </head>
   <body>
-    <!-- <div class="messageCtn success displayMessage">
-      <div class="status"></div>
-      <p>Create notebook success !</p>
-      <div id="close"></div>
-    </div> -->
     <div class="wrapper flex">
-      <!-- <button onclick="removeToken()">
-        Remove token then back to homepage
-      </button> -->
       <section class="sideBar">
         <h1 class="display-none">Linknote</h1>
         <div class="sideBar-welcome">
@@ -30,73 +22,52 @@
         </div>
         <button id="createNotebookBtn">+ New Notebook</button>
         <!-- 筆記本按鈕 -->
-        <!-- <div class="notebookBtns">
-          <div class="sideBarBtn">
-            <div class="myNotebookBtn flex">
+        <div class="sideBarBtnArea">
+          <div class="sideBarBtn no-select notebookGroup">
+            <div class="myNotebookBtn">
               <img
                 src="https://cdn.linknote.online/linknote-icons/person-white.png"
                 alt="person-white"
               />
               <p>My Notebooks</p>
             </div>
-            <button id="myNotebookExtendBtn"></button>
-          </div>
-          <div class="sideBarBtn"></div>
-        </div> -->
 
-        <!-- 筆記本邀請按鈕 -->
-        <!-- <div class="sideBarBtn invitationsBtn">
-          <img
-            src="https://cdn.linknote.online/linknote-icons/notebook.png"
-            alt="Collaborative Notebooks 
-            Management"
-          />
-          <p>Collaborative Notebooks Management</p>
-        </div> -->
-        <!-- 設定按鈕 -->
-        <!-- <div class="sideBarBtn settingBtn">
-          <img
-            src="https://cdn.linknote.online/linknote-icons/setting.png"
-            alt="setting"
-          />
-          <p>Setting</p>
-        </div> -->
+            <!-- <div id="myNotebookExtendBtn" class="extendBtn"></div> -->
+          </div>
+
+          <div class="sideBarBtn no-select notebookGroup">
+            <div class="coNotebookBtns">
+              <img
+                src="https://cdn.linknote.online/linknote-icons/collaborators.png"
+                alt="person-white"
+              />
+              <p>Collaborative Notebooks</p>
+            </div>
+
+            <!-- <div id="coNotebookExtendBtn" class="extendBtn"></div> -->
+          </div>
+
+          <!-- 筆記本邀請按鈕 -->
+          <div class="sideBarBtn no-select invitationsBtn">
+            <img
+              src="https://cdn.linknote.online/linknote-icons/notebook.png"
+              alt="Collaborative Notebooks 
+              Management"
+            />
+            <p>Collaborative Notebooks Management</p>
+          </div>
+          <!-- 設定按鈕 -->
+          <div class="sideBarBtn no-select settingBtn">
+            <img
+              src="https://cdn.linknote.online/linknote-icons/setting.png"
+              alt="setting"
+            />
+            <p>Setting</p>
+          </div>
+        </div>
       </section>
 
-      <main>
-        <!-- <section class="createNotebookWrapper">
-          <h3>Create Notebook</h3>
-          <div class="createNotebookForm">
-            <div class="inputs">
-              <label for="notebookName">Notebook Name</label>
-              <input
-                type="text"
-                name="notebookName"
-                id="notebookName"
-                placeholder="Name"
-              />
-              <label for="description">Description (Optional)</label>
-              <input
-                type="text"
-                name="description"
-                id="description"
-                placeholder="What is the purpose of the notebook?"
-              />
-              <label for="tag">Tags</label>
-              <div class="tagInput">
-                <input type="text" name="tag" id="tag" placeholder="Tag Name" />
-                <button id="addTag">Add</button>
-              </div>
-              <div class="tags"></div>
-            </div>
-
-            <div class="flex createNotebookBtns">
-              <div id="cancel" class="no-select">Cancel</div>
-              <div id="submit" class="no-select">Submit</div>
-            </div>
-          </div>
-        </section> -->
-      </main>
+      <main></main>
     </div>
     <script src="/base/js/Authentication.js"></script>
     <script src="/base/js/FetchData.js"></script>

@@ -59,3 +59,65 @@
     opacity: 0.8;
   }
 }
+
+.sideBarBtnArea {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #666666;
+}
+
+.notebookGroup {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sideBarBtn {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  color: white;
+  padding-left: 10px;
+  width: 230px;
+  cursor: pointer;
+  transition: all ease-in-out 0.2s;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  height: 30px;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+  &:hover {
+    background-color: #999;
+  }
+}
+
+.myNotebookBtn {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.coNotebookBtns {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.invitationsBtn {
+}
+
+.settingBtn {
+}
+
+.extendBtn {
+  width: 20px;
+  height: 20px;
+  background-image: url(https://cdn.linknote.online/linknote-icons/extendBtn.png);
+  background-size: cover;
+  cursor: pointer;
+}
