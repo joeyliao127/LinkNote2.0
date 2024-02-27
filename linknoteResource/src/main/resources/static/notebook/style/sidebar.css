@@ -1,0 +1,43 @@
+.sideBar {
+  height: 100%;
+  width: 270px;
+  background-color: #1f221f;
+  opacity: 0.9;
+  flex-grow: 0;
+  padding-block: 20px;
+}
+
+.sideBar-welcome {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 230px;
+  height: 100px;
+  margin-inline: 20px;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 5px;
+  h2 {
+    font-weight: 500;
+  }
+}
+
+.welcome-username {
+  display: flex;
+  gap: 10px;
+  max-width: 75%;
+  overflow: hidden;
+  img {
+    width: 30px;
+    height: 30px;
+  }
+  p {
+    margin: auto;
+    font-size: 20px;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+}

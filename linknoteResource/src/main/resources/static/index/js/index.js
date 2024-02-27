@@ -51,7 +51,7 @@ function register() {
   }
 
   async function fetchRegisterEndpoint(username, email, password) {
-    const requestPath = ":8080/api/user/register";
+    const requestPath = "/api/user/register";
     const requestBody = { username, email, password };
     const response = await FetchDataHandler.fetchData(
       requestPath,
@@ -92,11 +92,17 @@ function signInBtnListener() {
       );
     }
 
-    const response = await FetchDataHandler.fetchData(
-      ":8080/api/auth/user/signin",
-      "POST",
-      requestBody
-    );
+    //開發環境path
+    const path = "http://127.0.0.1/api/auth/user/signin";
+    //正式環境path
+    // const path = "/api/auth/user/signin";
+    const response = await fetch(path, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(requestBody),
+    });
 
     const data = await response.json();
     console.log(data);

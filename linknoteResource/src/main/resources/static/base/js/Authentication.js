@@ -11,7 +11,7 @@ class AuthenticationHandler {
   }
 
   static async verifyUserToken() {
-    const path = ":8080/api/auth/user/token";
+    const path = "/api/auth/user/token";
 
     const response = await FetchDataHandler.fetchData(path, "POST");
 

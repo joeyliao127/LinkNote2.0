@@ -28,6 +28,13 @@
   opacity: 0.8;
 }
 
+/* 禁止使用者選取文字 */
+.no-select {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  user-select: none; /* 標準語法 */
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

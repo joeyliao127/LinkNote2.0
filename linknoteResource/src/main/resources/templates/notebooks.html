@@ -2,11 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/base/style/base.css" />
+    <link rel="stylesheet" href="/notebook/style/style.css" />
     <title>notebook</title>
   </head>
   <body>
-    <p>Hi Notebooks</p>
-    <button onclick="removeToken()">Remove token then back to homepage</button>
+    <div class="wrapper flex">
+      <!-- <button onclick="removeToken()">
+        Remove token then back to homepage
+      </button> -->
+      <section class="sideBar">
+        <h1 class="display-none">Linknote</h1>
+        <div class="sideBar-welcome">
+          <div class="welcome-username">
+            <img
+              src="https://cdn.linknote.online/linknote-icons/person-black.png"
+              alt="person-black"
+            />
+            <p class="no-select">Hi <span id="username"></span></p>
+          </div>
+          <h2 class="no-select">Welcome to LinkNote!</h2>
+        </div>
+      </section>
+    </div>
+    <script src="/base/js/Authentication.js"></script>
+    <script src="/base/js/FetchData.js"></script>
+    <script src="/notebook/js/sideBar.js"></script>
     <script>
       function removeToken() {
         localStorage.clear();
