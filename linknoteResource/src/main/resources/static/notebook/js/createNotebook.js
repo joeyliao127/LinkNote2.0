@@ -1,40 +1,75 @@
 function createNotebookMain() {
   createNotebookTagBtnListener();
+  createNotebookListener();
+  createNotebookTagInputListener();
 }
 
 function createNotebookTagBtnListener() {
   document.querySelector("#addTag").addEventListener("click", generateTags);
-
-  function generateTags() {
-    MessageMaker.success("新增tag成功！");
-    const tag = document.createElement("p");
-    tag.textContent = document.querySelector("#tag").value;
-    document.querySelector("#tag").value = "";
-    tag.addEventListener("click", () => {
-      tag.remove();
-    });
-
-    document.querySelector(".tags").appendChild(tag);
-  }
 }
 
-function createNotebookHandler() {
+function createNotebookTagInputListener() {
+  document.querySelector("#tag").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      generateTags();
+    }
+  });
+}
+
+function generateTags() {
+  const tag = document.createElement("p");
+  const text = document.querySelector("#tag").value;
+  if (!text) {
+    return;
+  }
+  tag.textContent = text;
+  document.querySelector("#tag").value = "";
+  tag.addEventListener("click", () => {
+    tag.remove();
+  });
+  document.querySelector(".tags").appendChild(tag);
+}
+
+function createNotebookListener() {
+  const submitBtn = document.querySelector("#submit");
+  submitBtn.addEventListener("click", createNotebook);
+}
+
+async function createNotebook() {
   const tags = [];
   document.querySelectorAll(".tags p").forEach((item) => {
-    tags.push(item.value);
+    tags.push({
+      name: item.textContent,
+    });
   });
+  const notebookName = document.querySelector("#notebookName").value;
+  if (!notebookName) {
+    MessageMaker.warning("Notebook name is required.");
+    return;
+  }
   const requestBody = {
-    notebookName: document.querySelector("#notebookName").value,
+    name: notebookName,
     description: document.querySelector("#description").value,
     tags: tags,
   };
 
-  FetchDataHandler.fetchData("/api/notebooks", "POST", requestBody);
+  console.log(requestBody);
+  const response = await FetchDataHandler.fetchData(
+    "/api/notebooks",
+    "POST",
+    requestBody
+  );
+
+  if (response.status == 200) {
+    const notebookId = await response.json();
+    MessageMaker.success("create notebook success!");
+  }
 }
 
 function renderCreateNotebookForm() {
-  elementHTML = `
-  <section class="createNotebookWrapper">
+  const createNotebookWrapper = document.createElement("createNotebookWrapper");
+  createNotebookWrapper.classList.add("createNotebookWrapper");
+  createNotebookWrapper.innerHTML = `
   <h3>Create Notebook</h3>
   <div class="createNotebookForm">
     <div class="inputs">
@@ -64,8 +99,7 @@ function renderCreateNotebookForm() {
       <div id="cancel" class="no-select">Cancel</div>
       <div id="submit" class="no-select">Submit</div>
     </div>
-  </div>
-</section>`;
-  MainRender.renderMain(elementHTML);
+  </div>`;
+  MainRender.renderMain(createNotebookWrapper);
   createNotebookMain();
 }

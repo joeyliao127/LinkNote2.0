@@ -41,7 +41,7 @@
 }
 
 .warning {
-  background-color: rgb(183, 0, 0);
+  background-color: rgb(221, 88, 0);
   .status {
     background-image: url(https://cdn.linknote.online/linknote-icons/warning.png);
   }

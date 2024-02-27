@@ -14,6 +14,9 @@ class MessageMaker {
 
     closeBtn.addEventListener("click", () => {
       messageCtn.classList.remove("displayMessage");
+      setTimeout(() => {
+        messageCtn.remove();
+      }, 2000);
     });
     messageCtn.appendChild(status);
     messageCtn.appendChild(msg);
@@ -42,7 +45,11 @@ class MessageMaker {
   static appnedMessageBlock(messageBlock) {
     setTimeout(() => {
       messageBlock.classList.remove("displayMessage");
+      setTimeout(() => {
+        messageBlock.remove();
+      }, 2000);
     }, 5000);
+
     document.querySelector("body").appendChild(messageBlock);
   }
 }
