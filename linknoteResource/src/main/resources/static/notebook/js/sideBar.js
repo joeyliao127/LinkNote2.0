@@ -1,5 +1,6 @@
-function main() {
+function sideBarMain() {
   setUsernameAndEmail();
+  createNotebookBtnListner();
 }
 
 async function setUsernameAndEmail() {
@@ -9,4 +10,10 @@ async function setUsernameAndEmail() {
   //   document.querySelector("#email").textContent = data.email;
 }
 
-main();
+function createNotebookBtnListner() {
+  document
+    .querySelector("#createNotebookBtn")
+    .addEventListener("click", renderCreateNotebookForm);
+}
+
+sideBarMain();

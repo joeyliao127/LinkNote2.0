@@ -1,4 +1,5 @@
 @import url(/base/style/reset.css);
+@import url(/base/style/message.css);
 * {
   text-decoration: none;
   box-sizing: border-box;
