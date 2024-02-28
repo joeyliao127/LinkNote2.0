@@ -79,7 +79,7 @@ public class NotebookDAOImpl implements NotebookDAO {
       sql = """
           SELECT n.id, n.name, n.description FROM notebooks n 
           JOIN notebooks_users_role nur ON n.id = nur.notebookId 
-          WHERE nur.userId = :userId 
+          WHERE nur.userId = :userId AND nur.roleId = 2 
           """;
 
     } else {

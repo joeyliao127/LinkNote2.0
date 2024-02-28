@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../static/notebook/style/main.css" />
     <link rel="stylesheet" href="../static/notebook/style/wrapper.css" />
     <link rel="stylesheet" href="../static/notebook/style/sidebar.css" />
+    <link rel="stylesheet" href="../static/notebook/style/main-notebook.css" />
     <link rel="stylesheet" href="../static/base/style/base.css" />
     <link rel="stylesheet" href="../static/base/style/message.css" />
     <link rel="stylesheet" href="../static/base/style/reset.css" />
@@ -30,7 +31,7 @@
         <button id="createNotebookBtn" class="no-select">+ New Notebook</button>
         <!-- 筆記本按鈕 -->
         <div class="sideBarBtnArea">
-          <div class="myNotebookArea">
+          <div class="sideBarMyNotebookArea">
             <div class="sideBarBtn no-select notebookGroup">
               <div class="myNotebookBtn">
                 <img
@@ -42,12 +43,12 @@
 
               <!-- <div id="myNotebookExtendBtn" class="extendBtn"></div> -->
             </div>
-            <div class="notebooksCtn">
+            <div class="notebooksCtn" id="sideBar-myNotebookBtnCtn">
               <!-- <div class="loader sideBarLoader"></div> -->
             </div>
           </div>
 
-          <div class="coNotebookArea">
+          <div class="sideBarCoNotebookArea">
             <div class="sideBarBtn no-select notebookGroup">
               <div class="coNotebookBtn">
                 <img
@@ -56,51 +57,10 @@
                 />
                 <p>Collaborative Notebooks</p>
               </div>
-
               <!-- <div id="coNotebookExtendBtn" class="extendBtn"></div> -->
             </div>
-            <div class="notebooksCtn">
+            <div class="notebooksCtn" id="sideBar-coNotebookBtnCtn">
               <!-- <div class="loader sideBarLoader"></div> -->
-              <!-- <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p>
-              <p>Notebook1</p> -->
             </div>
           </div>
 
@@ -133,12 +93,37 @@
         </div>
       </section>
 
-      <main></main>
+      <main>
+        <div class="mainWrapper">
+          <section class="notebookArea">
+            <h3>My Notebooks</h3>
+            <div class="initNotebookWrapper">
+              <div class="initNotebookCtn">
+                <img
+                  src="https://cdn.linknote.online/linknote-icons/create-notebook.png"
+                  alt="create-notebook"
+                />
+                <div class="initCreateNotebookGroup">
+                  <h4>Create your first notebook!</h4>
+                  <div class="initBtns">
+                    <div id="initCreateNotebookBtn" class="no-select">
+                      Create notebook
+                    </div>
+                    <a href="" id="tutorials" class="no-select">Tutorials</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
     </div>
+
     <script src="/base/js/Authentication.js"></script>
     <script src="/base/js/FetchData.js"></script>
     <script src="/notebook/js/main.js"></script>
     <script src="/notebook/js/createNotebook.js"></script>
+    <script src="/notebook/js/NotebookRender.js"></script>
     <script src="/notebook/js/sideBar.js"></script>
     <script src="/base/js/Message.js"></script>
 
