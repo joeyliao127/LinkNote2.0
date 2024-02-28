@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/base/style/base.css" />
     <link rel="stylesheet" href="/notebook/style/style.css" />
+    <link rel="stylesheet" href="../static/notebook/style/createNotebook.css" />
+    <link rel="stylesheet" href="../static/notebook/style/main.css" />
+    <link rel="stylesheet" href="../static/notebook/style/wrapper.css" />
+    <link rel="stylesheet" href="../static/notebook/style/sidebar.css" />
+    <link rel="stylesheet" href="../static/base/style/base.css" />
+    <link rel="stylesheet" href="../static/base/style/message.css" />
+    <link rel="stylesheet" href="../static/base/style/reset.css" />
     <title>notebook</title>
   </head>
   <body>
@@ -20,31 +27,81 @@
           </div>
           <h2 class="no-select">Welcome to LinkNote!</h2>
         </div>
-        <button id="createNotebookBtn">+ New Notebook</button>
+        <button id="createNotebookBtn" class="no-select">+ New Notebook</button>
         <!-- 筆記本按鈕 -->
         <div class="sideBarBtnArea">
-          <div class="sideBarBtn no-select notebookGroup">
-            <div class="myNotebookBtn">
-              <img
-                src="https://cdn.linknote.online/linknote-icons/person-white.png"
-                alt="person-white"
-              />
-              <p>My Notebooks</p>
-            </div>
+          <div class="myNotebookArea">
+            <div class="sideBarBtn no-select notebookGroup">
+              <div class="myNotebookBtn">
+                <img
+                  src="https://cdn.linknote.online/linknote-icons/person-white.png"
+                  alt="person-white"
+                />
+                <p>My Notebooks</p>
+              </div>
 
-            <!-- <div id="myNotebookExtendBtn" class="extendBtn"></div> -->
+              <!-- <div id="myNotebookExtendBtn" class="extendBtn"></div> -->
+            </div>
+            <div class="notebooksCtn">
+              <!-- <div class="loader sideBarLoader"></div> -->
+            </div>
           </div>
 
-          <div class="sideBarBtn no-select notebookGroup">
-            <div class="coNotebookBtns">
-              <img
-                src="https://cdn.linknote.online/linknote-icons/collaborators.png"
-                alt="person-white"
-              />
-              <p>Collaborative Notebooks</p>
-            </div>
+          <div class="coNotebookArea">
+            <div class="sideBarBtn no-select notebookGroup">
+              <div class="coNotebookBtn">
+                <img
+                  src="https://cdn.linknote.online/linknote-icons/collaborators.png"
+                  alt="person-white"
+                />
+                <p>Collaborative Notebooks</p>
+              </div>
 
-            <!-- <div id="coNotebookExtendBtn" class="extendBtn"></div> -->
+              <!-- <div id="coNotebookExtendBtn" class="extendBtn"></div> -->
+            </div>
+            <div class="notebooksCtn">
+              <!-- <div class="loader sideBarLoader"></div> -->
+              <!-- <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p>
+              <p>Notebook1</p> -->
+            </div>
           </div>
 
           <!-- 筆記本邀請按鈕 -->
@@ -54,7 +111,7 @@
               alt="Collaborative Notebooks 
               Management"
             />
-            <p>Collaborative Notebooks Management</p>
+            <p>Invitations Management</p>
           </div>
           <!-- 設定按鈕 -->
           <div class="sideBarBtn no-select settingBtn">
@@ -63,6 +120,15 @@
               alt="setting"
             />
             <p>Setting</p>
+          </div>
+        </div>
+
+        <div class="sideBarBottom">
+          <div class="userEmail sideBarBottomBlock no-select">
+            <p id="email"></p>
+          </div>
+          <div class="signoutBtn sideBarBottomBlock no-select">
+            <p>SignOut</p>
           </div>
         </div>
       </section>
@@ -77,10 +143,7 @@
     <script src="/base/js/Message.js"></script>
 
     <script>
-      function removeToken() {
-        localStorage.clear();
-        location.href = "/";
-      }
+      function removeToken() {}
     </script>
   </body>
 </html>
