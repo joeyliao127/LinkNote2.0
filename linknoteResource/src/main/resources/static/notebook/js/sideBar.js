@@ -8,6 +8,7 @@ class SideBarRender {
     selectedElement: null,
   };
   static sideBarMain() {
+    this.genNotebookBnts("#sideBar-myNotebookBtnCtn");
     this.setUsernameAndEmail();
     this.genCreateNotebookBtnListner();
     this.myNotebookBtnListner();
@@ -37,7 +38,9 @@ class SideBarRender {
     document
       .querySelector(".sideBarMyNotebookArea .sideBarBtn")
       .addEventListener("click", () => {
-        this.renderSelectBtn("myNotebookBtn");
+        if (this.selectedBtn.selectedElement == "myNotebookBtn") {
+          return;
+        }
         NotebookRander.renderMyNotebooks();
         this.genNotebookBnts("#sideBar-myNotebookBtnCtn");
       });
@@ -47,7 +50,9 @@ class SideBarRender {
     document
       .querySelector(".sideBarCoNotebookArea .sideBarBtn")
       .addEventListener("click", () => {
-        this.renderSelectBtn("coNotebookBtn");
+        if (this.selectedBtn.selectedElement == "coNotebookBtn") {
+          return;
+        }
         NotebookRander.renderCoNotebooks();
         this.genNotebookBnts("#sideBar-coNotebookBtnCtn");
       });
@@ -67,14 +72,21 @@ class SideBarRender {
     let path;
     let notebookBtnsCtn;
     if (id === "#sideBar-myNotebookBtnCtn") {
+      this.renderSelectBtn("myNotebookBtn");
       notebookBtnsCtn = myNotebookBtnsCtn;
       path = `/api/notebooks?offset=${offset}&limit=${limit}`;
     } else {
+      this.renderSelectBtn("coNotebookBtn");
       notebookBtnsCtn = coNotebookBtnsCtn;
       path = `/api/coNotebooks?offset=${offset}&limit=${limit}`;
     }
     const notebookBtns = await this.getNotebooks(path);
-    this.appendNotebookBtns(notebookBtnsCtn, notebookBtns);
+    console.log(notebookBtns);
+    if (notebookBtns.length == 0) {
+      NotebookRander.renderCreateNotebook();
+    } else {
+      this.appendNotebookBtns(notebookBtnsCtn, notebookBtns);
+    }
   };
 
   static getNotebooks = async function (path) {
@@ -118,12 +130,18 @@ class SideBarRender {
 
   static invitationPageBtnListner() {
     document.querySelector(".invitationsBtn").addEventListener("click", () => {
+      if (this.selectedBtn.selectedElement == "invitationBtn") {
+        return;
+      }
       this.renderSelectBtn("invitationBtn");
     });
   }
 
   static settingPageBtnListner() {
     document.querySelector(".settingBtn").addEventListener("click", () => {
+      if (this.selectedBtn.selectedElement == "settingBtn") {
+        return;
+      }
       this.renderSelectBtn("settingBtn");
     });
   }

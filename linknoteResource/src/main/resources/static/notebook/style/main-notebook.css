@@ -1,14 +1,8 @@
 .notebookArea {
   padding: 40px 60px;
 }
-.notebookArea h3 {
-  color: white;
-  font-size: 20px;
-  font-weight: 500;
-  padding-bottom: 10px;
-  border-bottom: 2px solid white;
-}
 
+/* =====================init區域===================== */
 .initNotebookWrapper {
   margin-top: 15px;
   background-color: rgba(44, 44, 44, 0.8);
@@ -61,4 +55,184 @@
   &:hover {
     opacity: 0.8;
   }
+}
+
+/* =====================Notebooks區域===================== */
+.notebooksTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notebookArea h3 {
+  color: #ccc;
+  font-size: 20px;
+  font-weight: 500;
+  position: relative;
+  bottom: -10px;
+}
+
+.search {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.search input {
+  background-color: transparent;
+  border-radius: 5px;
+  border: 2px solid #666;
+  color: #ccc;
+  padding: 8px 30px 8px 12px;
+  width: 180px;
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.search img {
+  width: 20px;
+  height: 20px;
+  vertical-align: bottom;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+.notebookCtn {
+  height: calc(100vh - 130px);
+  overflow: scroll;
+  padding-right: 10px;
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+  }
+}
+.noteCtn {
+  position: relative;
+  height: 480px;
+  overflow-y: scroll;
+  padding-top: 20px;
+  padding-right: 10px;
+  border-top: 2px solid white;
+  margin-top: 10px;
+}
+
+.deleteNotebookBtn {
+  width: 35px;
+  height: 35px;
+  padding: 3px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  position: absolute;
+  right: 0;
+  top: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: red;
+  }
+}
+.noteCtn h4 {
+  font-weight: 700;
+  font-size: 20px;
+  color: white;
+}
+
+.description {
+  padding: 10px 10px;
+}
+
+.noteCardCtn {
+  display: grid;
+  /* grid-template-rows: repeat(4, 120px); */
+  gap: 10px;
+  max-height: 380px;
+  overflow: scroll;
+  &:hover {
+    &::-webkit-scrollbar {
+      display: block;
+      width: 8px;
+    }
+  }
+}
+@media screen and (min-width: 1550px) {
+  .noteCardCtn {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+@media screen and (min-width: 1200px) AND (max-width: 1550px) {
+  .noteCardCtn {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (min-width: 1000px) AND (max-width: 1200px) {
+  .noteCardCtn {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (min-width: 800px) AND (max-width: 1000px) {
+  .noteCardCtn {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen AND (max-width: 800px) {
+  .noteCardCtn {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.noteCard {
+  position: relative;
+  height: 120px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background-color: #333;
+  border: 1px solid #999;
+  transition: all ease-in-out 0.2s;
+  &:hover {
+    background-color: #777;
+  }
+}
+
+.noteCard h5 {
+  color: #eee;
+  font-weight: 700;
+}
+.star {
+  position: absolute;
+  z-index: 5;
+  right: 5px;
+  top: 5px;
+  background-image: url(https://cdn.linknote.online/linknote-icons/empty-star.png);
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  &:hover {
+    background-image: url(https://cdn.linknote.online/linknote-icons/full-star.png);
+  }
+}
+.star:hover + .noteCard {
+  background-color: #333;
+}
+
+.question {
+  font-size: 12px;
+  padding: 3px 3px;
+  color: #eee;
+  font-weight: 500;
+  height: 70px;
+  overflow: hidden;
+}
+.createTime {
+  position: absolute;
+  bottom: 5px;
+  right: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #aaa;
 }
