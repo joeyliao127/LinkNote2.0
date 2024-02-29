@@ -1,5 +1,6 @@
 @import url(/base/style/reset.css);
 @import url(/base/style/message.css);
+@import url(/base/style/deleteAlert.css);
 * {
   text-decoration: none;
   box-sizing: border-box;

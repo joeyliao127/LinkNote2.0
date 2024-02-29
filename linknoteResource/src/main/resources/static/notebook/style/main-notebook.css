@@ -111,12 +111,12 @@
 }
 .noteCtn {
   position: relative;
-  height: 480px;
+  max-height: 480px;
   overflow-y: scroll;
   padding-top: 20px;
   padding-right: 10px;
   border-top: 2px solid white;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .deleteNotebookBtn {
@@ -134,22 +134,83 @@
     background-color: red;
   }
 }
+
+.leaveCoNotebookBtn {
+  font-size: 16px;
+  font-weight: 700;
+  background-color: red;
+  padding: 7px 10px;
+  border-radius: 3px;
+  position: absolute;
+  right: 0;
+  top: 10px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  color: #eee;
+  &:hover {
+    opacity: 0.8;
+  }
+}
 .noteCtn h4 {
+  padding: 10px;
   font-weight: 700;
   font-size: 20px;
   color: white;
+  display: inline-block;
+}
+
+.notebookInfo {
+  position: relative;
 }
 
 .description {
+  margin-top: 10px;
   padding: 10px 10px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
+.editMode {
+  border: 2px solid #999;
+  border-radius: 5px;
+}
+.updateBtnCtn {
+  padding-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: end;
+}
+.updateBtn {
+  border-radius: 5px;
+  background-color: green;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+.cancelUpdateBtn {
+  border-radius: 5px;
+  background-color: #666;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
 .noteCardCtn {
   display: grid;
   /* grid-template-rows: repeat(4, 120px); */
   gap: 10px;
   max-height: 380px;
   overflow: scroll;
+  margin-top: 10px;
   &:hover {
     &::-webkit-scrollbar {
       display: block;
@@ -207,7 +268,6 @@
   z-index: 5;
   right: 5px;
   top: 5px;
-  background-image: url(https://cdn.linknote.online/linknote-icons/empty-star.png);
   background-size: cover;
   width: 25px;
   height: 25px;
@@ -216,11 +276,18 @@
     background-image: url(https://cdn.linknote.online/linknote-icons/full-star.png);
   }
 }
+
+.star-empty {
+  background-image: url(https://cdn.linknote.online/linknote-icons/empty-star.png);
+}
+.star-full {
+  background-image: url(https://cdn.linknote.online/linknote-icons/full-star.png);
+}
 .star:hover + .noteCard {
   background-color: #333;
 }
 
-.question {
+.content {
   font-size: 12px;
   padding: 3px 3px;
   color: #eee;

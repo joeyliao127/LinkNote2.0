@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../static/base/style/base.css" />
     <link rel="stylesheet" href="../static/base/style/message.css" />
     <link rel="stylesheet" href="../static/base/style/reset.css" />
+    <link rel="stylesheet" href="../static/base/style/deleteAlert.css" />
     <title>notebook</title>
   </head>
   <body>
@@ -29,7 +30,7 @@
           <h2 class="no-select">Welcome to LinkNote!</h2>
         </div>
         <button id="createNotebookBtn" class="no-select">+ New Notebook</button>
-        <!-- 筆記本按鈕 -->
+
         <div class="sideBarBtnArea">
           <div class="sideBarMyNotebookArea">
             <div class="sideBarBtn no-select notebookGroup">
@@ -43,9 +44,7 @@
 
               <!-- <div id="myNotebookExtendBtn" class="extendBtn"></div> -->
             </div>
-            <div class="notebooksCtn" id="sideBar-myNotebookBtnCtn">
-              <!-- <div class="loader sideBarLoader"></div> -->
-            </div>
+            <div class="notebooksCtn" id="sideBar-myNotebookBtnCtn"></div>
           </div>
 
           <div class="sideBarCoNotebookArea">
@@ -64,7 +63,6 @@
             </div>
           </div>
 
-          <!-- 筆記本邀請按鈕 -->
           <div class="sideBarBtn no-select invitationsBtn">
             <img
               src="https://cdn.linknote.online/linknote-icons/notebook.png"
@@ -73,7 +71,7 @@
             />
             <p>Invitations Management</p>
           </div>
-          <!-- 設定按鈕 -->
+
           <div class="sideBarBtn no-select settingBtn">
             <img
               src="https://cdn.linknote.online/linknote-icons/setting.png"
@@ -94,28 +92,6 @@
       </section>
 
       <main>
-        <!-- <div class="mainWrapper">
-          <section class="notebookArea">
-            <h3>My Notebooks</h3>
-            <div class="initNotebookWrapper">
-              <div class="initNotebookCtn">
-                <img
-                  src="https://cdn.linknote.online/linknote-icons/create-notebook.png"
-                  alt="create-notebook"
-                />
-                <div class="initCreateNotebookGroup">
-                  <h4>Create your first notebook!</h4>
-                  <div class="initBtns">
-                    <div id="initCreateNotebookBtn" class="no-select">
-                      Create notebook
-                    </div>
-                    <a href="" id="tutorials" class="no-select">Tutorials</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div> -->
         <div class="mainWrapper">
           <section class="notebookArea">
             <div class="notebooksTop">
@@ -134,289 +110,29 @@
             </div>
             <div class="notebookCtn">
               <section class="noteCtn">
-                <img class="deleteNotebookBtn"
-                src="https://cdn.linknote.online/linknote-icons/trash-white.png"
-                alt=trashCan">
-                <h4>Notebook1</h4>
-                <p class="description">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                  explicabo facere atque, asperiores autem non impedit. Neque,
-                  ratione dignissimos quis, laboriosam velit culpa illum, totam
-                  odit expedita quaerat blanditiis in.
-                </p>
-
-                <div class="noteCardCtn">
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
+                <img
+                  class="deleteNotebookBtn"
+                  src="https://cdn.linknote.online/linknote-icons/trash-white.png"
+                />
+                <div class="notebookInfo">
+                  <h4 contenteditable="true" class="editMode">Notebook1</h4>
+                  <p class="description editMode" contenteditable="true">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Eaque explicabo facere atque, asperiores autem non impedit.
+                    Neque, ratione dignissimos quis, laboriosam velit culpa
+                    illum, totam odit expedita quaerat blanditiis in.
+                  </p>
+                  <div class="updateBtnCtn">
+                    <div class="updateBtn">Save</div>
+                    <div class="cancelUpdateBtn">Cancel</div>
+                  </div>
                 </div>
-              </section>
-              <section class="noteCtn">
-                <img class="deleteNotebookBtn"
-                src="https://cdn.linknote.online/linknote-icons/trash-white.png"
-                alt=trashCan">
-                <h4>Notebook1</h4>
-                <p class="description">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                  explicabo facere atque, asperiores autem non impedit. Neque,
-                  ratione dignissimos quis, laboriosam velit culpa illum, totam
-                  odit expedita quaerat blanditiis in.
-                </p>
 
                 <div class="noteCardCtn">
                   <a class="noteCard" href="/">
                     <div class="star"></div>
                     <h5>note1</h5>
-                    <p class="question">
+                    <p class="content">
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                       Consectetur atque in corporis voluptatum laudantium. Quo
                       non laboriosam alias! Corporis earum obcaecati tempora
@@ -428,7 +144,7 @@
                   <a class="noteCard" href="/">
                     <div class="star"></div>
                     <h5>note1</h5>
-                    <p class="question">
+                    <p class="content">
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                       Consectetur atque in corporis voluptatum laudantium. Quo
                       non laboriosam alias! Corporis earum obcaecati tempora
@@ -440,7 +156,7 @@
                   <a class="noteCard" href="/">
                     <div class="star"></div>
                     <h5>note1</h5>
-                    <p class="question">
+                    <p class="content">
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                       Consectetur atque in corporis voluptatum laudantium. Quo
                       non laboriosam alias! Corporis earum obcaecati tempora
@@ -452,7 +168,7 @@
                   <a class="noteCard" href="/">
                     <div class="star"></div>
                     <h5>note1</h5>
-                    <p class="question">
+                    <p class="content">
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                       Consectetur atque in corporis voluptatum laudantium. Quo
                       non laboriosam alias! Corporis earum obcaecati tempora
@@ -464,7 +180,7 @@
                   <a class="noteCard" href="/">
                     <div class="star"></div>
                     <h5>note1</h5>
-                    <p class="question">
+                    <p class="content">
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                       Consectetur atque in corporis voluptatum laudantium. Quo
                       non laboriosam alias! Corporis earum obcaecati tempora
@@ -476,7 +192,7 @@
                   <a class="noteCard" href="/">
                     <div class="star"></div>
                     <h5>note1</h5>
-                    <p class="question">
+                    <p class="content">
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                       Consectetur atque in corporis voluptatum laudantium. Quo
                       non laboriosam alias! Corporis earum obcaecati tempora
@@ -488,7 +204,7 @@
                   <a class="noteCard" href="/">
                     <div class="star"></div>
                     <h5>note1</h5>
-                    <p class="question">
+                    <p class="content">
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                       Consectetur atque in corporis voluptatum laudantium. Quo
                       non laboriosam alias! Corporis earum obcaecati tempora
@@ -500,430 +216,7 @@
                   <a class="noteCard" href="/">
                     <div class="star"></div>
                     <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                </div>
-              </section>
-              <section class="noteCtn">
-                <img class="deleteNotebookBtn"
-                src="https://cdn.linknote.online/linknote-icons/trash-white.png"
-                alt=trashCan">
-                <h4>Notebook1</h4>
-                <p class="description">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                  explicabo facere atque, asperiores autem non impedit. Neque,
-                  ratione dignissimos quis, laboriosam velit culpa illum, totam
-                  odit expedita quaerat blanditiis in.
-                </p>
-
-                <div class="noteCardCtn">
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Consectetur atque in corporis voluptatum laudantium. Quo
-                      non laboriosam alias! Corporis earum obcaecati tempora
-                      reprehenderit animi molestias doloribus temporibus
-                      pariatur, velit suscipit.
-                    </p>
-                    <p class="createTime">2024 Jan 1</p>
-                  </a>
-                  <a class="noteCard" href="/">
-                    <div class="star"></div>
-                    <h5>note1</h5>
-                    <p class="question">
+                    <p class="content">
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                       Consectetur atque in corporis voluptatum laudantium. Quo
                       non laboriosam alias! Corporis earum obcaecati tempora
@@ -947,9 +240,6 @@
     <script src="/notebook/js/NotebookRender.js"></script>
     <script src="/notebook/js/sideBar.js"></script>
     <script src="/base/js/Message.js"></script>
-
-    <script>
-      function removeToken() {}
-    </script>
+    <script src="/base/js/DeleteAlert.js"></script>
   </body>
 </html>

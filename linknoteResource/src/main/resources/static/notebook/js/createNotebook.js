@@ -24,7 +24,7 @@ class CreateNotebookFormRender {
 
   static cancelFormBtnListener = function () {
     document.querySelector("#cancel").addEventListener("click", () => {
-      NotebookRander.renderMyNotebooks();
+      NotebookRender.renderMyNotebooks();
       SideBarRender.genNotebookBnts("#sideBar-myNotebookBtnCtn");
     });
   };
@@ -75,7 +75,7 @@ class CreateNotebookFormRender {
 
     if (response.status == 200) {
       MessageMaker.success("create notebook success!");
-      NotebookRander.renderMyNotebooks();
+      NotebookRender.renderMyNotebooks();
     }
   };
 
