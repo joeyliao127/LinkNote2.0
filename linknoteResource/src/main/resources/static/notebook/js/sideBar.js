@@ -16,7 +16,7 @@ class SideBarRender {
   };
   constructor() {
     this.#notebookRender.renderMyNotebooks();
-    this.genNotebookBnts("#sideBar-myNotebookBtnCtn");
+    this.genNotebookBnts("myNotebooks");
     this.setUsernameAndEmail();
     this.genCreateNotebookBtnListner();
     this.myNotebookBtnListner();
@@ -26,7 +26,7 @@ class SideBarRender {
     this.signoutBtnListener();
   }
 
-  async genNotebookBnts(id) {
+  async genNotebookBnts(renderPage) {
     const coNotebookBtnsCtn = document.querySelector(
       "#sideBar-coNotebookBtnCtn"
     );
@@ -37,7 +37,7 @@ class SideBarRender {
     coNotebookBtnsCtn.innerHTML = "";
     let path;
     let notebookBtnsCtn;
-    if (id === "#sideBar-myNotebookBtnCtn") {
+    if (renderPage === "myNotebooks") {
       this.#renderSelectBtn("myNotebookBtn");
       notebookBtnsCtn = myNotebookBtnsCtn;
       path = `/api/notebooks?offset=${this.#myNotebookBtnOffset}&limit=${
@@ -53,7 +53,7 @@ class SideBarRender {
     this.#notebooks = await this.#getNotebooks(path);
     if (this.#notebooks.length != 0) {
       this.#notebooks.forEach((notebook) => {
-        notebookBtnsCtn.appendChild(this.#genNotebookBtn(notebook));
+        notebookBtnsCtn.appendChild(this.#genNotebookBtn(notebook, renderPage));
       });
     }
   }
@@ -140,14 +140,18 @@ class SideBarRender {
     this.#selectedBtn.selectedElement = target;
   }
 
-  #genNotebookBtn(notebook) {
+  #genNotebookBtn(notebook, renderPage) {
     const element = document.createElement("p");
     element.textContent = notebook.name;
     element.dataset.description = notebook.description;
     element.dataset.id = notebook.id;
     this.#selectedNotebookBtns[notebook.id] = element;
     element.addEventListener("click", () => {
-      this.#notebookRender.renderNotebook(notebook);
+      if (renderPage === "myNotebooks") {
+        this.#notebookRender.renderNotebook(notebook);
+      } else {
+        this.#notebookRender.renderCoNotebook(notebook);
+      }
       this.#renderSelectNotebookBtn(notebook.id);
     });
     return element;
