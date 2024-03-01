@@ -1,10 +1,12 @@
 class SideBarRender {
   #notebookRender = new NotebookRender();
+  #createNotebookFrom = new CreateNotebookFormRender();
   #myNotebookBtnOffset = 0;
   #myNotebookBtnLimit = 20;
   #coNotebookBtnOffset = 0;
   #coNotebookBtnLimit = 20;
   #notebooks = {};
+  #selectedNotebookBtns = {};
   #selectedBtn = {
     myNotebookBtn: document.querySelector(".sideBarMyNotebookArea .sideBarBtn"),
     coNotebookBtn: document.querySelector(".sideBarCoNotebookArea .sideBarBtn"),
@@ -68,8 +70,7 @@ class SideBarRender {
     document
       .querySelector("#createNotebookBtn")
       .addEventListener("click", () => {
-        CreateNotebookFormRender.renderCreateNotebookForm();
-        CreateNotebookFormRender.main();
+        this.#createNotebookFrom.renderCreateNotebookForm();
       });
   }
 
@@ -79,8 +80,11 @@ class SideBarRender {
       .addEventListener("click", () => {
         this.#notebookRender.renderMyNotebooks();
         if (this.#selectedBtn.selectedElement == "myNotebookBtn") {
+          this.#renderSelectNotebookBtn("none");
           return;
         }
+        this.#renderSelectBtn("myNotebookBtn");
+
         this.genNotebookBnts("#sideBar-myNotebookBtnCtn");
       });
   }
@@ -90,9 +94,12 @@ class SideBarRender {
       .querySelector(".sideBarCoNotebookArea .sideBarBtn")
       .addEventListener("click", () => {
         if (this.#selectedBtn.selectedElement == "coNotebookBtn") {
+          this.#renderSelectNotebookBtn("");
           return;
         }
+        this.#renderSelectBtn("coNotebookBtn");
         this.#notebookRender.renderCoNotebooks();
+
         this.genNotebookBnts("#sideBar-coNotebookBtnCtn");
       });
   }
@@ -138,6 +145,11 @@ class SideBarRender {
     element.textContent = notebook.name;
     element.dataset.description = notebook.description;
     element.dataset.id = notebook.id;
+    this.#selectedNotebookBtns[notebook.id] = element;
+    element.addEventListener("click", () => {
+      this.#notebookRender.renderNotebook(notebook);
+      this.#renderSelectNotebookBtn(notebook.id);
+    });
     return element;
   }
 
@@ -152,6 +164,16 @@ class SideBarRender {
     }
   };
 
+  #renderSelectNotebookBtn(notebookId) {
+    console.log(`執行select`);
+    for (const [key, value] of Object.entries(this.#selectedNotebookBtns)) {
+      if (key === notebookId) {
+        value.classList.add("selected666");
+      } else {
+        value.classList.remove("selected666");
+      }
+    }
+  }
   #observer(element, offset, limit) {
     const observe = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {

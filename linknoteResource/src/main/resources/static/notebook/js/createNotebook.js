@@ -1,37 +1,34 @@
 class CreateNotebookFormRender {
   constructor() {}
 
-  static main = function () {
-    this.createNotebookTagBtnListener();
-    this.createNotebookListener();
-    this.cancelFormBtnListener();
-    this.createNotebookTagInputListener();
-  };
+  #main() {
+    this.#createNotebookListener();
+    this.#cancelFormBtnListener();
+    this.#createNotebookTagInputListener();
+    this.#createNotebookTagBtnListener();
+  }
 
-  static originMain;
-
-  static createNotebookTagBtnListener = function () {
+  #createNotebookTagBtnListener() {
     document
       .querySelector("#addTag")
-      .addEventListener("click", this.generateTags);
-  };
+      .addEventListener("click", this.#generateTags);
+  }
 
-  static createNotebookTagInputListener = function () {
+  #createNotebookTagInputListener() {
     document.querySelector("#tag").addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
-        this.generateTags();
+        this.#generateTags();
       }
     });
-  };
+  }
 
-  static cancelFormBtnListener = function () {
+  #cancelFormBtnListener() {
     document.querySelector("#cancel").addEventListener("click", () => {
-      document.querySelector("main").remove();
-      document.querySelector("body").appendChild(this.originMain);
+      window.location.href = window.location.href;
     });
-  };
+  }
 
-  static generateTags = function () {
+  #generateTags() {
     const tag = document.createElement("p");
     const text = document.querySelector("#tag").value;
     if (!text) {
@@ -43,14 +40,14 @@ class CreateNotebookFormRender {
       tag.remove();
     });
     document.querySelector(".tags").appendChild(tag);
-  };
+  }
 
-  static createNotebookListener = function () {
+  #createNotebookListener() {
     const submitBtn = document.querySelector("#submit");
-    submitBtn.addEventListener("click", this.createNotebook);
-  };
+    submitBtn.addEventListener("click", this.#createNotebook);
+  }
 
-  static createNotebook = async function () {
+  async #createNotebook() {
     const tags = [];
     document.querySelectorAll(".tags p").forEach((item) => {
       tags.push({
@@ -77,12 +74,11 @@ class CreateNotebookFormRender {
 
     if (response.status == 200) {
       MessageMaker.success("create notebook success!");
-      NotebookRender.renderMyNotebooks();
+      window.location.href = window.location.href;
     }
-  };
+  }
 
-  static renderCreateNotebookForm = function () {
-    this.originMain = document.querySelector("main");
+  renderCreateNotebookForm() {
     const createNotebookWrapper = document.createElement(
       "createNotebookWrapper"
     );
@@ -119,5 +115,6 @@ class CreateNotebookFormRender {
       </div>
     </div>`;
     ReRenderElement.reRenderMain(createNotebookWrapper);
-  };
+    this.#main();
+  }
 }

@@ -1,9 +1,9 @@
-class ReRender {
+class ReRenderElement {
   constructor() {}
 
   static reRenderMain(element) {
-    const main = document.querySelector("main");
-    main.innerHTML = "";
-    main.appendChild(element);
+    const mainWrapper = document.querySelector(".mainWrapper");
+    mainWrapper.innerHTML = "";
+    mainWrapper.appendChild(element);
   }
 }

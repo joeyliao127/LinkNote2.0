@@ -8,27 +8,26 @@ class NotebookRender {
   #searchNotebookLimit = 20;
   constructor() {}
 
-  renderMyNotebooks() {
+  async renderMyNotebooks() {
     this.#role = "owner";
-    this.renderNotebookArea();
+    await this.renderNotebookArea();
   }
 
-  renderCoNotebooks() {
+  async renderCoNotebooks() {
     this.#role = "collaborator";
-    this.renderNotebookArea();
+    await this.renderNotebookArea();
   }
 
-  renderNotebookArea() {
+  async renderNotebookArea() {
     let notebookArea = document.querySelector(".notebookArea");
     if (notebookArea) {
       notebookArea.remove();
     }
-    notebookArea = this.genNotebookArea();
+    notebookArea = await this.genNotebookArea();
     ReRenderElement.reRenderMain(notebookArea);
   }
 
-  //還有search事件要處理
-  genNotebookArea() {
+  async genNotebookArea() {
     const notebookArea = document.createElement("section");
     notebookArea.classList.add("notebookArea");
     notebookArea.innerHTML = `
@@ -57,9 +56,10 @@ class NotebookRender {
       notebookArea.querySelector("h3").textContent = "My Notebook";
 
       searchElemet.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          const keyword = searchElemet.value;
-          this.renderNoteCtn(path + `&keyword=${keyword}`);
+        const keyword = searchElemet.value;
+        if (e.key === "Enter" && keyword) {
+          this.renderNotebookCtn(path + `&keyword=${keyword}`);
+          return;
         }
       });
     } else {
@@ -67,23 +67,27 @@ class NotebookRender {
         this.#coNotebookLimit
       }`;
       searchElemet.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          this.renderNoteCtn(path + `&keyword=${keyword}`);
+        const keyword = searchElemet.value;
+        if (e.key === "Enter" && keyword) {
+          this.renderNotebookCtn(path + `&keyword=${keyword}`);
+          return;
         }
       });
       notebookArea.querySelector("h3").textContent = "Collaborative Notebook";
     }
-    notebookArea.appendChild(this.genNotebookCtn(path));
+    notebookArea.appendChild(await this.genNotebookCtn(path));
     return notebookArea;
   }
 
-  renderNotebookCtn(path) {
+  async renderNotebookCtn(path) {
     const notebookCtn = document.querySelector(".notebookCtn");
     if (notebookCtn) {
       notebookCtn.remove();
     }
-    notebookCtn = this.genNotebookCtn(path);
-    document.querySelector(".notebookAear").appendChild(notebookCtn);
+    const newNotebookCtn = await this.genNotebookCtn(path);
+    console.log(newNotebookCtn);
+    newNotebookCtn.classList.add("notebookCtn");
+    document.querySelector(".notebookArea").appendChild(newNotebookCtn);
   }
 
   async genNotebookCtn(path) {
@@ -119,25 +123,30 @@ class NotebookRender {
     document.querySelector(".notebookCtn").appendChild(newNoteCtn);
   }
 
-  async genNoteCtn(notebook) {
+  async genNoteCtn(notebookInfo) {
     const noteCtn = document.createElement("section");
     noteCtn.classList.add("noteCtn");
-    let delBtn;
+    let notebookBtnCtn;
 
     if (this.#role === "owner") {
-      delBtn = genDeleteNotebookBtn(notebook.id);
-      noteCtn.appendChild(delBtn);
+      notebookBtnCtn = genDeleteNotebookBtn(notebookInfo);
+      noteCtn.appendChild(notebookBtnCtn);
     }
     genNotebookDescriptionElement.bind(this);
     genNotebookNameElement.bind(this);
-
-    noteCtn.appendChild(genNotebookNameElement(notebook.name));
-    noteCtn.appendChild(genNotebookDescriptionElement(notebook.description));
-    noteCtn.appendChild(genUpdateBtnCtn(notebook.id));
-    noteCtn.appendChild(await this.genNoteCardCtn(notebook.id));
+    const notebookName = genNotebookNameElement(notebookInfo.name, this.#role);
+    notebookName.addEventListener("click", () => {
+      this.renderNotebook(notebook);
+    });
+    noteCtn.appendChild(notebookName);
+    noteCtn.appendChild(
+      genNotebookDescriptionElement(notebookInfo.description, this.#role)
+    );
+    noteCtn.appendChild(genUpdateBtnCtn(notebookInfo.id));
+    noteCtn.appendChild(await this.genNoteCardCtn(notebookInfo.id));
     return noteCtn;
 
-    function genNotebookDescriptionElement(description) {
+    function genNotebookDescriptionElement(description, role) {
       const descriptionElement = document.createElement("p");
       descriptionElement.classList.add("description");
       descriptionElement.textContent = description;
@@ -147,18 +156,13 @@ class NotebookRender {
       }
       return descriptionElement;
     }
-    function genNotebookNameElement(name) {
+    function genNotebookNameElement(name, role) {
       const nameElement = document.createElement("h4");
       nameElement.textContent = name;
-      if (role === "owner") {
-        this.renderNotebook(notebook.id);
-      } else {
-        NotebookRender.renderCoNotebook(notebook.id);
-      }
       return nameElement;
     }
 
-    function genDeleteNotebookBtn(notebookId) {
+    function genDeleteNotebookBtn(notebookInfo) {
       const deleteNotebookBtn = document.createElement("img");
       deleteNotebookBtn.classList.add("deleteNotebookBtn");
       deleteNotebookBtn.src =
@@ -167,11 +171,11 @@ class NotebookRender {
 
       return deleteNotebookBtn;
       function deleteNotebook() {
-        const path = `/api/notebooks/${notebookId}`;
+        const path = `/api/notebooks/${notebookInfo.id}`;
         DeleteAlert.renderDeleteAletBox(
           noteCtn,
           "notebook",
-          notebook.name,
+          notebookInfo.name,
           path
         );
       }
@@ -244,6 +248,20 @@ class NotebookRender {
       description.textContent = notebook.description;
       name.textContent = notebook.name;
     }
+  }
+
+  async renderNotebook(notebook) {
+    const notebookArea = document.querySelector(".notebookArea");
+    notebookArea.innerHTML = "";
+    const noteCtn = await this.genNoteCtn(notebook);
+    notebookArea.appendChild(noteCtn);
+  }
+
+  async renderCoNotebook(notebook) {
+    const notebookArea = document.querySelector(".notebookArea");
+    notebookArea.innerHTML = "";
+    const noteCtn = await this.genNoteCtn(notebook);
+    notebookArea.appendChild(noteCtn);
   }
 
   async genNoteCardCtn(notebookId) {
