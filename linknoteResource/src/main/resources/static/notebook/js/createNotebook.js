@@ -118,6 +118,6 @@ class CreateNotebookFormRender {
         <div id="submit" class="no-select">Submit</div>
       </div>
     </div>`;
-    MainRender.renderMain(createNotebookWrapper);
+    ReRenderElement.reRenderMain(createNotebookWrapper);
   };
 }
