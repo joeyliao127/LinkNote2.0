@@ -11,6 +11,7 @@ class SideBarRender {
   static notebooks = {};
   static sideBarMain() {
     this.genNotebookBnts("#sideBar-myNotebookBtnCtn");
+    NotebookCollectionRender.renderMyNotebooks();
     this.setUsernameAndEmail();
     this.genCreateNotebookBtnListner();
     this.myNotebookBtnListner();
@@ -41,7 +42,7 @@ class SideBarRender {
     document
       .querySelector(".sideBarMyNotebookArea .sideBarBtn")
       .addEventListener("click", () => {
-        NotebookRender.renderMyNotebooks();
+        NotebookCollectionRender.renderMyNotebooks();
         if (this.selectedBtn.selectedElement == "myNotebookBtn") {
           return;
         }
@@ -56,7 +57,7 @@ class SideBarRender {
         if (this.selectedBtn.selectedElement == "coNotebookBtn") {
           return;
         }
-        NotebookRender.renderCoNotebooks();
+        NotebookCollectionRender.renderCoNotebooks();
         this.genNotebookBnts("#sideBar-coNotebookBtnCtn");
       });
   }
@@ -85,9 +86,7 @@ class SideBarRender {
     }
     this.notebooks = await this.getNotebooks(path);
     console.log(this.notebooks);
-    if (this.notebooks.length == 0) {
-      NotebookRender.renderCreateNotebookForm();
-    } else {
+    if (this.notebooks.length != 0) {
       this.appendNotebookBtns(notebookBtnsCtn, this.notebooks);
     }
   };

@@ -8,6 +8,8 @@ class CreateNotebookFormRender {
     this.createNotebookTagInputListener();
   };
 
+  static originMain;
+
   static createNotebookTagBtnListener = function () {
     document
       .querySelector("#addTag")
@@ -24,8 +26,8 @@ class CreateNotebookFormRender {
 
   static cancelFormBtnListener = function () {
     document.querySelector("#cancel").addEventListener("click", () => {
-      NotebookRender.renderMyNotebooks();
-      SideBarRender.genNotebookBnts("#sideBar-myNotebookBtnCtn");
+      document.querySelector("main").remove();
+      document.querySelector("body").appendChild(this.originMain);
     });
   };
 
@@ -80,6 +82,7 @@ class CreateNotebookFormRender {
   };
 
   static renderCreateNotebookForm = function () {
+    this.originMain = document.querySelector("main");
     const createNotebookWrapper = document.createElement(
       "createNotebookWrapper"
     );

@@ -78,6 +78,22 @@ function register() {
 
 function signInBtnListener() {
   const signinBtn = document.querySelector(".signin-ctn button");
+  document
+    .querySelector("#signin-email")
+    .addEventListener("keypress", async (e) => {
+      if (e.key === "Enter") {
+        signinBtnCallback();
+      }
+    });
+
+  document
+    .querySelector("#signin-password")
+    .addEventListener("keypress", async (e) => {
+      console.log(`input輸入...`);
+      if (e.key === "Enter") {
+        signinBtnCallback();
+      }
+    });
   signinBtn.addEventListener("click", signinBtnCallback);
 
   async function signinBtnCallback() {
