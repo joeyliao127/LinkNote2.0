@@ -171,7 +171,7 @@
 .updateBtn {
   border-radius: 5px;
   background-color: green;
-  padding: 10px 15px;
+  padding: 8px 12px;
   font-size: 16px;
   font-weight: 500;
   user-select: none;
@@ -320,7 +320,6 @@
   overflow: hidden;
   font-size: 13px;
   font-weight: 500;
-  flex-grow: 1;
 }
 .invitationForm {
   display: flex;

@@ -1,7 +1,7 @@
 class MessageMaker {
   constructor() {}
 
-  static genMessageBlock = function (message) {
+  static #genMessageBlock(message) {
     const messageCtn = document.createElement("div");
     messageCtn.classList.add("messageCtn");
     messageCtn.classList.add("displayMessage");
@@ -22,27 +22,27 @@ class MessageMaker {
     messageCtn.appendChild(msg);
     messageCtn.appendChild(closeBtn);
     return messageCtn;
-  };
+  }
 
-  static success = function (message) {
-    const messageBlock = this.genMessageBlock(message);
+  static success(message) {
+    const messageBlock = this.#genMessageBlock(message);
     messageBlock.classList.add("success");
-    this.appnedMessageBlock(messageBlock);
-  };
+    this.#appnedMessageBlock(messageBlock);
+  }
 
-  static failed = function (message) {
-    const messageBlock = this.genMessageBlock(message);
+  static failed(message) {
+    const messageBlock = this.#genMessageBlock(message);
     messageBlock.classList.add("failed");
-    this.appnedMessageBlock(messageBlock);
-  };
+    this.#appnedMessageBlock(messageBlock);
+  }
 
-  static warning = function (message) {
-    const messageBlock = this.genMessageBlock(message);
+  static warning(message) {
+    const messageBlock = this.#genMessageBlock(message);
     messageBlock.classList.add("warning");
-    this.appnedMessageBlock(messageBlock);
-  };
+    this.#appnedMessageBlock(messageBlock);
+  }
 
-  static appnedMessageBlock(messageBlock) {
+  static #appnedMessageBlock(messageBlock) {
     setTimeout(() => {
       messageBlock.classList.remove("displayMessage");
       setTimeout(() => {

@@ -155,6 +155,9 @@ class NotebookRender {
       noteCtn.appendChild(notebookBtnCtn);
     } else if (renderPage === "myNotebook") {
       notebookBtnCtn = genNotebookToolBar(notebookInfo.id);
+      notebookBtnCtn.appendChild(
+        await this.genCollaboratorForm(notebookInfo.id)
+      );
       noteCtn.appendChild(notebookBtnCtn);
     } else if (renderPage === "coNotebooks") {
     } else if (renderPage === "coNotebook") {
@@ -253,7 +256,14 @@ class NotebookRender {
       src="https://cdn.linknote.online/linknote-icons/addCollaborator.png"
       alt="collaboratorBtn"
     />`;
+      collaboratorBtn.addEventListener("click", displayCollaboratorForm);
       return collaboratorBtn;
+
+      function displayCollaboratorForm() {
+        document
+          .querySelector(".collaboratorForm")
+          .classList.toggle("display-none");
+      }
     }
 
     function genAllNoteBtn() {
@@ -339,14 +349,17 @@ class NotebookRender {
       deleteNotebookBtn.addEventListener("click", deleteNotebook);
 
       return deleteNotebookBtn;
-      function deleteNotebook() {
+      async function deleteNotebook() {
         const path = `/api/notebooks/${notebookId}`;
-        DeleteAlert.renderDeleteAletBox(
-          noteCtn,
-          "notebook",
-          notebookInfo.name,
-          path
-        );
+        if (!DeleteAlert.renderDeleteAlertBox("notebook", notebookInfo.name)) {
+          return;
+        }
+        const response = await FetchDataHandler.fetchData(path, "DELETE");
+        if (response.ok) {
+          MessageMaker.success("Delete notebook success!");
+        } else {
+          MessageMaker.failed("Delete notebook failed.");
+        }
       }
     }
 
@@ -558,5 +571,109 @@ class NotebookRender {
     noneElement.classList.add("none");
     noneElement.textContent = "There is no collaborative notebooks.";
     return noneElement;
+  }
+
+  async genCollaboratorForm(notebookId) {
+    const form = document.createElement("div");
+    form.classList.add("collaboratorForm");
+    form.classList.add("display-none");
+    form.innerHTML = `
+    <h5>Collaborators</h5>
+    `;
+
+    form.appendChild(await genCollaborators(notebookId));
+    form.appendChild(genInviationForm(notebookId));
+
+    return form;
+
+    async function genCollaborators(notebookId) {
+      const collaborators = document.createElement("div");
+      collaborators.classList.add("collaborators");
+      const path = `/api/notebooks/${notebookId}/collaborators`;
+      const resposne = await FetchDataHandler.fetchData(path, "GET");
+      if (!resposne.ok) {
+        MessageMaker.success("Error");
+        return;
+      }
+
+      const data = await resposne.json();
+      if (data.collaborators.length === 0) {
+        return collaborators;
+      }
+      data.collaborators.forEach((collaboratorInfo) => {
+        const collaborator = document.createElement("div");
+        collaborator.classList.add("collaborator");
+        collaborator.innerHTML = `
+        <p>${collaboratorInfo.name}</p>
+        <div class="deleteCollaboratorBtn" data-userEmail="${collaboratorInfo.userEmail}">
+          <p>Remove</p>
+        </div>
+        `;
+
+        collaborator
+          .querySelector(".deleteCollaboratorBtn")
+          .addEventListener("click", () => {
+            deleteCollaborator(collaboratorInfo);
+          });
+        return collaborator;
+
+        async function deleteCollaborator(collaboratorInfo) {
+          if (
+            !DeleteAlert.renderDeleteAlertBox(
+              "collaborator",
+              collaboratorInfo.name
+            )
+          ) {
+            return;
+          }
+          const path = `api/notebooks/${notebookId}/collaborators?userEmail=${collaboratorInfo.userEmail}`;
+          const response = await FetchDataHandler.fetchData(path, "DELETE");
+          if (response.ok) {
+            MessageMaker.success("Collaborator removed.");
+          } else {
+            MessageMaker.failed("Error");
+          }
+        }
+      });
+    }
+
+    function genInviationForm(notebookId) {
+      const form = document.createElement("div");
+      form.classList.add("invitationForm");
+      form.innerHTML = `
+      <p>Invite Collaborator</p>
+      <input
+        type="email"
+        id="inviteEmail"
+        placeholder="Email Address"
+      />
+      <input
+        type="text"
+        id="inviteMessage"
+        placeholder="Invitation message"
+      />
+      <div id="inviteBtn">Invite</div>
+      `;
+      form.querySelector("#inviteBtn").addEventListener("click", () => {
+        const inviteeEmail = form.querySelector("#inviteEmail");
+        const message = form.querySelector("#inviteMessage");
+        inviteCollaborator(inviteeEmail, message, notebookId);
+      });
+
+      return form;
+
+      async function inviteCollaborator(inviteeEmail, message, notebookId) {
+        const path = `/api/notebooks/${notebookId}/invitations`;
+        const response = await FetchDataHandler.fetchData(path, "POST", {
+          inviteeEmail,
+          message,
+        });
+        if (response.ok) {
+          MessageMaker.success("Success!");
+        } else {
+          MessageMaker.failed("error");
+        }
+      }
+    }
   }
 }
