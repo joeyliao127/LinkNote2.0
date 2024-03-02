@@ -1,5 +1,6 @@
 .notebookArea {
   padding: 40px 60px;
+  height: 100%;
 }
 
 /* =====================init區域===================== */
@@ -114,12 +115,19 @@
 }
 .noteCtn {
   position: relative;
-  max-height: 480px;
+  height: 100%;
   overflow-y: scroll;
-  padding-top: 20px;
   padding-right: 10px;
-  border-top: 2px solid white;
   margin-top: 20px;
+}
+
+.noteCtn h4 {
+  padding: 10px;
+  font-weight: 700;
+  font-size: 24px;
+  color: white;
+  display: inline-block;
+  border-bottom: 1px solid transparent;
 }
 
 .leaveCoNotebookBtn {
@@ -137,14 +145,6 @@
   &:hover {
     opacity: 0.8;
   }
-}
-.noteCtn h4 {
-  padding: 10px;
-  font-weight: 700;
-  font-size: 20px;
-  color: white;
-  display: inline-block;
-  border-bottom: 1px solid transparent;
 }
 
 .notebookInfo {
@@ -196,7 +196,7 @@
 .toolBar {
   position: absolute;
   right: 0;
-  top: 10px;
+  top: 0px;
   display: flex;
   align-items: end;
   gap: 5px;
@@ -211,15 +211,18 @@
   cursor: pointer;
   transition: all ease-in-out 0.1s;
   background-size: cover;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   &:hover {
     background-color: #666;
   }
   img {
     display: block;
-    margin: auto;
     width: 23px;
     height: 23px;
-    vertical-align: bottom;
   }
 }
 .createNoteBtn {
@@ -242,10 +245,16 @@
   }
 }
 
-#collaboratorBtn {
+#collaboratorBtn img {
+  width: 22px;
+  height: 20px;
+  position: relative;
+  right: -2px;
 }
 
-#allNoteBtn {
+#allNoteBtn img {
+  width: 22px;
+  height: 22px;
 }
 #tagBtn {
 }
@@ -256,9 +265,8 @@
 }
 .noteCardCtn {
   display: grid;
-  /* grid-template-rows: repeat(4, 120px); */
   gap: 10px;
-  max-height: 380px;
+  height: 80%;
   overflow: scroll;
   margin-block: 10px;
   &:hover {

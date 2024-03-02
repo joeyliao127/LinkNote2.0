@@ -139,6 +139,8 @@ class NotebookRender {
   async genNoteCtn(notebookInfo, renderPage) {
     const noteCtn = document.createElement("section");
     noteCtn.classList.add("noteCtn");
+    const divideLine = document.createElement("div");
+    divideLine.classList.add("divdeLine");
     let notebookBtnCtn;
 
     if (renderPage === "myNotebooks") {
@@ -147,6 +149,7 @@ class NotebookRender {
     } else if (renderPage === "myNotebook") {
       notebookBtnCtn = genNotebookToolBar(notebookInfo.id);
       noteCtn.appendChild(notebookBtnCtn);
+    } else if (renderPage === "coNotebooks") {
     } else if (renderPage === "coNotebook") {
       notebookBtnCtn = genCoNotebookToolBar(notebookInfo.id);
       noteCtn.appendChild(notebookBtnCtn);
