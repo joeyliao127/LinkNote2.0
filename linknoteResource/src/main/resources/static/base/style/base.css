@@ -10,16 +10,20 @@
 
 .scroll {
   &::-webkit-scrollbar {
-    display: none;
     background-color: transparent;
     width: 8px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #999999;
+    background-color: transparent;
   }
-  &:hover::-webkit-scrollbar {
-    display: block;
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: #999;
   }
+}
+
+.divide {
+  height: 2px;
+  background-color: #aaa;
 }
 .font {
   font-family: kanit;

@@ -85,7 +85,7 @@ class SideBarRender {
         }
         this.#renderSelectBtn("myNotebookBtn");
 
-        this.genNotebookBnts("#sideBar-myNotebookBtnCtn");
+        this.genNotebookBnts("myNotebooks");
       });
   }
 

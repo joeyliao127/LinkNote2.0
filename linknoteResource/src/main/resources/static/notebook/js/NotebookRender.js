@@ -122,7 +122,10 @@ class NotebookRender {
     }
 
     notebooks.forEach(async (notebook) => {
+      const divide = document.createElement("div");
+      divide.classList.add("divide");
       const noteCtn = await this.genNoteCtn(notebook, renderPage);
+      notebookCtn.appendChild(divide);
       notebookCtn.appendChild(noteCtn);
     });
 
