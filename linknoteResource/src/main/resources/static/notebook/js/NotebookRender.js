@@ -1,11 +1,14 @@
 class NotebookRender {
   #role;
-  #myNotebookOffset = 0;
-  #myNotebookLimit = 20;
-  #coNotebookOffset = 0;
-  #coNotebookLimit = 20;
-  #searchNotebookOffset = 0;
-  #searchNotebookLimit = 20;
+  #filter = {
+    offset: 0,
+    limit: 20,
+    star: false,
+    keyword: null,
+    tag: null,
+    sort: false,
+  };
+
   constructor() {}
 
   async renderMyNotebooks() {
@@ -44,6 +47,7 @@ class NotebookRender {
   async genNotebookArea(renderPage) {
     const notebookArea = document.createElement("section");
     notebookArea.classList.add("notebookArea");
+    notebookArea.classList.add("scroll");
     notebookArea.innerHTML = `
     <div class="notebooksTop">
       <h3></h3>
@@ -64,8 +68,8 @@ class NotebookRender {
     let path = "";
     const searchElemet = notebookArea.querySelector("#searchNotebook");
     if (this.#role === "owner") {
-      path = `/api/notebooks?offset=${this.#myNotebookOffset}&limit=${
-        this.#myNotebookLimit
+      path = `/api/notebooks?offset=${this.#filter.offset}&limit=${
+        this.#filter.limit
       }`;
       notebookArea.querySelector("h3").textContent = "My Notebook";
 
@@ -77,8 +81,8 @@ class NotebookRender {
         }
       });
     } else {
-      path = `/api/coNotebooks?offset=${this.#coNotebookOffset}&limit=${
-        this.#coNotebookLimit
+      path = `/api/coNotebooks?offset=${this.#filter.offset}&limit=${
+        this.#filter.limit
       }`;
       searchElemet.addEventListener("keypress", (e) => {
         const keyword = searchElemet.value;
@@ -161,7 +165,9 @@ class NotebookRender {
     );
 
     noteCtn.appendChild(genUpdateBtnCtn(notebookInfo));
-    noteCtn.appendChild(await this.genNoteCardCtn(notebookInfo.id));
+    noteCtn.appendChild(
+      await this.genNoteCardCtn(notebookInfo.id, renderPage, this.#filter)
+    );
     return noteCtn;
 
     function genNotebookDescriptionElement(description, role) {
@@ -183,6 +189,7 @@ class NotebookRender {
 
     function genMyNotebooksToolBar(notebookId) {
       const toolBarCtn = document.createElement("div");
+      toolBarCtn.classList.add("toolBar");
       toolBarCtn.appendChild(genDeleteNotebookBtn(notebookId));
       return toolBarCtn;
     }
@@ -412,16 +419,21 @@ class NotebookRender {
     }
   }
 
-  renderNoteCardCtn(notebookId, filters) {
+  renderNoteCardCtn(notebookId, renderPage, filters) {
     const noteCtn = document.querySelector(".noteCtn");
     document.querySelector(".noteCardCtn").remove();
-    const noteCardCtn = this.genNoteCardCtn(notebookId);
+    const noteCardCtn = this.genNoteCardCtn(notebookId, renderPage, filters);
     noteCtn.appendChild(noteCardCtn);
   }
 
-  async genNoteCardCtn(notebookId, filters) {
+  async genNoteCardCtn(notebookId, renderPage, filters) {
     const noteCardCtn = document.createElement("div");
     noteCardCtn.classList.add("noteCardCtn");
+    if (renderPage === "myNotebook" || renderPage === "coNotebook") {
+      noteCardCtn.classList.add("notebookPage");
+    } else {
+      noteCardCtn.classList.add("notebooksPage");
+    }
     const path = `/api/notebooks/${notebookId}/notes?offset=${0}&limit=${20}`;
     const response = await FetchDataHandler.fetchData(path, "GET");
     const notes = await response.json();

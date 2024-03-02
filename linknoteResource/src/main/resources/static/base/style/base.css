@@ -4,7 +4,11 @@
 * {
   text-decoration: none;
   box-sizing: border-box;
+  color: white;
+  line-height: 1.5;
+}
 
+.scroll {
   &::-webkit-scrollbar {
     display: none;
     background-color: transparent;
@@ -13,9 +17,10 @@
   &::-webkit-scrollbar-thumb {
     background-color: #999999;
   }
-  color: white;
+  &:hover::-webkit-scrollbar {
+    display: block;
+  }
 }
-
 .font {
   font-family: kanit;
 }

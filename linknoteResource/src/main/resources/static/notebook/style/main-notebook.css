@@ -1,6 +1,23 @@
 .notebookArea {
-  padding: 40px 60px;
-  height: 100%;
+  padding: 40px 20px 40px 40px;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.notebookCtn {
+  padding-right: 10px;
+}
+
+.noteCtn {
+  position: relative;
+  padding-right: 10px;
+  margin-top: 20px;
+}
+
+.noteCardCtn {
+  display: grid;
+  gap: 10px;
+  margin-block: 10px;
 }
 
 /* =====================init區域===================== */
@@ -63,6 +80,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .notebookArea h3 {
@@ -101,24 +119,6 @@
   position: absolute;
   right: 10px;
   cursor: pointer;
-}
-
-.notebookCtn {
-  height: calc(100vh - 130px);
-  overflow: scroll;
-  padding-right: 10px;
-
-  &::-webkit-scrollbar {
-    display: block;
-    width: 8px;
-  }
-}
-.noteCtn {
-  position: relative;
-  height: 100%;
-  overflow-y: scroll;
-  padding-right: 10px;
-  margin-top: 20px;
 }
 
 .noteCtn h4 {
@@ -263,19 +263,14 @@
 }
 #starBtn {
 }
-.noteCardCtn {
-  display: grid;
-  gap: 10px;
+
+/* .noteCardCtn.notebookPage {
   height: 80%;
-  overflow: scroll;
-  margin-block: 10px;
-  &:hover {
-    &::-webkit-scrollbar {
-      display: block;
-      width: 8px;
-    }
-  }
 }
+
+.noteCardCtn.notebooksPage {
+  height: 380px;
+} */
 @media screen and (min-width: 1550px) {
   .noteCardCtn {
     grid-template-columns: repeat(5, 1fr);
