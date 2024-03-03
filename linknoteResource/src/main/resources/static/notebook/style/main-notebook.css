@@ -130,6 +130,12 @@
   border-bottom: 1px solid transparent;
 }
 
+.noteCtn h5 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ccc;
+}
+
 .leaveCoNotebookBtn {
   font-size: 16px;
   font-weight: 700;

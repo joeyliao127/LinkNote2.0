@@ -5,10 +5,26 @@ class NotebookRender {
     limit: 20,
     star: false,
     keyword: null,
-    tag: null,
-    sort: false,
+    tag: [],
+    sortDesc: false,
   };
 
+  #notebooksOffset = 0;
+  #notebooksLimit = 20;
+
+  resetFilter() {
+    this.#filter = {
+      offset: 0,
+      limit: 20,
+      star: false,
+      keyword: null,
+      tag: [],
+      sort: false,
+    };
+
+    this.#notebooksOffset = 0;
+    this.#notebooksLimit = 20;
+  }
   constructor() {}
 
   async renderMyNotebooks() {
@@ -167,16 +183,16 @@ class NotebookRender {
         await this.genCollaboratorForm(notebookInfo.id)
       );
     }
-
+    const noteTitle = document.createElement("h5");
+    noteTitle.textContent = "Notes";
     noteCtn.appendChild(genNotebookNameElement(notebookInfo.name));
     noteCtn.appendChild(
       genNotebookDescriptionElement(notebookInfo.description, this.#role)
     );
 
     noteCtn.appendChild(genUpdateBtnCtn(notebookInfo));
-    noteCtn.appendChild(
-      await this.genNoteCardCtn(notebookInfo.id, renderPage, this.#filter)
-    );
+    noteCtn.appendChild(noteTitle);
+    noteCtn.appendChild(await this.genNoteCardCtn(notebookInfo.id, renderPage));
     return noteCtn;
 
     function genNotebookDescriptionElement(description, role) {
@@ -436,14 +452,14 @@ class NotebookRender {
     }
   }
 
-  renderNoteCardCtn(notebookId, renderPage, filters) {
+  renderNoteCardCtn(notebookId, renderPage) {
     const noteCtn = document.querySelector(".noteCtn");
     document.querySelector(".noteCardCtn").remove();
-    const noteCardCtn = this.genNoteCardCtn(notebookId, renderPage, filters);
+    const noteCardCtn = this.genNoteCardCtn(notebookId, renderPage);
     noteCtn.appendChild(noteCardCtn);
   }
 
-  async genNoteCardCtn(notebookId, renderPage, filters) {
+  async genNoteCardCtn(notebookId, renderPage) {
     const noteCardCtn = document.createElement("div");
     noteCardCtn.classList.add("noteCardCtn");
     if (renderPage === "myNotebook" || renderPage === "coNotebook") {
@@ -451,9 +467,8 @@ class NotebookRender {
     } else {
       noteCardCtn.classList.add("notebooksPage");
     }
-    const path = `/api/notebooks/${notebookId}/notes?offset=${0}&limit=${20}`;
-    const response = await FetchDataHandler.fetchData(path, "GET");
-    const notes = await response.json();
+
+    const notes = await this.getNotes(notebookId);
     console.log("notes:");
     console.log(notes);
     if (notes.length === 0) {
@@ -463,6 +478,27 @@ class NotebookRender {
         noteCardCtn.appendChild(this.genNoteCard(note, notebookId));
       });
       return noteCardCtn;
+    }
+  }
+
+  async getNotes(noteboookId) {
+    let path = `/api/notebooks/${noteboookId}/notes?
+    offset=${this.#filter.offset}&
+    limit=${this.#filter.limit}&
+    star=${this.#filter.star}&
+    tag=${this.#filter.tag}&
+    sortDesc=${this.#filter.sortDesc}&
+    keyword=${this.#filter.keyword}
+    `;
+    try {
+      const response = await FetchDataHandler.fetchData(path, "GET");
+      if (!response.ok) {
+        MessageMaker.failed("Get notes failed");
+      }
+      const notes = await response.json();
+      return notes;
+    } catch (e) {
+      MessageMaker.failed("Get notes failed");
     }
   }
 
