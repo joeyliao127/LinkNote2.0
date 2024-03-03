@@ -1,14 +1,6 @@
 class DeleteAlert {
   constructor() {}
 
-  static #genDeleteTargetBtn(path) {
-    const deleteBtn = alertBoxWrapper.querySelector("#delete");
-    deleteBtn.addEventListener("click", () => {
-      FetchDataHandler.fetchData(path, "DELETE");
-      window.location.href = window.location.href;
-    });
-  }
-
   static #genRemoveWrapperBtn() {
     const cancelBtn = alertBoxWrapper.querySelector("#cancelDelete");
     alertBoxWrapper.remove();

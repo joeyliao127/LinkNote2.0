@@ -171,8 +171,8 @@
 .updateBtn {
   border-radius: 5px;
   background-color: green;
-  padding: 8px 12px;
-  font-size: 16px;
+  padding: 5px 10px;
+  font-size: 13px;
   font-weight: 500;
   user-select: none;
   cursor: pointer;
@@ -183,8 +183,8 @@
 .cancelUpdateBtn {
   border-radius: 5px;
   background-color: #666;
-  padding: 10px 15px;
-  font-size: 16px;
+  padding: 5px 10px;
+  font-size: 13px;
   font-weight: 500;
   user-select: none;
   cursor: pointer;
@@ -273,15 +273,13 @@
   position: absolute;
   top: 40px;
   left: 95px;
-  display: flex;
-  flex-direction: column;
   padding: 5px 0;
   z-index: 10;
   width: 270px;
 }
 
 .collaboratorForm h5 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: #ccc;
   padding: 0px 5px 5px 8px;
@@ -350,12 +348,12 @@
 #inviteBtn {
   border-radius: 5px;
   background-color: green;
-  width: 70px;
+  width: 50px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   text-align: center;
   margin-left: auto;
-  padding-block: 5px;
+  padding-block: 4px;
   cursor: pointer;
   &:hover {
     opacity: 0.8;

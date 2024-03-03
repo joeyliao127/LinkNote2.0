@@ -163,6 +163,9 @@ class NotebookRender {
     } else if (renderPage === "coNotebook") {
       notebookBtnCtn = genCoNotebookToolBar(notebookInfo.id);
       noteCtn.appendChild(notebookBtnCtn);
+      notebookBtnCtn.appendChild(
+        await this.genCollaboratorForm(notebookInfo.id)
+      );
     }
 
     noteCtn.appendChild(genNotebookNameElement(notebookInfo.name));
@@ -615,7 +618,7 @@ class NotebookRender {
           .addEventListener("click", () => {
             deleteCollaborator(collaboratorInfo);
           });
-        return collaborator;
+        collaborators.appendChild(collaborator);
 
         async function deleteCollaborator(collaboratorInfo) {
           if (
@@ -635,6 +638,7 @@ class NotebookRender {
           }
         }
       });
+      return collaborators;
     }
 
     function genInviationForm(notebookId) {
@@ -655,23 +659,38 @@ class NotebookRender {
       <div id="inviteBtn">Invite</div>
       `;
       form.querySelector("#inviteBtn").addEventListener("click", () => {
-        const inviteeEmail = form.querySelector("#inviteEmail");
-        const message = form.querySelector("#inviteMessage");
+        const inviteeEmail = form.querySelector("#inviteEmail").value;
+        const message = form.querySelector("#inviteMessage").value;
+        if (!Validator.validateEmailFormat(inviteeEmail)) {
+          MessageMaker.failed("Invalid email format.");
+          return;
+        }
         inviteCollaborator(inviteeEmail, message, notebookId);
+        form.querySelector("#inviteEmail").value = "";
+        form.querySelector("#inviteMessage").value = "";
+        document
+          .querySelector(".collaboratorForm")
+          .classList.add("display-none");
       });
 
       return form;
 
       async function inviteCollaborator(inviteeEmail, message, notebookId) {
         const path = `/api/notebooks/${notebookId}/invitations`;
-        const response = await FetchDataHandler.fetchData(path, "POST", {
-          inviteeEmail,
-          message,
-        });
-        if (response.ok) {
-          MessageMaker.success("Success!");
-        } else {
-          MessageMaker.failed("error");
+        try {
+          const response = await FetchDataHandler.fetchData(path, "POST", {
+            inviteeEmail,
+            message,
+          });
+          if (response.ok) {
+            MessageMaker.success("Success!");
+          } else if (response.status === 400) {
+            MessageMaker.failed("Invalid email address");
+          } else if (response.status === 409) {
+            MessageMaker.warning("The invitation has been sent.");
+          }
+        } catch (e) {
+          MessageMaker.failed("Error");
         }
       }
     }

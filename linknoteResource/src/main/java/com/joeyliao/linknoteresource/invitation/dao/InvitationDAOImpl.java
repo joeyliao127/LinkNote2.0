@@ -48,6 +48,7 @@ public class InvitationDAOImpl implements InvitationDAO {
     Map<String, Object> map = new HashMap<>();
     map.put("inviteeEmail", po.getInviteeEmail());
     map.put("notebookId", po.getNotebookId());
+
     return namedParameterJdbcTemplate.query(sql ,map, new CheckInvitationRowMapper());
 
   }

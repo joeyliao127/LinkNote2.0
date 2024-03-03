@@ -47,37 +47,42 @@ public class InvitationServiceImpl implements InvitationService {
 
   @Override
   public void createInvitation(CreateInvitationPo po) throws BadRequestException {
-    if(checkInvitationIsExist(po)){
-      return;
+    log.info(
+        "Invitor: " + po.getInviterEmail() + " invitee: " + po.getInviteeEmail() + " Notebook: "
+            + po.getNotebookId());
+    if (checkInvitationIsExist(po)) {
+      log.info("Invitation已經存在");
+      throw new InvitationAlreadyExistException("重複的Invitation");
     }
+    log.info("Invitation不存在");
+    log.info("驗證Email是否存在：" + po.getInviteeEmail());
     verifyEmailIsExist(po.getInviteeEmail());
-    verifyInvitationNotExist(po);
+    log.info("Email存在，新增Invitation");
     po.setInviterEmail(getUserInfoByToken(po.getAuthorization()).getEmail());
     invitationDAO.createInvitation(po);
+    log.info("新增成功.");
   }
 
-  private Boolean checkInvitationIsExist(CreateInvitationPo po){
+  private Boolean checkInvitationIsExist(CreateInvitationPo po) {
     List<Integer> list = invitationDAO.checkInvitationNotExist(po);
-    return list != null;
+    log.info("Invitation check回傳結果：");
+    return !list.isEmpty();
   }
+
   private void verifyEmailIsExist(String email) throws BadRequestException {
-    String url = "http://localhost:8080/api/auth/user/email?email=" + email;
+    String url = "http://" + authenticationServerPath + "/api/auth/user/email?email=" + email;
     log.info("請求驗證email的路徑：" + url);
     Map<String, Object> map = new HashMap<>();
     log.info("驗證invitee email: " + email);
     map.put("email", email);
-    Boolean checkResponse = restTemplate.getForObject(url,Boolean.class, map);
+    Boolean checkResponse = restTemplate.getForObject(url, Boolean.class, map);
+    log.info("Email驗證結果：" + checkResponse);
     if (Boolean.FALSE.equals(checkResponse)) {
+      log.info("無效的Email");
       throw new BadRequestException("Invalid email address");
     }
   }
 
-  private void verifyInvitationNotExist(CreateInvitationPo po) {
-    List<Integer> list = invitationDAO.checkInvitationNotExist(po);
-    if (list != null) {
-      throw new InvitationAlreadyExistException("Duplicate Invitation");
-    }
-  }
 
   private UserInfo getUserInfoByToken(String authorization) {
     String url = "http://" + authenticationServerPath + "/api/user/info";
@@ -113,7 +118,7 @@ public class InvitationServiceImpl implements InvitationService {
 
   private void setResponsePo(List list, Integer limit, InvitationResponsePo po) {
     if ((list.size()) == limit) {
-      list.remove(list.size() -1);
+      list.remove(list.size() - 1);
       po.setNextPage(true);
     } else {
       po.setNextPage(false);
@@ -135,8 +140,6 @@ public class InvitationServiceImpl implements InvitationService {
     po.setUserEmail(email);
     invitationDAO.deleteInvitation(po);
   }
-
-
 
 
 }
