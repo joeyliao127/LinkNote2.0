@@ -9,6 +9,25 @@ class NotebookRender {
     sortDesc: false,
   };
 
+  #toolBarCurrentSelectBtn = null;
+
+  #renderToolBarSelected(target) {
+    this.#toolBarCurrentSelectBtn = target;
+    const btns = {
+      allNoteBtn: document.querySelector("#allNoteBtn"),
+      tagBtn: document.querySelector("#tagBtn"),
+      sortBtn: document.querySelector("#sortByTimeBtn"),
+      starBtn: document.querySelector("#starBtn"),
+    };
+    for (let [key, value] of Object.entries(btns)) {
+      if (key === target) {
+        value.classList.add("selected");
+      } else {
+        value.classList.remove("selected");
+      }
+    }
+  }
+
   #notebooksOffset = 0;
   #notebooksLimit = 20;
 
@@ -294,6 +313,13 @@ class NotebookRender {
         src="https://cdn.linknote.online/linknote-icons/box.png"
         alt="box"
       />`;
+    allNoteBtn.addEventListener("click", () => {
+      if (this.#toolBarCurrentSelectBtn === "allNoteBtn") {
+        return;
+      }
+      this.#toolBarCurrentSelectBtn = "allNoteBtn";
+      this.#renderToolBarSelected("allNoteBtn");
+    });
     return allNoteBtn;
   }
 
@@ -306,6 +332,14 @@ class NotebookRender {
         src="https://cdn.linknote.online/linknote-icons/tag.png"
         alt="tag"
       />`;
+
+    tagBtn.addEventListener("click", () => {
+      if (this.#toolBarCurrentSelectBtn === "tagBtn") {
+        return;
+      }
+      this.#toolBarCurrentSelectBtn = "tagBtn";
+      this.#renderToolBarSelected("tagBtn");
+    });
     return tagBtn;
   }
 
@@ -319,6 +353,13 @@ class NotebookRender {
         alt="clock"
       />
     `;
+    sortByTimeBtn.addEventListener("click", () => {
+      if (this.#toolBarCurrentSelectBtn === "sortBtn") {
+        return;
+      }
+      this.#toolBarCurrentSelectBtn = "sortBtn";
+      this.#renderToolBarSelected("sortBtn");
+    });
     return sortByTimeBtn;
   }
 
@@ -332,6 +373,14 @@ class NotebookRender {
     alt="star"
   />
     `;
+    starBtn.addEventListener("click", () => {
+      if (this.#toolBarCurrentSelectBtn === "starBtn") {
+        return;
+      }
+
+      this.#toolBarCurrentSelectBtn = "starBtn";
+      this.#renderToolBarSelected("starBtn");
+    });
     return starBtn;
   }
 
