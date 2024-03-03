@@ -397,7 +397,7 @@
   border: 1px solid #999;
   transition: all ease-in-out 0.2s;
   &:hover {
-    background-color: #777;
+    background-color: #444;
   }
 }
 

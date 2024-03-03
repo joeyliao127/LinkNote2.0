@@ -220,7 +220,6 @@ class NotebookRender {
       const toolBarCtn = document.createElement("div");
       toolBarCtn.classList.add("toolBar");
       toolBarCtn.appendChild(genCreateNoteBtn(notebookId));
-      toolBarCtn.appendChild(genAddCollabortorBtn(notebookId));
       toolBarCtn.appendChild(genAllNoteBtn(notebookId));
       toolBarCtn.appendChild(genTagBtn(notebookId));
       toolBarCtn.appendChild(genSortByTime(notebookId));
@@ -476,6 +475,7 @@ class NotebookRender {
     );
     noteCard.appendChild(genNoteName(note.name));
     noteCard.appendChild(genQuestion(note.question));
+    noteCard.appendChild(genDeleteNoteBtn(notebookId, note.noteId, note.name));
     noteCard.appendChild(genCreateTime(note.createDate));
     return noteCard;
 
@@ -527,6 +527,18 @@ class NotebookRender {
       return questionElement;
     }
 
+    function genDeleteNoteBtn(notebookId, noteId, name) {
+      const btn = document.createElement("div");
+      btn.classList.add("deleteNoteBtn");
+      btn.addEventListener("click", deleteNote);
+      return btn;
+      function deleteNote(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
+        DeleteAlert.renderDeleteAletBox("Note", name, path);
+      }
+    }
     function genCreateTime(time) {
       time = time.split(" ")[0];
       const timeElement = document.createElement("p");
