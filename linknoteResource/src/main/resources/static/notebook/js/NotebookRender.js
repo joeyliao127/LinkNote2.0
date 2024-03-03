@@ -354,15 +354,14 @@ class NotebookRender {
       return deleteNotebookBtn;
       async function deleteNotebook() {
         const path = `/api/notebooks/${notebookId}`;
-        if (!DeleteAlert.renderDeleteAlertBox("notebook", notebookInfo.name)) {
-          return;
-        }
-        const response = await FetchDataHandler.fetchData(path, "DELETE");
-        if (response.ok) {
-          MessageMaker.success("Delete notebook success!");
-        } else {
-          MessageMaker.failed("Delete notebook failed.");
-        }
+        DeleteAlert.renderDeleteAletBox("notebook", notebookInfo.name, path);
+
+        // const response = await FetchDataHandler.fetchData(path, "DELETE");
+        // if (response.ok) {
+        //   MessageMaker.success("Delete notebook success!");
+        // } else {
+        //   MessageMaker.failed("Delete notebook failed.");
+        // }
       }
     }
 

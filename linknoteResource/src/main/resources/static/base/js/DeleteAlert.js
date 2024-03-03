@@ -1,13 +1,7 @@
 class DeleteAlert {
   constructor() {}
 
-  static #genRemoveWrapperBtn() {
-    const cancelBtn = alertBoxWrapper.querySelector("#cancelDelete");
-    alertBoxWrapper.remove();
-    cancelBtn.addEventListener("click", () => {});
-  }
-
-  static renderDeleteAlertBox(target, name) {
+  static renderDeleteAletBox(target, name, path) {
     const main = document.querySelector("main");
     const alertBoxWrapper = document.createElement("div");
     alertBoxWrapper.classList.add("alertWrapper");
@@ -23,7 +17,23 @@ class DeleteAlert {
             </div>
     `;
 
-    this.#genRemoveWrapperBtn();
+    genDeleteTargetBtn(path);
+    genRemoveWrapperBtn();
     main.appendChild(alertBoxWrapper);
+
+    function genDeleteTargetBtn(path) {
+      const deleteBtn = alertBoxWrapper.querySelector("#delete");
+      deleteBtn.addEventListener("click", () => {
+        FetchDataHandler.fetchData(path, "DELETE");
+        window.location.href = window.location.href;
+      });
+    }
+
+    function genRemoveWrapperBtn() {
+      const cancelBtn = alertBoxWrapper.querySelector("#cancelDelete");
+      cancelBtn.addEventListener("click", () => {
+        alertBoxWrapper.remove();
+      });
+    }
   }
 }
