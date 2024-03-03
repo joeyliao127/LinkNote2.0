@@ -167,17 +167,17 @@ class NotebookRender {
     let notebookBtnCtn;
 
     if (renderPage === "myNotebooks") {
-      notebookBtnCtn = genMyNotebooksToolBar(notebookInfo.id);
+      notebookBtnCtn = this.#genMyNotebooksToolBar(notebookInfo);
       noteCtn.appendChild(notebookBtnCtn);
     } else if (renderPage === "myNotebook") {
-      notebookBtnCtn = genNotebookToolBar(notebookInfo.id);
+      notebookBtnCtn = this.#genNotebookToolBar(notebookInfo);
       notebookBtnCtn.appendChild(
         await this.genCollaboratorForm(notebookInfo.id)
       );
       noteCtn.appendChild(notebookBtnCtn);
     } else if (renderPage === "coNotebooks") {
     } else if (renderPage === "coNotebook") {
-      notebookBtnCtn = genCoNotebookToolBar(notebookInfo.id);
+      notebookBtnCtn = this.#genCoNotebookToolBar(notebookInfo.id);
       noteCtn.appendChild(notebookBtnCtn);
       notebookBtnCtn.appendChild(
         await this.genCollaboratorForm(notebookInfo.id)
@@ -185,271 +185,258 @@ class NotebookRender {
     }
     const noteTitle = document.createElement("h5");
     noteTitle.textContent = "Notes";
-    noteCtn.appendChild(genNotebookNameElement(notebookInfo.name));
+    noteCtn.appendChild(this.#genNotebookNameElement(notebookInfo.name));
     noteCtn.appendChild(
-      genNotebookDescriptionElement(notebookInfo.description, this.#role)
+      this.#genNotebookDescriptionElement(notebookInfo.description, this.#role)
     );
 
-    noteCtn.appendChild(genUpdateBtnCtn(notebookInfo));
+    noteCtn.appendChild(this.#genUpdateBtnCtn(notebookInfo));
     noteCtn.appendChild(noteTitle);
     noteCtn.appendChild(await this.genNoteCardCtn(notebookInfo.id, renderPage));
     return noteCtn;
+  }
 
-    function genNotebookDescriptionElement(description, role) {
-      const descriptionElement = document.createElement("p");
-      descriptionElement.classList.add("description");
-      descriptionElement.textContent = description;
-      if (role === "owner") {
-        descriptionElement.addEventListener("click", editMode);
-        descriptionElement.setAttribute("contenteditable", true);
-      }
-      return descriptionElement;
+  #genNotebookDescriptionElement(description, role) {
+    const descriptionElement = document.createElement("p");
+    descriptionElement.classList.add("description");
+    descriptionElement.textContent = description;
+    if (role === "owner") {
+      descriptionElement.addEventListener("click", this.#editMode);
+      descriptionElement.setAttribute("contenteditable", true);
     }
+    return descriptionElement;
+  }
 
-    function genNotebookNameElement(name) {
-      const nameElement = document.createElement("h4");
-      nameElement.textContent = name;
-      return nameElement;
-    }
+  #genNotebookNameElement(name) {
+    const nameElement = document.createElement("h4");
+    nameElement.textContent = name;
+    return nameElement;
+  }
 
-    function genMyNotebooksToolBar(notebookId) {
-      const toolBarCtn = document.createElement("div");
-      toolBarCtn.classList.add("toolBar");
-      toolBarCtn.appendChild(genDeleteNotebookBtn(notebookId));
-      return toolBarCtn;
-    }
+  #genMyNotebooksToolBar(notebookInfo) {
+    const toolBarCtn = document.createElement("div");
+    toolBarCtn.classList.add("toolBar");
+    toolBarCtn.appendChild(this.#genDeleteNotebookBtn(notebookInfo));
+    return toolBarCtn;
+  }
 
-    function genNotebookToolBar(notebookId) {
-      const toolBarCtn = document.createElement("div");
-      toolBarCtn.classList.add("toolBar");
-      toolBarCtn.appendChild(genCreateNoteBtn(notebookId));
-      toolBarCtn.appendChild(genAddCollabortorBtn(notebookId));
-      toolBarCtn.appendChild(genAllNoteBtn(notebookId));
-      toolBarCtn.appendChild(genTagBtn(notebookId));
-      toolBarCtn.appendChild(genSortByTime(notebookId));
-      toolBarCtn.appendChild(genStar(notebookId));
-      toolBarCtn.appendChild(genSearchNoteInput(notebookId));
-      toolBarCtn.appendChild(genDeleteNotebookBtn(notebookId));
-      return toolBarCtn;
-    }
-    function genCoNotebookToolBar(notebookId) {
-      const toolBarCtn = document.createElement("div");
-      toolBarCtn.classList.add("toolBar");
-      toolBarCtn.appendChild(genCreateNoteBtn(notebookId));
-      toolBarCtn.appendChild(genAllNoteBtn(notebookId));
-      toolBarCtn.appendChild(genTagBtn(notebookId));
-      toolBarCtn.appendChild(genSortByTime(notebookId));
-      toolBarCtn.appendChild(genStar(notebookId));
-      toolBarCtn.appendChild(genSearchNoteInput(notebookId));
-      return toolBarCtn;
-    }
+  #genNotebookToolBar(notebookInfo) {
+    const toolBarCtn = document.createElement("div");
+    toolBarCtn.classList.add("toolBar");
+    toolBarCtn.appendChild(this.#genCreateNoteBtn(notebookInfo.id));
+    toolBarCtn.appendChild(this.#genAddCollabortorBtn(notebookInfo.id));
+    toolBarCtn.appendChild(this.#genAllNoteBtn(notebookInfo.id));
+    toolBarCtn.appendChild(this.#genTagBtn(notebookInfo.id));
+    toolBarCtn.appendChild(this.#genSortByTime(notebookInfo.id));
+    toolBarCtn.appendChild(this.#genStar(notebookInfo.id));
+    toolBarCtn.appendChild(this.#genSearchNoteInput(notebookInfo.id));
+    toolBarCtn.appendChild(this.#genDeleteNotebookBtn(notebookInfo));
+    return toolBarCtn;
+  }
+  #genCoNotebookToolBar(notebookId) {
+    const toolBarCtn = document.createElement("div");
+    toolBarCtn.classList.add("toolBar");
+    toolBarCtn.appendChild(genCreateNoteBtn(notebookId));
+    toolBarCtn.appendChild(genAllNoteBtn());
+    toolBarCtn.appendChild(genTagBtn(notebookId));
+    toolBarCtn.appendChild(genSortByTime());
+    toolBarCtn.appendChild(genStar());
+    toolBarCtn.appendChild(genSearchNoteInput());
+    return toolBarCtn;
+  }
 
-    function genCreateNoteBtn(notebookId) {
-      const createNoteBtn = document.createElement("div");
-      createNoteBtn.classList.add("createNoteBtn");
-      createNoteBtn.innerHTML = "<p>New note</p>";
-      createNoteBtn.addEventListener("click", () => {
-        createNote(notebookId);
+  #genCreateNoteBtn(notebookId) {
+    const createNoteBtn = document.createElement("div");
+    createNoteBtn.classList.add("createNoteBtn");
+    createNoteBtn.innerHTML = "<p>New note</p>";
+    createNoteBtn.addEventListener("click", () => {
+      createNote(notebookId);
+    });
+    return createNoteBtn;
+
+    async function createNote(notebookId) {
+      const path = `/api/notebooks/${notebookId}/notes`;
+      const response = await FetchDataHandler.fetchData(path, "POST", {
+        notebookId,
       });
-      return createNoteBtn;
-
-      async function createNote(notebookId) {
-        const path = `/api/notebooks/${notebookId}/notes`;
-        const response = await FetchDataHandler.fetchData(path, "POST", {
-          notebookId,
-        });
-        if (response.ok) {
-          const data = await response.json();
-          window.location.href = `/notebooks/${notebookId}/notes/${data.noteId}`;
-        }
+      if (response.ok) {
+        const data = await response.json();
+        window.location.href = `/notebooks/${notebookId}/notes/${data.noteId}`;
       }
     }
+  }
 
-    function genAddCollabortorBtn() {
-      const collaboratorBtn = document.createElement("div");
-      collaboratorBtn.classList.add("toolBtn");
-      collaboratorBtn.id = "collaboratorBtn";
-      collaboratorBtn.innerHTML = ` 
-      <img
-      src="https://cdn.linknote.online/linknote-icons/addCollaborator.png"
-      alt="collaboratorBtn"
-    />`;
-      collaboratorBtn.addEventListener("click", displayCollaboratorForm);
-      return collaboratorBtn;
+  #genAddCollabortorBtn() {
+    const collaboratorBtn = document.createElement("div");
+    collaboratorBtn.classList.add("toolBtn");
+    collaboratorBtn.id = "collaboratorBtn";
+    collaboratorBtn.innerHTML = ` 
+    <img
+    src="https://cdn.linknote.online/linknote-icons/addCollaborator.png"
+    alt="collaboratorBtn"
+  />`;
+    collaboratorBtn.addEventListener("click", displayCollaboratorForm);
+    return collaboratorBtn;
 
-      function displayCollaboratorForm() {
-        document
-          .querySelector(".collaboratorForm")
-          .classList.toggle("display-none");
-      }
+    function displayCollaboratorForm() {
+      document
+        .querySelector(".collaboratorForm")
+        .classList.toggle("display-none");
     }
+  }
 
-    function genAllNoteBtn() {
-      const allNoteBtn = document.createElement("div");
-      allNoteBtn.classList.add("toolBtn");
-      allNoteBtn.id = "allNoteBtn";
-      allNoteBtn.innerHTML = `
-      <img
-          src="https://cdn.linknote.online/linknote-icons/box.png"
-          alt="box"
-        />`;
-      return allNoteBtn;
-    }
+  #genAllNoteBtn() {
+    const allNoteBtn = document.createElement("div");
+    allNoteBtn.classList.add("toolBtn");
+    allNoteBtn.id = "allNoteBtn";
+    allNoteBtn.innerHTML = `
+    <img
+        src="https://cdn.linknote.online/linknote-icons/box.png"
+        alt="box"
+      />`;
+    return allNoteBtn;
+  }
 
-    function genTagBtn() {
-      const tagBtn = document.createElement("div");
-      tagBtn.classList.add("toolBtn");
-      tagBtn.id = "tagBtn";
-      tagBtn.innerHTML = `
-      <img
-          src="https://cdn.linknote.online/linknote-icons/tag.png"
-          alt="tag"
-        />`;
-      return tagBtn;
-    }
+  #genTagBtn() {
+    const tagBtn = document.createElement("div");
+    tagBtn.classList.add("toolBtn");
+    tagBtn.id = "tagBtn";
+    tagBtn.innerHTML = `
+    <img
+        src="https://cdn.linknote.online/linknote-icons/tag.png"
+        alt="tag"
+      />`;
+    return tagBtn;
+  }
 
-    function genSortByTime() {
-      const sortByTimeBtn = document.createElement("div");
-      sortByTimeBtn.classList.add("toolBtn");
-      sortByTimeBtn.id = "sortByTimeBtn";
-      sortByTimeBtn.innerHTML = `
-      <img
-          src="https://cdn.linknote.online/linknote-icons/clock.png"
-          alt="clock"
-        />
-      `;
-      return sortByTimeBtn;
-    }
-
-    function genStar() {
-      const starBtn = document.createElement("div");
-      starBtn.classList.add("toolBtn");
-      starBtn.id = "starBtn";
-      starBtn.innerHTML = `
-      <img
-      src="https://cdn.linknote.online/linknote-icons/full-star.png"
-      alt="star"
-    />
-      `;
-      return starBtn;
-    }
-
-    function genSearchNoteInput() {
-      const searchInput = document.createElement("div");
-      searchInput.innerHTML = `
-      <input
-        type="text"
-        id="searchNote"
-        placeholder="search notes"
+  #genSortByTime() {
+    const sortByTimeBtn = document.createElement("div");
+    sortByTimeBtn.classList.add("toolBtn");
+    sortByTimeBtn.id = "sortByTimeBtn";
+    sortByTimeBtn.innerHTML = `
+    <img
+        src="https://cdn.linknote.online/linknote-icons/clock.png"
+        alt="clock"
       />
-      <img
-        src="https://cdn.linknote.online/linknote-icons/search.png"
-        alt="search"
-      />`;
-      searchInput.classList.add("searchNote");
-      searchInput.classList.add("search");
-      searchInput.querySelector("input").addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-        }
-      });
-      searchInput.querySelector("img").addEventListener("click", () => {});
-      return searchInput;
-    }
+    `;
+    return sortByTimeBtn;
+  }
 
-    function genDeleteNotebookBtn(notebookId) {
-      const deleteNotebookBtn = document.createElement("div");
-      deleteNotebookBtn.classList.add("toolBtn");
-      deleteNotebookBtn.innerHTML = `
-      <img
-        src="https://cdn.linknote.online/linknote-icons/trash-white.png"
-        alt="deleteBtn"
-      />`;
-      deleteNotebookBtn.addEventListener("click", deleteNotebook);
+  #genStar() {
+    const starBtn = document.createElement("div");
+    starBtn.classList.add("toolBtn");
+    starBtn.id = "starBtn";
+    starBtn.innerHTML = `
+    <img
+    src="https://cdn.linknote.online/linknote-icons/full-star.png"
+    alt="star"
+  />
+    `;
+    return starBtn;
+  }
 
-      return deleteNotebookBtn;
-      async function deleteNotebook() {
-        const path = `/api/notebooks/${notebookId}`;
-        DeleteAlert.renderDeleteAletBox("notebook", notebookInfo.name, path);
-
-        // const response = await FetchDataHandler.fetchData(path, "DELETE");
-        // if (response.ok) {
-        //   MessageMaker.success("Delete notebook success!");
-        // } else {
-        //   MessageMaker.failed("Delete notebook failed.");
-        // }
+  #genSearchNoteInput() {
+    const searchInput = document.createElement("div");
+    searchInput.innerHTML = `
+    <input
+      type="text"
+      id="searchNote"
+      placeholder="search notes"
+    />
+    <img
+      src="https://cdn.linknote.online/linknote-icons/search.png"
+      alt="search"
+    />`;
+    searchInput.classList.add("searchNote");
+    searchInput.classList.add("search");
+    searchInput.querySelector("input").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
       }
+    });
+    searchInput.querySelector("img").addEventListener("click", () => {});
+    return searchInput;
+  }
+
+  #genDeleteNotebookBtn(notebookInfo) {
+    const deleteNotebookBtn = document.createElement("div");
+    deleteNotebookBtn.classList.add("toolBtn");
+    deleteNotebookBtn.innerHTML = `
+    <img
+      src="https://cdn.linknote.online/linknote-icons/trash-white.png"
+      alt="deleteBtn"
+    />`;
+    deleteNotebookBtn.addEventListener("click", deleteNotebook);
+
+    return deleteNotebookBtn;
+    async function deleteNotebook() {
+      const path = `/api/notebooks/${notebookInfo.id}`;
+      DeleteAlert.renderDeleteAletBox("notebook", notebookInfo.name, path);
     }
+  }
 
-    function genUpdateBtnCtn(notebook) {
-      const updateBtnCtn = document.createElement("div");
-      updateBtnCtn.classList.add("updateBtnCtn");
-      updateBtnCtn.appendChild(genUpdateBtn(notebook));
-      updateBtnCtn.appendChild(
-        genCancelUpdateBtn(notebook.description, notebook.name)
-      );
-      return updateBtnCtn;
+  #genUpdateBtnCtn(notebookInfo) {
+    const updateBtnCtn = document.createElement("div");
+    updateBtnCtn.classList.add("updateBtnCtn");
+    updateBtnCtn.appendChild(this.#genUpdateBtn(notebookInfo));
+    updateBtnCtn.appendChild(
+      this.#genCancelUpdateBtn(notebookInfo.description, notebookInfo.name)
+    );
+    return updateBtnCtn;
+  }
+
+  #genUpdateBtn(notebookInfo) {
+    const updateBtn = document.createElement("div");
+    updateBtn.classList.add("updateBtn");
+    updateBtn.classList.add("display-none");
+    updateBtn.addEventListener("click", () => {
+      this.#updateNotebook(notebookInfo);
+    });
+    updateBtn.textContent = "Save";
+    return updateBtn;
+  }
+
+  async #updateNotebook(notebookInfo) {
+    const path = `/api/notebooks/${notebookInfo.id}`;
+    const name = noteCtn.querySelector("h4").textContent;
+    const description = noteCtn.querySelector(".description").textContent;
+    const requestBody = {
+      name,
+      description,
+    };
+
+    const response = await FetchDataHandler.fetchData(path, "PUT", requestBody);
+
+    if (response.ok) {
+      MessageMaker.success("update success!");
+      notebookInfo.description = description;
+      notebookInfo.name = name;
+      this.#cancelEditMode();
     }
+  }
 
-    function genUpdateBtn(notebook) {
-      const updateBtn = document.createElement("div");
-      updateBtn.classList.add("updateBtn");
-      updateBtn.classList.add("display-none");
-      updateBtn.addEventListener("click", () => {
-        updateNotebook(notebook.id);
-      });
-      updateBtn.textContent = "Save";
-      return updateBtn;
+  #genCancelUpdateBtn(oldDescription, oldName) {
+    const cancelUpdateBtn = document.createElement("div");
+    cancelUpdateBtn.classList.add("display-none");
+    cancelUpdateBtn.classList.add("cancelUpdateBtn");
+    cancelUpdateBtn.textContent = "Cancel";
+    cancelUpdateBtn.addEventListener("click", () => {
+      this.#cancelEditMode(oldDescription, oldName);
+    });
+    return cancelUpdateBtn;
+  }
 
-      async function updateNotebook(notebookId) {
-        const path = `/api/notebooks/${notebookId}`;
-        const name = noteCtn.querySelector("h4").textContent;
-        const description = noteCtn.querySelector(".description").textContent;
-        const requestBody = {
-          name,
-          description,
-        };
+  #editMode() {
+    const description = noteCtn.querySelector(".description");
+    description.classList.add("editMode");
+    noteCtn.querySelector(".updateBtn").classList.remove("display-none");
+    noteCtn.querySelector(".cancelUpdateBtn").classList.remove("display-none");
+  }
 
-        const response = await FetchDataHandler.fetchData(
-          path,
-          "PUT",
-          requestBody
-        );
-
-        if (response.ok) {
-          MessageMaker.success("update success!");
-          notebook.description = description;
-          notebook.name = name;
-          cancelEditMode();
-        }
-      }
-    }
-
-    function genCancelUpdateBtn(oldDescription, oldName) {
-      const cancelUpdateBtn = document.createElement("div");
-      cancelUpdateBtn.classList.add("display-none");
-      cancelUpdateBtn.classList.add("cancelUpdateBtn");
-      cancelUpdateBtn.textContent = "Cancel";
-      cancelUpdateBtn.addEventListener("click", () => {
-        cancelEditMode(oldDescription, oldName);
-      });
-      return cancelUpdateBtn;
-    }
-
-    function editMode() {
-      const description = noteCtn.querySelector(".description");
-      description.classList.add("editMode");
-      noteCtn.querySelector(".updateBtn").classList.remove("display-none");
-      noteCtn
-        .querySelector(".cancelUpdateBtn")
-        .classList.remove("display-none");
-    }
-
-    function cancelEditMode() {
-      const description = noteCtn.querySelector(".description");
-      description.classList.remove("editMode");
-      noteCtn.querySelector(".updateBtn").classList.add("display-none");
-      noteCtn.querySelector(".cancelUpdateBtn").classList.add("display-none");
-    }
+  #cancelEditMode() {
+    const description = noteCtn.querySelector(".description");
+    description.classList.remove("editMode");
+    noteCtn.querySelector(".updateBtn").classList.add("display-none");
+    noteCtn.querySelector(".cancelUpdateBtn").classList.add("display-none");
   }
 
   renderNoteCardCtn(notebookId, renderPage) {
