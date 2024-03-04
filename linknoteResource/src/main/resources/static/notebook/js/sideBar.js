@@ -1,4 +1,16 @@
 class SideBarRender {
+  constructor() {
+    this.#notebookRender.renderMyNotebooks();
+    this.genNotebookBtns("myNotebooks");
+    this.setUsernameAndEmail();
+    this.genCreateNotebookBtnListner();
+    this.myNotebookBtnListner();
+    this.coNotebookBtnListner();
+    this.invitationPageBtnListner();
+    this.settingPageBtnListner();
+    this.signoutBtnListener();
+  }
+
   #notebookRender = new NotebookRender();
   #createNotebookFrom = new CreateNotebookFormRender();
   #myNotebookBtnOffset = 0;
@@ -14,17 +26,6 @@ class SideBarRender {
     settingBtn: document.querySelector(".settingBtn"),
     selectedElement: null,
   };
-  constructor() {
-    this.#notebookRender.renderMyNotebooks();
-    this.genNotebookBtns("myNotebooks");
-    this.setUsernameAndEmail();
-    this.genCreateNotebookBtnListner();
-    this.myNotebookBtnListner();
-    this.coNotebookBtnListner();
-    this.invitationPageBtnListner();
-    this.settingPageBtnListner();
-    this.signoutBtnListener();
-  }
 
   async genNotebookBtns(renderPage) {
     const coNotebookBtnsCtn = document.querySelector(
@@ -78,7 +79,7 @@ class SideBarRender {
     document
       .querySelector(".sideBarMyNotebookArea .sideBarBtn")
       .addEventListener("click", () => {
-        this.#notebookRender.resetFitler();
+        this.#notebookRender.resetFilter();
         this.#notebookRender.renderMyNotebooks();
         if (this.#selectedBtn.selectedElement == "myNotebookBtn") {
           this.#renderSelectNotebookBtn("none");

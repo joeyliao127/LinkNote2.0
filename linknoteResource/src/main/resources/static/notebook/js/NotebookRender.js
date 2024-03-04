@@ -475,17 +475,17 @@ class NotebookRender {
   }
 
   #editMode() {
-    const description = noteCtn.querySelector(".description");
+    const description = document.querySelector(".description");
     description.classList.add("editMode");
-    noteCtn.querySelector(".updateBtn").classList.remove("display-none");
-    noteCtn.querySelector(".cancelUpdateBtn").classList.remove("display-none");
+    document.querySelector(".updateBtn").classList.remove("display-none");
+    document.querySelector(".cancelUpdateBtn").classList.remove("display-none");
   }
 
   #cancelEditMode() {
-    const description = noteCtn.querySelector(".description");
+    const description = document.querySelector(".description");
     description.classList.remove("editMode");
-    noteCtn.querySelector(".updateBtn").classList.add("display-none");
-    noteCtn.querySelector(".cancelUpdateBtn").classList.add("display-none");
+    document.querySelector(".updateBtn").classList.add("display-none");
+    document.querySelector(".cancelUpdateBtn").classList.add("display-none");
   }
 
   renderNoteCardCtn(notebookId, renderPage) {
