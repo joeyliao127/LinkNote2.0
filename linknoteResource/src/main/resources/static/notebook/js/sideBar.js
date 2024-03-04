@@ -65,6 +65,7 @@ class SideBarRender {
     document.querySelector("#username").textContent = data.username;
     document.querySelector("#email").textContent = data.email;
     localStorage.setItem("email", data.email);
+    localStorage.setItem("username", data.username);
   }
 
   genCreateNotebookBtnListner() {
@@ -274,6 +275,63 @@ class SideBarRender {
       if (this.#selectedBtn.selectedElement == "settingBtn") {
         return;
       }
+      const userProfile = document.createElement("section");
+      userProfile.classList.add("userProfileWrapper");
+      userProfile.innerHTML = `
+      <h4>Member Profile</h4>
+            <div class="userProfileForm">
+              <div class="userProfile">
+                <p class="title">Email</p>
+                <p id="email">${localStorage.getItem("email")}</p>
+              </div>
+              <div class="userProfile">
+                <label class="title" for="usernmae">Username</label>
+                <input type="text" id="username" value="${localStorage.getItem(
+                  "username"
+                )}" />
+              </div>
+              <div class="userProfile">
+                <label class="title" for="password">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="passowrd"
+                />
+              </div>
+              <button id="userProfileBtn">Save</button>
+            </div>
+      `;
+
+      userProfile
+        .querySelector("#userProfileBtn")
+        .addEventListener("click", async () => {
+          if (
+            !userProfile.querySelector("#password").value ||
+            !userProfile.querySelector("#username").value
+          ) {
+            MessageMaker.warning("Username or password is null.");
+            return;
+          }
+          const requestBody = {
+            username: userProfile.querySelector("#username").value,
+            password: userProfile.querySelector("#password").value,
+            email: localStorage.getItem("email"),
+          };
+          const path = `/api/user`;
+          const response = await FetchDataHandler.fetchData(
+            path,
+            "PUT",
+            requestBody
+          );
+          if (response.ok) {
+            window.location.href = window.location.href;
+          } else {
+            MessageMaker.failed("Error.");
+          }
+        });
+      ReRenderElement.reRenderMain(userProfile);
+
       this.#renderSelectBtn("settingBtn");
     });
   }

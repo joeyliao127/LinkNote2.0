@@ -150,7 +150,7 @@ class NotebookRender {
     notebooks = notebooks.notebooks;
     if (notebooks.length === 0) {
       if (this.#role === "owner") {
-        return this.genCreateNotebookBlock();
+        return this.genNoCoNotebookBlock();
       } else {
         return this.genNoCoNotebookBlock();
       }
@@ -204,32 +204,103 @@ class NotebookRender {
     }
     const noteTitle = document.createElement("h5");
     noteTitle.textContent = "Notes";
-    noteCtn.appendChild(this.#genNotebookNameElement(notebookInfo.name));
+    noteCtn.appendChild(genNotebookNameElement(notebookInfo.name));
     noteCtn.appendChild(
-      this.#genNotebookDescriptionElement(notebookInfo.description, this.#role)
+      genNotebookDescriptionElement(notebookInfo.description, this.#role)
     );
 
-    noteCtn.appendChild(this.#genUpdateBtnCtn(notebookInfo));
+    noteCtn.appendChild(genUpdateBtnCtn(notebookInfo));
     noteCtn.appendChild(noteTitle);
     noteCtn.appendChild(await this.genNoteCardCtn(notebookInfo.id, renderPage));
     return noteCtn;
-  }
 
-  #genNotebookDescriptionElement(description, role) {
-    const descriptionElement = document.createElement("p");
-    descriptionElement.classList.add("description");
-    descriptionElement.textContent = description;
-    if (role === "owner") {
-      descriptionElement.addEventListener("click", this.#editMode);
-      descriptionElement.setAttribute("contenteditable", true);
+    function genNotebookDescriptionElement(description, role) {
+      const descriptionElement = document.createElement("p");
+      descriptionElement.classList.add("description");
+      descriptionElement.textContent = description;
+      if (role === "owner") {
+        descriptionElement.addEventListener("click", () => {
+          editMode(descriptionElement);
+        });
+        descriptionElement.setAttribute("contenteditable", true);
+      }
+      return descriptionElement;
     }
-    return descriptionElement;
-  }
 
-  #genNotebookNameElement(name) {
-    const nameElement = document.createElement("h4");
-    nameElement.textContent = name;
-    return nameElement;
+    function genNotebookNameElement(name) {
+      const nameElement = document.createElement("h4");
+      nameElement.textContent = name;
+      return nameElement;
+    }
+
+    function genUpdateBtnCtn(notebookInfo) {
+      const updateBtnCtn = document.createElement("div");
+      updateBtnCtn.classList.add("updateBtnCtn");
+      updateBtnCtn.appendChild(genUpdateBtn(notebookInfo));
+      updateBtnCtn.appendChild(
+        genCancelUpdateBtn(notebookInfo.description, notebookInfo.name)
+      );
+      return updateBtnCtn;
+    }
+
+    function genUpdateBtn(notebookInfo) {
+      const updateBtn = document.createElement("div");
+      updateBtn.classList.add("updateBtn");
+      updateBtn.classList.add("display-none");
+      updateBtn.addEventListener("click", () => {
+        updateNotebook(notebookInfo);
+      });
+      updateBtn.textContent = "Save";
+      return updateBtn;
+    }
+
+    async function updateNotebook(notebookInfo) {
+      const path = `/api/notebooks/${notebookInfo.id}`;
+      const name = noteCtn.querySelector("h4").textContent;
+      const description = noteCtn.querySelector(".description").textContent;
+      const requestBody = {
+        name,
+        description,
+      };
+
+      const response = await FetchDataHandler.fetchData(
+        path,
+        "PUT",
+        requestBody
+      );
+
+      if (response.ok) {
+        MessageMaker.success("update success!");
+        notebookInfo.description = description;
+        notebookInfo.name = name;
+        cancelEditMode();
+      }
+    }
+
+    function genCancelUpdateBtn(oldDescription, oldName) {
+      const cancelUpdateBtn = document.createElement("div");
+      cancelUpdateBtn.classList.add("display-none");
+      cancelUpdateBtn.classList.add("cancelUpdateBtn");
+      cancelUpdateBtn.textContent = "Cancel";
+      cancelUpdateBtn.addEventListener("click", () => {
+        cancelEditMode(oldDescription, oldName);
+      });
+      return cancelUpdateBtn;
+    }
+
+    function editMode() {
+      noteCtn.querySelector(".description").classList.add("editMode");
+      noteCtn.querySelector(".updateBtn").classList.remove("display-none");
+      noteCtn
+        .querySelector(".cancelUpdateBtn")
+        .classList.remove("display-none");
+    }
+
+    function cancelEditMode() {
+      noteCtn.querySelector(".description").classList.remove("editMode");
+      noteCtn.querySelector(".updateBtn").classList.add("display-none");
+      noteCtn.querySelector(".cancelUpdateBtn").classList.add("display-none");
+    }
   }
 
   #genMyNotebooksToolBar(notebookInfo) {
@@ -255,12 +326,12 @@ class NotebookRender {
   #genCoNotebookToolBar(notebookId) {
     const toolBarCtn = document.createElement("div");
     toolBarCtn.classList.add("toolBar");
-    toolBarCtn.appendChild(genCreateNoteBtn(notebookId));
-    toolBarCtn.appendChild(genAllNoteBtn());
-    toolBarCtn.appendChild(genTagBtn(notebookId));
-    toolBarCtn.appendChild(genSortByTime());
-    toolBarCtn.appendChild(genStar());
-    toolBarCtn.appendChild(genSearchNoteInput());
+    toolBarCtn.appendChild(this.#genCreateNoteBtn(notebookId));
+    toolBarCtn.appendChild(this.#genAllNoteBtn());
+    toolBarCtn.appendChild(this.#genTagBtn(notebookId));
+    toolBarCtn.appendChild(this.#genSortByTime());
+    toolBarCtn.appendChild(this.#genStar());
+    toolBarCtn.appendChild(this.#genSearchNoteInput());
     return toolBarCtn;
   }
 
@@ -421,71 +492,6 @@ class NotebookRender {
       const path = `/api/notebooks/${notebookInfo.id}`;
       DeleteAlert.renderDeleteAletBox("notebook", notebookInfo.name, path);
     }
-  }
-
-  #genUpdateBtnCtn(notebookInfo) {
-    const updateBtnCtn = document.createElement("div");
-    updateBtnCtn.classList.add("updateBtnCtn");
-    updateBtnCtn.appendChild(this.#genUpdateBtn(notebookInfo));
-    updateBtnCtn.appendChild(
-      this.#genCancelUpdateBtn(notebookInfo.description, notebookInfo.name)
-    );
-    return updateBtnCtn;
-  }
-
-  #genUpdateBtn(notebookInfo) {
-    const updateBtn = document.createElement("div");
-    updateBtn.classList.add("updateBtn");
-    updateBtn.classList.add("display-none");
-    updateBtn.addEventListener("click", () => {
-      this.#updateNotebook(notebookInfo);
-    });
-    updateBtn.textContent = "Save";
-    return updateBtn;
-  }
-
-  async #updateNotebook(notebookInfo) {
-    const path = `/api/notebooks/${notebookInfo.id}`;
-    const name = noteCtn.querySelector("h4").textContent;
-    const description = noteCtn.querySelector(".description").textContent;
-    const requestBody = {
-      name,
-      description,
-    };
-
-    const response = await FetchDataHandler.fetchData(path, "PUT", requestBody);
-
-    if (response.ok) {
-      MessageMaker.success("update success!");
-      notebookInfo.description = description;
-      notebookInfo.name = name;
-      this.#cancelEditMode();
-    }
-  }
-
-  #genCancelUpdateBtn(oldDescription, oldName) {
-    const cancelUpdateBtn = document.createElement("div");
-    cancelUpdateBtn.classList.add("display-none");
-    cancelUpdateBtn.classList.add("cancelUpdateBtn");
-    cancelUpdateBtn.textContent = "Cancel";
-    cancelUpdateBtn.addEventListener("click", () => {
-      this.#cancelEditMode(oldDescription, oldName);
-    });
-    return cancelUpdateBtn;
-  }
-
-  #editMode() {
-    const description = document.querySelector(".description");
-    description.classList.add("editMode");
-    document.querySelector(".updateBtn").classList.remove("display-none");
-    document.querySelector(".cancelUpdateBtn").classList.remove("display-none");
-  }
-
-  #cancelEditMode() {
-    const description = document.querySelector(".description");
-    description.classList.remove("editMode");
-    document.querySelector(".updateBtn").classList.add("display-none");
-    document.querySelector(".cancelUpdateBtn").classList.add("display-none");
   }
 
   renderNoteCardCtn(notebookId, renderPage) {
@@ -655,7 +661,7 @@ class NotebookRender {
   genNoCoNotebookBlock() {
     const noneElement = document.createElement("div");
     noneElement.classList.add("none");
-    noneElement.textContent = "There is no collaborative notebooks.";
+    noneElement.textContent = "There is no notebooks.";
     return noneElement;
   }
 
