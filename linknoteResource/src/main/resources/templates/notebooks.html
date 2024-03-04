@@ -9,10 +9,12 @@
     <link rel="stylesheet" href="../static/notebook/style/wrapper.css" />
     <link rel="stylesheet" href="../static/notebook/style/sidebar.css" />
     <link rel="stylesheet" href="../static/notebook/style/main-notebook.css" />
+    <link rel="stylesheet" href="../static/notebook/style/invitation.css" />
     <link rel="stylesheet" href="../static/base/style/base.css" />
     <link rel="stylesheet" href="../static/base/style/message.css" />
     <link rel="stylesheet" href="../static/base/style/reset.css" />
     <link rel="stylesheet" href="../static/base/style/deleteAlert.css" />
+
     <title>notebook</title>
   </head>
   <body>
@@ -95,171 +97,116 @@
       </section>
       <main>
         <div class="mainWrapper">
-          <section class="notebookArea">
-            <section class="noteCtn">
-              <h4>Java</h4>
-              <p class="description">學習Java開發後端APIIII</p>
-              <div class="toolBar">
-                <div class="createNoteBtn"><p>New note</p></div>
-                <div class="toolBtn" id="collaboratorBtn">
-                  <img
-                    src="https://cdn.linknote.online/linknote-icons/addCollaborator.png"
-                    alt="collaboratorBtn"
-                  />
-                </div>
-                <div class="collaboratorForm display-none">
-                  <h5>Collaborators</h5>
-                  <div class="collaborators">
-                    <div class="collaborator">
-                      <p>Sandy Yang</p>
-                      <div class="deleteCollaboratorBtn">
-                        <p>Remove</p>
-                      </div>
-                    </div>
-                    <div class="collaborator">
-                      <p>Sandy Yang</p>
-                      <div class="deleteCollaboratorBtn">
-                        <p>Remove</p>
-                      </div>
-                    </div>
-
-                    <div class="collaborator">
-                      <p>Sandy Yang</p>
-                      <div class="deleteCollaboratorBtn">
-                        <p>Remove</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="invitationForm">
-                    <p>Invite Collaborator</p>
-                    <input
-                      type="email"
-                      id="inviteEmail"
-                      placeholder="Email Address"
-                    />
-                    <input
-                      type="text"
-                      id="inviteMessage"
-                      placeholder="Invitation message"
-                    />
-                    <div id="inviteBtn">Invite</div>
-                  </div>
-                </div>
-                <div class="toolBtn" id="allNoteBtn">
-                  <img
-                    src="https://cdn.linknote.online/linknote-icons/box.png"
-                    alt="box"
-                  />
-                </div>
-                <div class="toolBtn" id="tagBtn">
-                  <img
-                    src="https://cdn.linknote.online/linknote-icons/tag.png"
-                    alt="tag"
-                  />
-                </div>
-                <div class="toolBtn" id="sortByTimeBtn">
-                  <img
-                    src="https://cdn.linknote.online/linknote-icons/clock.png"
-                    alt="clock"
-                  />
-                </div>
-                <div class="toolBtn" id="starBtn">
-                  <img
-                    src="https://cdn.linknote.online/linknote-icons/full-star.png"
-                    alt="star"
-                  />
-                </div>
-                <div class="search">
-                  <input
-                    type="text"
-                    id="searchNote"
-                    placeholder="search notes"
-                  />
-                  <img
-                    src="https://cdn.linknote.online/linknote-icons/search.png"
-                    alt="search"
-                  />
-                </div>
-                <div class="deleNotebookBtn toolBtn">
-                  <img
-                    src="https://cdn.linknote.online/linknote-icons/trash-white.png"
-                    alt=""
-                  />
-                </div>
-              </div>
-              <div class="updateBtnCtn">
-                <div class="updateBtn display-none">Save</div>
-                <div class="dcancelUpdateBtn display-none">Cancel</div>
-              </div>
-              <h5>Notes</h5>
-              <div class="noteCardCtn">
-                <a href="/notebooks" class="noteCard">
-                  <div class="star star-full"></div>
-                  <h5>Java note5</h5>
-                  <p class="question">如何使用java開發後端api</p>
-                  <div class="deleteNoteBtn"></div>
-                  <p class="createTime">2024-02-15</p>
-                </a>
-                <a href="/notebooks" class="noteCard">
-                  <div class="star star-full"></div>
-                  <h5>Java note5</h5>
-                  <p class="question">如何使用java開發後端api</p>
-                  <div class="deleteNoteBtn"></div>
-                  <p class="createTime">2024-02-15</p>
-                </a>
-                <a href="/notebooks" class="noteCard">
-                  <div class="star star-full"></div>
-                  <h5>Java note5</h5>
-                  <p class="question">如何使用java開發後端api</p>
-                  <div class="deleteNoteBtn"></div>
-                  <p class="createTime">2024-02-15</p>
-                </a>
-                <a href="/notebooks" class="noteCard">
-                  <div class="star star-full"></div>
-                  <h5>Java note5</h5>
-                  <p class="question">如何使用java開發後端api</p>
-                  <div class="deleteNoteBtn"></div>
-                  <p class="createTime">2024-02-15</p>
-                </a>
-                <a href="/notebooks" class="noteCard">
-                  <div class="star star-full"></div>
-                  <h5>Java note5</h5>
-                  <p class="question">如何使用java開發後端api</p>
-                  <div class="deleteNoteBtn"></div>
-                  <p class="createTime">2024-02-15</p>
-                </a>
-                <a href="/notebooks" class="noteCard">
-                  <div class="star star-full"></div>
-                  <h5>Java note5</h5>
-                  <p class="question">如何使用java開發後端api</p>
-                  <div class="deleteNoteBtn"></div>
-                  <p class="createTime">2024-02-15</p>
-                </a>
-                <a href="/notebooks" class="noteCard">
-                  <div class="star star-full"></div>
-                  <h5>Java note5</h5>
-                  <p class="question">如何使用java開發後端api</p>
-                  <div class="deleteNoteBtn"></div>
-                  <p class="createTime">2024-02-15</p>
-                </a>
-
-                <a href="/notebooks" class="noteCard">
-                  <div class="star star-full"></div>
-                  <h5>Java note5</h5>
-                  <p class="question">如何使用java開發後端api</p>
-                  <div class="deleteNoteBtn"></div>
-                  <p class="createTime">2024-02-15</p>
-                </a>
-                <a href="/notebooks" class="noteCard">
-                  <div class="star star-full"></div>
-                  <h5>Java note5</h5>
-                  <p class="question">如何使用java開發後端api</p>
-                  <div class="deleteNoteBtn"></div>
-                  <p class="createTime">2024-02-15</p>
-                </a>
-              </div>
+          <div class="invitationWrapper">
+            <section class="invitationTable" id="receivedInvitaionTable">
+              <h4>Pending Received Invitations</h4>
+              <table>
+                <!-- <tr>
+                  <th>none</th>
+                </tr> -->
+                <tr>
+                  <th>Inviter</th>
+                  <th>Notebook Name</th>
+                  <th>Create Date</th>
+                  <th>Message</th>
+                  <th class="confirm">Confirm</th>
+                </tr>
+                <tr>
+                  <td>Joey Liao</td>
+                  <td>Java</td>
+                  <td>2024-01-01</td>
+                  <td>Java to A1</td>
+                  <td>
+                    <button class="acceptInvitation">Accept</button>
+                    <button class="denyInvitation">Deny</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Joey Liao</td>
+                  <td>Java</td>
+                  <td>2024-01-01</td>
+                  <td>Java to A1</td>
+                  <td>
+                    <button class="acceptInvitation">Accept</button>
+                    <button class="denyInvitation">Deny</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Joey Liao</td>
+                  <td>Java</td>
+                  <td>2024-01-01</td>
+                  <td>Java to A1</td>
+                  <td>
+                    <button class="acceptInvitation">Accept</button>
+                    <button class="denyInvitation">Deny</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Joey Liao</td>
+                  <td>Java</td>
+                  <td>2024-01-01</td>
+                  <td>Java to A1</td>
+                  <td>
+                    <button class="acceptInvitation">Accept</button>
+                    <button class="denyInvitation">Deny</button>
+                  </td>
+                </tr>
+              </table>
             </section>
-          </section>
+            <section class="invitaionTable" id="sentInvitaionTable">
+              <section class="invitationTable" id="receivedInvitaionTable">
+                <h4>Pending Sent Invitations</h4>
+                <table>
+                  <!-- <tr>
+                    <th>none</th>
+                  </tr> -->
+                  <tr>
+                    <th>Inviter</th>
+                    <th>Notebook Name</th>
+                    <th>Create Date</th>
+                    <th>Message</th>
+                    <th class="confirm">Confirm</th>
+                  </tr>
+                  <tr>
+                    <td>Joey Liao</td>
+                    <td>Java</td>
+                    <td>2024-01-01</td>
+                    <td>Java to A1</td>
+                    <td>
+                      <button class="deleteInvitation">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Joey Liao</td>
+                    <td>Java</td>
+                    <td>2024-01-01</td>
+                    <td>Java to A1</td>
+                    <td>
+                      <button class="deleteInvitation">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Joey Liao</td>
+                    <td>Java</td>
+                    <td>2024-01-01</td>
+                    <td>Java to A1</td>
+                    <td>
+                      <button class="deleteInvitation">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Joey Liao</td>
+                    <td>Java</td>
+                    <td>2024-01-01</td>
+                    <td>Java to A1</td>
+                    <td>
+                      <button class="deleteInvitation">Delete</button>
+                    </td>
+                  </tr>
+                </table>
+              </section>
+            </section>
+          </div>
         </div>
       </main>
     </div>
@@ -275,3 +222,169 @@
     <script src="/base/js/Message.js"></script>
   </body>
 </html>
+
+<!-- <section class="notebookArea">
+  <section class="noteCtn">
+    <h4>Java</h4>
+    <p class="description">學習Java開發後端APIIII</p>
+    <div class="toolBar">
+      <div class="createNoteBtn"><p>New note</p></div>
+      <div class="toolBtn" id="collaboratorBtn">
+        <img
+          src="https://cdn.linknote.online/linknote-icons/addCollaborator.png"
+          alt="collaboratorBtn"
+        />
+      </div>
+      <div class="collaboratorForm display-none">
+        <h5>Collaborators</h5>
+        <div class="collaborators">
+          <div class="collaborator">
+            <p>Sandy Yang</p>
+            <div class="deleteCollaboratorBtn">
+              <p>Remove</p>
+            </div>
+          </div>
+          <div class="collaborator">
+            <p>Sandy Yang</p>
+            <div class="deleteCollaboratorBtn">
+              <p>Remove</p>
+            </div>
+          </div>
+
+          <div class="collaborator">
+            <p>Sandy Yang</p>
+            <div class="deleteCollaboratorBtn">
+              <p>Remove</p>
+            </div>
+          </div>
+        </div>
+        <div class="invitationForm">
+          <p>Invite Collaborator</p>
+          <input
+            type="email"
+            id="inviteEmail"
+            placeholder="Email Address"
+          />
+          <input
+            type="text"
+            id="inviteMessage"
+            placeholder="Invitation message"
+          />
+          <div id="inviteBtn">Invite</div>
+        </div>
+      </div>
+      <div class="toolBtn" id="allNoteBtn">
+        <img
+          src="https://cdn.linknote.online/linknote-icons/box.png"
+          alt="box"
+        />
+      </div>
+      <div class="toolBtn" id="tagBtn">
+        <img
+          src="https://cdn.linknote.online/linknote-icons/tag.png"
+          alt="tag"
+        />
+      </div>
+      <div class="toolBtn" id="sortByTimeBtn">
+        <img
+          src="https://cdn.linknote.online/linknote-icons/clock.png"
+          alt="clock"
+        />
+      </div>
+      <div class="toolBtn" id="starBtn">
+        <img
+          src="https://cdn.linknote.online/linknote-icons/full-star.png"
+          alt="star"
+        />
+      </div>
+      <div class="search">
+        <input
+          type="text"
+          id="searchNote"
+          placeholder="search notes"
+        />
+        <img
+          src="https://cdn.linknote.online/linknote-icons/search.png"
+          alt="search"
+        />
+      </div>
+      <div class="deleNotebookBtn toolBtn">
+        <img
+          src="https://cdn.linknote.online/linknote-icons/trash-white.png"
+          alt=""
+        />
+      </div>
+    </div>
+    <div class="updateBtnCtn">
+      <div class="updateBtn display-none">Save</div>
+      <div class="dcancelUpdateBtn display-none">Cancel</div>
+    </div>
+    <h5>Notes</h5>
+    <div class="noteCardCtn">
+      <a href="/notebooks" class="noteCard">
+        <div class="star star-full"></div>
+        <h5>Java note5</h5>
+        <p class="question">如何使用java開發後端api</p>
+        <div class="deleteNoteBtn"></div>
+        <p class="createTime">2024-02-15</p>
+      </a>
+      <a href="/notebooks" class="noteCard">
+        <div class="star star-full"></div>
+        <h5>Java note5</h5>
+        <p class="question">如何使用java開發後端api</p>
+        <div class="deleteNoteBtn"></div>
+        <p class="createTime">2024-02-15</p>
+      </a>
+      <a href="/notebooks" class="noteCard">
+        <div class="star star-full"></div>
+        <h5>Java note5</h5>
+        <p class="question">如何使用java開發後端api</p>
+        <div class="deleteNoteBtn"></div>
+        <p class="createTime">2024-02-15</p>
+      </a>
+      <a href="/notebooks" class="noteCard">
+        <div class="star star-full"></div>
+        <h5>Java note5</h5>
+        <p class="question">如何使用java開發後端api</p>
+        <div class="deleteNoteBtn"></div>
+        <p class="createTime">2024-02-15</p>
+      </a>
+      <a href="/notebooks" class="noteCard">
+        <div class="star star-full"></div>
+        <h5>Java note5</h5>
+        <p class="question">如何使用java開發後端api</p>
+        <div class="deleteNoteBtn"></div>
+        <p class="createTime">2024-02-15</p>
+      </a>
+      <a href="/notebooks" class="noteCard">
+        <div class="star star-full"></div>
+        <h5>Java note5</h5>
+        <p class="question">如何使用java開發後端api</p>
+        <div class="deleteNoteBtn"></div>
+        <p class="createTime">2024-02-15</p>
+      </a>
+      <a href="/notebooks" class="noteCard">
+        <div class="star star-full"></div>
+        <h5>Java note5</h5>
+        <p class="question">如何使用java開發後端api</p>
+        <div class="deleteNoteBtn"></div>
+        <p class="createTime">2024-02-15</p>
+      </a>
+
+      <a href="/notebooks" class="noteCard">
+        <div class="star star-full"></div>
+        <h5>Java note5</h5>
+        <p class="question">如何使用java開發後端api</p>
+        <div class="deleteNoteBtn"></div>
+        <p class="createTime">2024-02-15</p>
+      </a>
+      <a href="/notebooks" class="noteCard">
+        <div class="star star-full"></div>
+        <h5>Java note5</h5>
+        <p class="question">如何使用java開發後端api</p>
+        <div class="deleteNoteBtn"></div>
+        <p class="createTime">2024-02-15</p>
+      </a>
+    </div>
+  </section>
+</section> -->
