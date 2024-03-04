@@ -106,7 +106,7 @@ public class InvitationDAOImpl implements InvitationDAO {
         WHERE notebookId = :notebookId AND inviteeEmail = :inviteeEmail
         """;
     Map<String, Object> map = new HashMap<>();
-    map.put("inviteeEmail", po.getInviteeId());
+    map.put("inviteeEmail", po.getInviteeEmail());
     map.put("notebookId", po.getNotebookId());
     map.put("isAccept", po.getIsAccept());
     namedParameterJdbcTemplate.update(sql,map);

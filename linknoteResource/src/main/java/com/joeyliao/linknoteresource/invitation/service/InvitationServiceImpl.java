@@ -128,6 +128,7 @@ public class InvitationServiceImpl implements InvitationService {
   @Override
   @Transactional
   public void updateInvitation(UpdateInvitationPo po) {
+    po.setInviteeEmail(getUserInfoByToken(po.getAuthorization()).getEmail());
     po.setInviteeId(getUserInfoByToken(po.getAuthorization()).getUserId());
     invitationDAO.updateInvitation(po);
     collaboratorService.createCollaborator(po.getInviteeId(), po.getNotebookId());

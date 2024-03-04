@@ -72,13 +72,11 @@ public class InvitationController {
     return ResponseEntity.status(200).body(invitationService.getReceivedInvitation(po));
   }
 
-  @PutMapping("/api/notebooks/{notebookId}/invitations")
+  @PutMapping("/api/invitations/received-invitation")
   public ResponseEntity<Object> updateInvitation(
-      @PathVariable String notebookId,
       @RequestHeader String Authorization,
       @RequestBody @Valid UpdateInvitationPo po
   ){
-    po.setNotebookId(notebookId);
     po.setAuthorization(Authorization);
     invitationService.updateInvitation(po);
     return ResponseEntity.status(200).body(Map.of("result", true));

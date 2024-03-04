@@ -5,9 +5,15 @@
     font-size: 20px;
   }
 }
+.invitationTable {
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 .invitationTable table {
-  width: 80vw;
+  width: 100%;
   overflow-x: scroll;
   margin: 15px auto;
   padding-top: 5px;

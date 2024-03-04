@@ -111,8 +111,162 @@ class SideBarRender {
       if (this.#selectedBtn.selectedElement == "invitationBtn") {
         return;
       }
+      genInvitationTable();
       this.#renderSelectBtn("invitationBtn");
     });
+    async function genInvitationTable() {
+      const invitationWrapper = document.createElement("div");
+      invitationWrapper.classList.add("invitationWrapper");
+      invitationWrapper.innerHTML = `
+      <section class="invitationTable" id="receivedInvitaionTable">
+      <h4>Pending Received Invitations</h4>
+      <table id="received-table">
+        <tr id="received-none">
+          <th>none</th>
+        </tr>
+        <tr  id="received-header" class="display-none" >
+          <th>Inviter</th>
+          <th>Notebook Name</th>
+          <th>Create Date</th>
+          <th>Message</th>
+          <th>Confirm</th>
+        </tr>
+      </table>
+    </section>
+    <section class="invitaionTable" id="sentInvitaionTable">
+      <section class="invitationTable" id="receivedInvitaionTable">
+        <h4>Pending Sent Invitations</h4>
+        <table id="sent-table">
+          <tr id="sent-none" >
+            <th>none</th>
+          </tr>
+          <tr  id="sent-header" class="display-none" >
+            <th>Invitee</th>
+            <th>Notebook Name</th>
+            <th>Create Date</th>
+            <th>Message</th>
+            <th>Confirm</th>
+          </tr>
+          
+        </table>
+      </section>
+    </section>
+      `;
+      const receviedResponse = await FetchDataHandler.fetchData(
+        "/api/invitations/received-invitations?offset=0&limit=20",
+        "GET"
+      );
+      const receivedData = await receviedResponse.json();
+      const receivedInvitations = receivedData.invitations;
+      const receivedTable = invitationWrapper.querySelector("#received-table");
+      if (receivedInvitations.length !== 0) {
+        invitationWrapper
+          .querySelector("#received-none")
+          .classList.add("display-none");
+        invitationWrapper
+          .querySelector("#received-header")
+          .classList.remove("display-none");
+        receivedInvitations.forEach((invitation) => {
+          receivedTable.appendChild(genReceivedInvitationTr(invitation));
+        });
+      }
+
+      const sentResponse = await FetchDataHandler.fetchData(
+        "/api/invitations/sent-invitations?offset=0&limit=20",
+        "GET"
+      );
+      const sentData = await sentResponse.json();
+      const sentInvitations = sentData.invitations;
+      const sentTable = invitationWrapper.querySelector("#sent-table");
+      if (sentInvitations.length !== 0) {
+        invitationWrapper
+          .querySelector("#sent-none")
+          .classList.add("display-none");
+        invitationWrapper
+          .querySelector("#sent-header")
+          .classList.remove("display-none");
+        sentInvitations.forEach((invitation) => {
+          sentTable.appendChild(genSentInvitationTr(invitation));
+        });
+      }
+
+      ReRenderElement.reRenderMain(invitationWrapper);
+    }
+
+    function genReceivedInvitationTr(invitation) {
+      const tr = document.createElement("tr");
+      const createDate = invitation.createDate.split(" ");
+      tr.innerHTML = `
+      <tr>
+      <td>${invitation.inviterName}</td>
+      <td>${invitation.notebookName}</td>
+      <td>${createDate[0]}</td>
+      <td>${invitation.message}</td>
+      <td>
+        <button class="acceptInvitation">Accept</button>
+        <button class="denyInvitation">Deny</button>
+      </td>
+    </tr>
+      `;
+      const acceptBtn = tr.querySelector(".acceptInvitation");
+      acceptBtn.addEventListener("click", async () => {
+        const path = `/api/invitations/received-invitation`;
+        const response = await FetchDataHandler.fetchData(path, "PUT", {
+          notebookId: invitation.notebookId,
+          isAccept: true,
+        });
+        if (response.ok) {
+          tr.remove();
+          MessageMaker.success("success!");
+        } else {
+          MessageMaker.failed("failed.");
+        }
+      });
+
+      const denyBtn = tr.querySelector(".denyInvitation");
+      denyBtn.addEventListener("click", async () => {
+        const path = `/api/invitations/received-invitation`;
+        const response = await FetchDataHandler.fetchData(path, "PUT", {
+          notebookId: invitation.notebookId,
+          isAccept: false,
+        });
+        if (response.ok) {
+          MessageMaker.success("success!");
+          tr.remove();
+        } else {
+          MessageMaker.failed("failed.");
+        }
+      });
+      return tr;
+    }
+
+    function genSentInvitationTr(invitation) {
+      const tr = document.createElement("tr");
+      const createDate = invitation.createDate.split(" ");
+      tr.innerHTML = `
+      <tr>
+      <td>${invitation.inviteeName}</td>
+      <td>${invitation.notebookName}</td>
+      <td>${createDate[0]}</td>
+      <td>${invitation.message}</td>
+      <td>
+        <button class="deleteInvitation">Delete</button>
+      </td>
+    </tr>
+      `;
+      const delBtn = tr.querySelector(".deleteInvitation");
+      delBtn.addEventListener("click", async () => {
+        const path = `/api/notebooks/${invitation.notebookId}/invitations`;
+        const response = await FetchDataHandler.fetchData(path, "DELETE");
+        if (response.ok) {
+          MessageMaker.success("removed!");
+          tr.remove();
+        } else {
+          MessageMaker.failed("failed.");
+        }
+      });
+      return tr;
+    }
   }
 
   settingPageBtnListner() {

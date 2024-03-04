@@ -96,118 +96,7 @@
         </div>
       </section>
       <main>
-        <div class="mainWrapper">
-          <div class="invitationWrapper">
-            <section class="invitationTable" id="receivedInvitaionTable">
-              <h4>Pending Received Invitations</h4>
-              <table>
-                <!-- <tr>
-                  <th>none</th>
-                </tr> -->
-                <tr>
-                  <th>Inviter</th>
-                  <th>Notebook Name</th>
-                  <th>Create Date</th>
-                  <th>Message</th>
-                  <th class="confirm">Confirm</th>
-                </tr>
-                <tr>
-                  <td>Joey Liao</td>
-                  <td>Java</td>
-                  <td>2024-01-01</td>
-                  <td>Java to A1</td>
-                  <td>
-                    <button class="acceptInvitation">Accept</button>
-                    <button class="denyInvitation">Deny</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Joey Liao</td>
-                  <td>Java</td>
-                  <td>2024-01-01</td>
-                  <td>Java to A1</td>
-                  <td>
-                    <button class="acceptInvitation">Accept</button>
-                    <button class="denyInvitation">Deny</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Joey Liao</td>
-                  <td>Java</td>
-                  <td>2024-01-01</td>
-                  <td>Java to A1</td>
-                  <td>
-                    <button class="acceptInvitation">Accept</button>
-                    <button class="denyInvitation">Deny</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Joey Liao</td>
-                  <td>Java</td>
-                  <td>2024-01-01</td>
-                  <td>Java to A1</td>
-                  <td>
-                    <button class="acceptInvitation">Accept</button>
-                    <button class="denyInvitation">Deny</button>
-                  </td>
-                </tr>
-              </table>
-            </section>
-            <section class="invitaionTable" id="sentInvitaionTable">
-              <section class="invitationTable" id="receivedInvitaionTable">
-                <h4>Pending Sent Invitations</h4>
-                <table>
-                  <!-- <tr>
-                    <th>none</th>
-                  </tr> -->
-                  <tr>
-                    <th>Inviter</th>
-                    <th>Notebook Name</th>
-                    <th>Create Date</th>
-                    <th>Message</th>
-                    <th class="confirm">Confirm</th>
-                  </tr>
-                  <tr>
-                    <td>Joey Liao</td>
-                    <td>Java</td>
-                    <td>2024-01-01</td>
-                    <td>Java to A1</td>
-                    <td>
-                      <button class="deleteInvitation">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Joey Liao</td>
-                    <td>Java</td>
-                    <td>2024-01-01</td>
-                    <td>Java to A1</td>
-                    <td>
-                      <button class="deleteInvitation">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Joey Liao</td>
-                    <td>Java</td>
-                    <td>2024-01-01</td>
-                    <td>Java to A1</td>
-                    <td>
-                      <button class="deleteInvitation">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Joey Liao</td>
-                    <td>Java</td>
-                    <td>2024-01-01</td>
-                    <td>Java to A1</td>
-                    <td>
-                      <button class="deleteInvitation">Delete</button>
-                    </td>
-                  </tr>
-                </table>
-              </section>
-            </section>
-          </div>
-        </div>
+        <div class="mainWrapper"></div>
       </main>
     </div>
 
@@ -388,3 +277,116 @@
     </div>
   </section>
 </section> -->
+
+<!-- 共編邀請區域 -->
+<!-- <div class="invitationWrapper">
+  <section class="invitationTable" id="receivedInvitaionTable">
+    <h4>Pending Received Invitations</h4>
+    <table>
+      <tr id="received-none" class="display-none">
+        <th>none</th>
+      </tr>
+      <tr  id="received-header">
+        <th>Inviter</th>
+        <th>Notebook Name</th>
+        <th>Create Date</th>
+        <th>Message</th>
+        <th class="confirm">Confirm</th>
+      </tr>
+      <tr>
+        <td>Joey Liao</td>
+        <td>Java</td>
+        <td>2024-01-01</td>
+        <td>Java to A1</td>
+        <td>
+          <button class="acceptInvitation">Accept</button>
+          <button class="denyInvitation">Deny</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Joey Liao</td>
+        <td>Java</td>
+        <td>2024-01-01</td>
+        <td>Java to A1</td>
+        <td>
+          <button class="acceptInvitation">Accept</button>
+          <button class="denyInvitation">Deny</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Joey Liao</td>
+        <td>Java</td>
+        <td>2024-01-01</td>
+        <td>Java to A1</td>
+        <td>
+          <button class="acceptInvitation">Accept</button>
+          <button class="denyInvitation">Deny</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Joey Liao</td>
+        <td>Java</td>
+        <td>2024-01-01</td>
+        <td>Java to A1</td>
+        <td>
+          <button class="acceptInvitation">Accept</button>
+          <button class="denyInvitation">Deny</button>
+        </td>
+      </tr>
+      </tr>
+    </table>
+  </section>
+  <section class="invitaionTable" id="sentInvitaionTable">
+    <section class="invitationTable" id="receivedInvitaionTable">
+      <h4>Pending Sent Invitations</h4>
+      <table>
+        <tr>
+          <th>none</th>
+        </tr>
+        <tr>
+          <th>Invitee</th>
+          <th>Notebook Name</th>
+          <th>Create Date</th>
+          <th>Message</th>
+          <th class="confirm">Confirm</th>
+        </tr>
+        <tr>
+          <td>Joey Liao</td>
+          <td>Java</td>
+          <td>2024-01-01</td>
+          <td>Java to A1</td>
+          <td>
+            <button class="deleteInvitation">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Joey Liao</td>
+          <td>Java</td>
+          <td>2024-01-01</td>
+          <td>Java to A1</td>
+          <td>
+            <button class="deleteInvitation">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Joey Liao</td>
+          <td>Java</td>
+          <td>2024-01-01</td>
+          <td>Java to A1</td>
+          <td>
+            <button class="deleteInvitation">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Joey Liao</td>
+          <td>Java</td>
+          <td>2024-01-01</td>
+          <td>Java to A1</td>
+          <td>
+            <button class="deleteInvitation">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </section>
+  </section>
+</div> -->
