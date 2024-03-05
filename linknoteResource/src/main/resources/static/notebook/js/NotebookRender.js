@@ -9,10 +9,7 @@ class NotebookRender {
     sortDesc: false,
   };
 
-  #toolBarCurrentSelectBtn = null;
-
   #renderToolBarSelected(target) {
-    this.#toolBarCurrentSelectBtn = target;
     const btns = {
       allNoteBtn: document.querySelector("#allNoteBtn"),
       tagBtn: document.querySelector("#tagBtn"),
@@ -28,6 +25,23 @@ class NotebookRender {
     }
   }
 
+  resetTagFilter() {
+    this.#currentTag = "";
+    this.#tagsBtns = [];
+  }
+  #currentTag;
+  #tagsBtns = [];
+
+  #renderSelectedTag(target) {
+    this.#currentTag = target;
+    target.classList.add("selected");
+    for (let i = 0; i < this.#tagsBtns.length; i++) {
+      if (this.#tagsBtns[i] !== target) {
+        console.log(this.#tagsBtns[i]);
+        this.#tagsBtns[i].classList.remove("selected");
+      }
+    }
+  }
   #notebooksOffset = 0;
   #notebooksLimit = 20;
 
@@ -532,7 +546,15 @@ class NotebookRender {
       return tagForm;
     }
     tags.forEach((tag) => {
-      tagForm.querySelector(".tagCtn").appendChild(genTagBtn(tag));
+      const tagBtn = genTagBtn(tag);
+      tagForm.querySelector(".tagCtn").appendChild(tagBtn);
+      this.#tagsBtns.push(tagBtn);
+      tagBtn.addEventListener("click", () => {
+        this.#filter.tag = tag.name;
+        this.renderNoteCardCtn(notebookId, "myNotebook");
+        this.#renderSelectedTag(tagBtn);
+        tagForm.classList.add("display-none");
+      });
     });
 
     tagForm
@@ -592,13 +614,134 @@ class NotebookRender {
           const response = await FetchDataHandler.fetchData(path, "DELETE");
           if (response.ok) {
             MessageMaker.success(`Delete tag ${tag.name} success!`);
+            tagDiv.remove();
+          } else {
+            MessageMaker.failed(`Delete tag ${tag.name} failed.`);
           }
-          tagDiv.remove();
         });
       return tagDiv;
     }
   }
 
+  async #genCollaboratorForm(notebookId) {
+    const form = document.createElement("div");
+    form.classList.add("collaboratorForm");
+    form.classList.add("display-none");
+    form.innerHTML = `
+    <h5>Collaborators</h5>
+    `;
+
+    form.appendChild(await genCollaborators(notebookId));
+    form.appendChild(genInviationForm(notebookId));
+
+    return form;
+
+    async function genCollaborators(notebookId) {
+      const collaborators = document.createElement("div");
+      collaborators.classList.add("collaborators");
+      const path = `/api/notebooks/${notebookId}/collaborators`;
+      const resposne = await FetchDataHandler.fetchData(path, "GET");
+      if (!resposne.ok) {
+        MessageMaker.success("Error");
+        return;
+      }
+
+      const data = await resposne.json();
+      if (data.collaborators.length === 0) {
+        return collaborators;
+      }
+      data.collaborators.forEach((collaboratorInfo) => {
+        const collaborator = document.createElement("div");
+        collaborator.classList.add("collaborator");
+        collaborator.innerHTML = `
+        <p>${collaboratorInfo.name}</p>
+        <div class="deleteCollaboratorBtn" data-userEmail="${collaboratorInfo.userEmail}">
+          <p>Remove</p>
+        </div>
+        `;
+
+        collaborator
+          .querySelector(".deleteCollaboratorBtn")
+          .addEventListener("click", () => {
+            deleteCollaborator(collaboratorInfo);
+          });
+        collaborators.appendChild(collaborator);
+
+        async function deleteCollaborator(collaboratorInfo) {
+          if (
+            !DeleteAlert.renderDeleteAlertBox(
+              "collaborator",
+              collaboratorInfo.name
+            )
+          ) {
+            return;
+          }
+          const path = `api/notebooks/${notebookId}/collaborators?userEmail=${collaboratorInfo.userEmail}`;
+          const response = await FetchDataHandler.fetchData(path, "DELETE");
+          if (response.ok) {
+            MessageMaker.success("Collaborator removed.");
+          } else {
+            MessageMaker.failed("Error");
+          }
+        }
+      });
+      return collaborators;
+    }
+
+    function genInviationForm(notebookId) {
+      const form = document.createElement("div");
+      form.classList.add("invitationForm");
+      form.innerHTML = `
+      <p>Invite Collaborator</p>
+      <input
+        type="email"
+        id="inviteEmail"
+        placeholder="Email Address"
+      />
+      <input
+        type="text"
+        id="inviteMessage"
+        placeholder="Invitation message"
+      />
+      <div id="inviteBtn">Invite</div>
+      `;
+      form.querySelector("#inviteBtn").addEventListener("click", () => {
+        const inviteeEmail = form.querySelector("#inviteEmail").value;
+        const message = form.querySelector("#inviteMessage").value;
+        if (!Validator.validateEmailFormat(inviteeEmail)) {
+          MessageMaker.failed("Invalid email format.");
+          return;
+        }
+        inviteCollaborator(inviteeEmail, message, notebookId);
+        form.querySelector("#inviteEmail").value = "";
+        form.querySelector("#inviteMessage").value = "";
+        document
+          .querySelector(".collaboratorForm")
+          .classList.add("display-none");
+      });
+
+      return form;
+
+      async function inviteCollaborator(inviteeEmail, message, notebookId) {
+        const path = `/api/notebooks/${notebookId}/invitations`;
+        try {
+          const response = await FetchDataHandler.fetchData(path, "POST", {
+            inviteeEmail,
+            message,
+          });
+          if (response.ok) {
+            MessageMaker.success("Success!");
+          } else if (response.status === 400) {
+            MessageMaker.failed("Invalid email address");
+          } else if (response.status === 409) {
+            MessageMaker.warning("The invitation has been sent.");
+          }
+        } catch (e) {
+          MessageMaker.failed("Error");
+        }
+      }
+    }
+  }
   async renderNoteCardCtn(notebookId, renderPage) {
     const noteCtn = document.querySelector(".noteCtn");
     document.querySelector(".noteCardCtn").remove();
@@ -766,125 +909,5 @@ class NotebookRender {
     noneElement.classList.add("none");
     noneElement.textContent = "There is no notebooks.";
     return noneElement;
-  }
-
-  async #genCollaboratorForm(notebookId) {
-    const form = document.createElement("div");
-    form.classList.add("collaboratorForm");
-    form.classList.add("display-none");
-    form.innerHTML = `
-    <h5>Collaborators</h5>
-    `;
-
-    form.appendChild(await genCollaborators(notebookId));
-    form.appendChild(genInviationForm(notebookId));
-
-    return form;
-
-    async function genCollaborators(notebookId) {
-      const collaborators = document.createElement("div");
-      collaborators.classList.add("collaborators");
-      const path = `/api/notebooks/${notebookId}/collaborators`;
-      const resposne = await FetchDataHandler.fetchData(path, "GET");
-      if (!resposne.ok) {
-        MessageMaker.success("Error");
-        return;
-      }
-
-      const data = await resposne.json();
-      if (data.collaborators.length === 0) {
-        return collaborators;
-      }
-      data.collaborators.forEach((collaboratorInfo) => {
-        const collaborator = document.createElement("div");
-        collaborator.classList.add("collaborator");
-        collaborator.innerHTML = `
-        <p>${collaboratorInfo.name}</p>
-        <div class="deleteCollaboratorBtn" data-userEmail="${collaboratorInfo.userEmail}">
-          <p>Remove</p>
-        </div>
-        `;
-
-        collaborator
-          .querySelector(".deleteCollaboratorBtn")
-          .addEventListener("click", () => {
-            deleteCollaborator(collaboratorInfo);
-          });
-        collaborators.appendChild(collaborator);
-
-        async function deleteCollaborator(collaboratorInfo) {
-          if (
-            !DeleteAlert.renderDeleteAlertBox(
-              "collaborator",
-              collaboratorInfo.name
-            )
-          ) {
-            return;
-          }
-          const path = `api/notebooks/${notebookId}/collaborators?userEmail=${collaboratorInfo.userEmail}`;
-          const response = await FetchDataHandler.fetchData(path, "DELETE");
-          if (response.ok) {
-            MessageMaker.success("Collaborator removed.");
-          } else {
-            MessageMaker.failed("Error");
-          }
-        }
-      });
-      return collaborators;
-    }
-
-    function genInviationForm(notebookId) {
-      const form = document.createElement("div");
-      form.classList.add("invitationForm");
-      form.innerHTML = `
-      <p>Invite Collaborator</p>
-      <input
-        type="email"
-        id="inviteEmail"
-        placeholder="Email Address"
-      />
-      <input
-        type="text"
-        id="inviteMessage"
-        placeholder="Invitation message"
-      />
-      <div id="inviteBtn">Invite</div>
-      `;
-      form.querySelector("#inviteBtn").addEventListener("click", () => {
-        const inviteeEmail = form.querySelector("#inviteEmail").value;
-        const message = form.querySelector("#inviteMessage").value;
-        if (!Validator.validateEmailFormat(inviteeEmail)) {
-          MessageMaker.failed("Invalid email format.");
-          return;
-        }
-        inviteCollaborator(inviteeEmail, message, notebookId);
-        form.querySelector("#inviteEmail").value = "";
-        form.querySelector("#inviteMessage").value = "";
-        document
-          .querySelector(".collaboratorForm")
-          .classList.add("display-none");
-      });
-
-      return form;
-
-      async function inviteCollaborator(inviteeEmail, message, notebookId) {
-        const path = `/api/notebooks/${notebookId}/invitations`;
-        try {
-          const response = await FetchDataHandler.fetchData(path, "POST", {
-            inviteeEmail,
-            message,
-          });
-          if (response.ok) {
-            MessageMaker.success("Success!");
-          } else if (response.status === 400) {
-            MessageMaker.failed("Invalid email address");
-          } else if (response.status === 409) {
-            MessageMaker.warning("The invitation has been sent.");
-          }
-        } catch (e) {
-          MessageMaker.failed("Error");
-        }
-      }
-    }
   }
 }

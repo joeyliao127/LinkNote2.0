@@ -362,6 +362,7 @@ class SideBarRender {
     this.#selectedNotebookBtns[notebook.id] = element;
     element.addEventListener("click", () => {
       this.#notebookRender.resetFilter();
+      this.#notebookRender.resetTagFilter();
       if (renderPage === "myNotebooks") {
         this.#renderSelectBtn("myNotebookBtn");
         this.#notebookRender.renderNotebook(notebook);
