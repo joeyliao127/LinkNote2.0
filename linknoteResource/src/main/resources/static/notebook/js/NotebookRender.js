@@ -193,18 +193,13 @@ class NotebookRender {
       notebookBtnCtn = this.#genMyNotebooksToolBar(notebookInfo);
       noteCtn.appendChild(notebookBtnCtn);
     } else if (renderPage === "myNotebook") {
-      notebookBtnCtn = this.#genNotebookToolBar(notebookInfo);
-      notebookBtnCtn.appendChild(
-        await this.genCollaboratorForm(notebookInfo.id)
-      );
+      notebookBtnCtn = await this.#genNotebookToolBar(notebookInfo);
+
       noteCtn.appendChild(notebookBtnCtn);
     } else if (renderPage === "coNotebooks") {
     } else if (renderPage === "coNotebook") {
-      notebookBtnCtn = this.#genCoNotebookToolBar(notebookInfo.id);
+      notebookBtnCtn = await this.#genCoNotebookToolBar(notebookInfo.id);
       noteCtn.appendChild(notebookBtnCtn);
-      notebookBtnCtn.appendChild(
-        await this.genCollaboratorForm(notebookInfo.id)
-      );
     }
     const noteTitle = document.createElement("h5");
     noteTitle.textContent = "Notes";
@@ -314,28 +309,36 @@ class NotebookRender {
     return toolBarCtn;
   }
 
-  #genNotebookToolBar(notebookInfo) {
+  async #genNotebookToolBar(notebookInfo) {
     const toolBarCtn = document.createElement("div");
     toolBarCtn.classList.add("toolBar");
     toolBarCtn.appendChild(this.#genCreateNoteBtn(notebookInfo.id));
     toolBarCtn.appendChild(this.#genAddCollabortorBtn(notebookInfo.id));
-    toolBarCtn.appendChild(this.#genAllNoteBtn(notebookInfo.id));
-    toolBarCtn.appendChild(this.#genTagBtn(notebookInfo.id));
-    toolBarCtn.appendChild(this.#genSortByTime(notebookInfo.id));
-    toolBarCtn.appendChild(this.#genStar(notebookInfo.id));
-    toolBarCtn.appendChild(this.#genSearchNoteInput(notebookInfo.id));
+    toolBarCtn.appendChild(this.#genAllNoteBtn(notebookInfo.id, "myNotebook"));
+    toolBarCtn.appendChild(
+      await this.#genTagBtn(notebookInfo.id, "myNotebook")
+    );
+    toolBarCtn.appendChild(this.#genSortByTime(notebookInfo.id, "myNotebook"));
+    toolBarCtn.appendChild(this.#genStar(notebookInfo.id, "myNotebook"));
+    toolBarCtn.appendChild(
+      this.#genSearchNoteInput(notebookInfo.id, "myNotebook")
+    );
     toolBarCtn.appendChild(this.#genDeleteNotebookBtn(notebookInfo));
+    toolBarCtn.appendChild(await this.#genNotebookTagForm(notebookInfo.id));
+    toolBarCtn.appendChild(await this.#genCollaboratorForm(notebookInfo.id));
     return toolBarCtn;
   }
-  #genCoNotebookToolBar(notebookId) {
+  async #genCoNotebookToolBar(notebookId) {
     const toolBarCtn = document.createElement("div");
     toolBarCtn.classList.add("toolBar");
     toolBarCtn.appendChild(this.#genCreateNoteBtn(notebookId));
-    toolBarCtn.appendChild(this.#genAllNoteBtn());
-    toolBarCtn.appendChild(this.#genTagBtn(notebookId));
-    toolBarCtn.appendChild(this.#genSortByTime());
-    toolBarCtn.appendChild(this.#genStar());
-    toolBarCtn.appendChild(this.#genSearchNoteInput());
+    toolBarCtn.appendChild(this.#genAllNoteBtn(notebookId, "coNotebook"));
+    toolBarCtn.appendChild(await this.#genTagBtn(notebookId, "coNotebook"));
+    toolBarCtn.appendChild(this.#genSortByTime(notebookId, "coNotebook"));
+    toolBarCtn.appendChild(this.#genStar(notebookId, "coNotebook"));
+    toolBarCtn.appendChild(this.#genSearchNoteInput(notebookId, "coNotebook"));
+    toolBarCtn.appendChild(await this.#genNotebookTagForm(notebookId));
+    toolBarCtn.appendChild(await this.#genCollaboratorForm(notebookId));
     return toolBarCtn;
   }
 
@@ -369,17 +372,16 @@ class NotebookRender {
     src="https://cdn.linknote.online/linknote-icons/addCollaborator.png"
     alt="collaboratorBtn"
   />`;
-    collaboratorBtn.addEventListener("click", displayCollaboratorForm);
-    return collaboratorBtn;
-
-    function displayCollaboratorForm() {
+    collaboratorBtn.addEventListener("click", () => {
       document
         .querySelector(".collaboratorForm")
         .classList.toggle("display-none");
-    }
+      document.querySelector(".tagForm").classList.add("display-none");
+    });
+    return collaboratorBtn;
   }
 
-  #genAllNoteBtn() {
+  #genAllNoteBtn(notebookId, renderPage) {
     const allNoteBtn = document.createElement("div");
     allNoteBtn.classList.add("toolBtn");
     allNoteBtn.id = "allNoteBtn";
@@ -389,16 +391,18 @@ class NotebookRender {
         alt="box"
       />`;
     allNoteBtn.addEventListener("click", () => {
-      if (this.#toolBarCurrentSelectBtn === "allNoteBtn") {
-        return;
-      }
-      this.#toolBarCurrentSelectBtn = "allNoteBtn";
-      this.#renderToolBarSelected("allNoteBtn");
+      this.resetFilter();
+      this.renderNoteCardCtn(notebookId, renderPage);
+      // if (this.#toolBarCurrentSelectBtn === "allNoteBtn") {
+      //   return;
+      // }
+      // this.#toolBarCurrentSelectBtn = "allNoteBtn";
+      // this.#renderToolBarSelected("allNoteBtn");
     });
     return allNoteBtn;
   }
 
-  #genTagBtn() {
+  async #genTagBtn(notebookId, renderPage) {
     const tagBtn = document.createElement("div");
     tagBtn.classList.add("toolBtn");
     tagBtn.id = "tagBtn";
@@ -409,16 +413,18 @@ class NotebookRender {
       />`;
 
     tagBtn.addEventListener("click", () => {
-      if (this.#toolBarCurrentSelectBtn === "tagBtn") {
-        return;
-      }
-      this.#toolBarCurrentSelectBtn = "tagBtn";
-      this.#renderToolBarSelected("tagBtn");
+      document.querySelector(".tagForm").classList.toggle("display-none");
+      document.querySelector(".collaboratorForm").classList.add("display-none");
+      // if (this.#toolBarCurrentSelectBtn === "tagBtn") {
+      //   return;
+      // }
+      // this.#toolBarCurrentSelectBtn = "tagBtn";
+      // this.#renderToolBarSelected("tagBtn");
     });
     return tagBtn;
   }
 
-  #genSortByTime() {
+  #genSortByTime(notebookId, renderPage) {
     const sortByTimeBtn = document.createElement("div");
     sortByTimeBtn.classList.add("toolBtn");
     sortByTimeBtn.id = "sortByTimeBtn";
@@ -429,16 +435,16 @@ class NotebookRender {
       />
     `;
     sortByTimeBtn.addEventListener("click", () => {
-      if (this.#toolBarCurrentSelectBtn === "sortBtn") {
-        return;
-      }
-      this.#toolBarCurrentSelectBtn = "sortBtn";
-      this.#renderToolBarSelected("sortBtn");
+      // if (this.#toolBarCurrentSelectBtn === "sortBtn") {
+      //   return;
+      // }
+      // this.#toolBarCurrentSelectBtn = "sortBtn";
+      // this.#renderToolBarSelected("sortBtn");
     });
     return sortByTimeBtn;
   }
 
-  #genStar() {
+  #genStar(notebookId, renderPage) {
     const starBtn = document.createElement("div");
     starBtn.classList.add("toolBtn");
     starBtn.id = "starBtn";
@@ -449,17 +455,16 @@ class NotebookRender {
   />
     `;
     starBtn.addEventListener("click", () => {
-      if (this.#toolBarCurrentSelectBtn === "starBtn") {
-        return;
-      }
-
-      this.#toolBarCurrentSelectBtn = "starBtn";
-      this.#renderToolBarSelected("starBtn");
+      // if (this.#toolBarCurrentSelectBtn === "starBtn") {
+      //   return;
+      // }
+      // this.#toolBarCurrentSelectBtn = "starBtn";
+      // this.#renderToolBarSelected("starBtn");
     });
     return starBtn;
   }
 
-  #genSearchNoteInput() {
+  #genSearchNoteInput(notebookId, renderPage) {
     const searchInput = document.createElement("div");
     searchInput.innerHTML = `
     <input
@@ -498,10 +503,106 @@ class NotebookRender {
     }
   }
 
-  renderNoteCardCtn(notebookId, renderPage) {
+  async #genNotebookTagForm(notebookId) {
+    const tagForm = document.createElement("div");
+    tagForm.classList.add("tagForm");
+    tagForm.classList.add("display-none");
+    tagForm.innerHTML = `
+    <h5>Tags</h5>
+    <div class="tagCtn">
+    </div>
+    <div class="createTagForm">
+    <input
+      type="text"
+      id="createTagName"
+      placeholder="Create new tag"
+    />
+    <button id="createTagBtn">Create</button>
+  </div>
+    `;
+    const path = `/api/notebooks/${notebookId}/tags`;
+    const response = await FetchDataHandler.fetchData(path, "GET");
+    if (!response.ok) {
+      MessageMaker.failed("Get tag Failed.");
+      return;
+    }
+    const data = await response.json();
+    const tags = data.tags;
+    if (tags.length === 0) {
+      return tagForm;
+    }
+    tags.forEach((tag) => {
+      tagForm.querySelector(".tagCtn").appendChild(genTagBtn(tag));
+    });
+
+    tagForm
+      .querySelector("#createTagBtn")
+      .addEventListener("click", async () => {
+        createTagHandler();
+      });
+    tagForm
+      .querySelector("#createTagName")
+      .addEventListener("keypress", async (e) => {
+        if (e.key === "Enter") {
+          createTagHandler();
+        }
+      });
+
+    return tagForm;
+
+    async function createTagHandler() {
+      const newTagInput = tagForm.querySelector("#createTagName");
+      const newTag = newTagInput.value;
+      const path = `/api/notebooks/${notebookId}/tags`;
+      const requestBody = {
+        name: newTag,
+      };
+      const response = await FetchDataHandler.fetchData(
+        path,
+        "POST",
+        requestBody
+      );
+      if (response.ok) {
+        const data = await response.json();
+        const tag = {
+          name: newTag,
+          tagId: data.tagId,
+        };
+        newTagInput.value = "";
+        tagForm.querySelector(".tagCtn").appendChild(genTagBtn(tag));
+      } else {
+        MessageMaker.failed("Create tag Failed.");
+      }
+    }
+
+    function genTagBtn(tag) {
+      const tagDiv = document.createElement("div");
+      tagDiv.classList.add("tag");
+      tagDiv.innerHTML = `
+      <p>${tag.name}</p>
+      <div class="deleteTagBtn">
+        <p>Remove</p>
+      </div>
+      `;
+      tagDiv
+        .querySelector(".deleteTagBtn")
+        .addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const path = `/api/notebooks/${notebookId}/tags?tagId=${tag.tagId}`;
+          const response = await FetchDataHandler.fetchData(path, "DELETE");
+          if (response.ok) {
+            MessageMaker.success(`Delete tag ${tag.name} success!`);
+          }
+          tagDiv.remove();
+        });
+      return tagDiv;
+    }
+  }
+
+  async renderNoteCardCtn(notebookId, renderPage) {
     const noteCtn = document.querySelector(".noteCtn");
     document.querySelector(".noteCardCtn").remove();
-    const noteCardCtn = this.genNoteCardCtn(notebookId, renderPage);
+    const noteCardCtn = await this.genNoteCardCtn(notebookId, renderPage);
     noteCtn.appendChild(noteCardCtn);
   }
 
@@ -528,13 +629,11 @@ class NotebookRender {
   }
 
   async getNotes(noteboookId) {
-    let path = `/api/notebooks/${noteboookId}/notes?
-    offset=${this.#filter.offset}&
-    limit=${this.#filter.limit}&
-    star=${this.#filter.star}&
-    tag=${this.#filter.tag}&
-    sortDesc=${this.#filter.sortDesc}&
-    keyword=${this.#filter.keyword}
+    let path = `/api/notebooks/${noteboookId}/notes?offset=${
+      this.#filter.offset
+    }&limit=${this.#filter.limit}&star=${this.#filter.star}&tag=${
+      this.#filter.tag
+    }&sortDesc=${this.#filter.sortDesc}&keyword=${this.#filter.keyword}
     `;
     try {
       const response = await FetchDataHandler.fetchData(path, "GET");
@@ -669,7 +768,7 @@ class NotebookRender {
     return noneElement;
   }
 
-  async genCollaboratorForm(notebookId) {
+  async #genCollaboratorForm(notebookId) {
     const form = document.createElement("div");
     form.classList.add("collaboratorForm");
     form.classList.add("display-none");
