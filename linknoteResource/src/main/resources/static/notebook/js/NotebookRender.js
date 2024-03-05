@@ -17,6 +17,12 @@ class NotebookRender {
   #currentTag;
   #tagsBtns = [];
 
+  #setFilter(key, value) {
+    this.#filter[key] = value;
+    this.#filter.offset = 0;
+    this.#renderToolBarSelected();
+  }
+
   #renderSelectedTag(target) {
     if (target) {
       this.#currentTag = target;
@@ -418,11 +424,6 @@ class NotebookRender {
       this.resetFilter();
       this.#renderToolBarSelected();
       this.renderNoteCardCtn(notebookId, renderPage);
-      // if (this.#toolBarCurrentSelectBtn === "allNoteBtn") {
-      //   return;
-      // }
-      // this.#toolBarCurrentSelectBtn = "allNoteBtn";
-      // this.#renderToolBarSelected("allNoteBtn");
     });
     return allNoteBtn;
   }
@@ -440,11 +441,6 @@ class NotebookRender {
     tagBtn.addEventListener("click", () => {
       document.querySelector(".tagForm").classList.toggle("display-none");
       document.querySelector(".collaboratorForm").classList.add("display-none");
-      // if (this.#toolBarCurrentSelectBtn === "tagBtn") {
-      //   return;
-      // }
-      // this.#toolBarCurrentSelectBtn = "tagBtn";
-      // this.#renderToolBarSelected("tagBtn");
     });
     return tagBtn;
   }
@@ -461,17 +457,11 @@ class NotebookRender {
     `;
     sortByTimeBtn.addEventListener("click", () => {
       if (this.#filter.sortDesc) {
-        this.#filter.sortDesc = false;
+        this.#setFilter("sortDesc", false);
       } else {
-        this.#filter.sortDesc = true;
+        this.#setFilter("sortDesc", true);
       }
-      this.#renderToolBarSelected();
       this.renderNoteCardCtn(notebookId, renderPage);
-      // if (this.#toolBarCurrentSelectBtn === "sortBtn") {
-      //   return;
-      // }
-      // this.#toolBarCurrentSelectBtn = "sortBtn";
-      // this.#renderToolBarSelected("sortBtn");
     });
     return sortByTimeBtn;
   }
@@ -488,17 +478,11 @@ class NotebookRender {
     `;
     starBtn.addEventListener("click", () => {
       if (this.#filter.star) {
-        this.#filter.star = false;
+        this.#setFilter("star", false);
       } else {
-        this.#filter.star = true;
+        this.#setFilter("star", true);
       }
-      this.#renderToolBarSelected();
       this.renderNoteCardCtn(notebookId, renderPage);
-      // if (this.#toolBarCurrentSelectBtn === "starBtn") {
-      //   return;
-      // }
-      // this.#toolBarCurrentSelectBtn = "starBtn";
-      // this.#renderToolBarSelected("starBtn");
     });
     return starBtn;
   }
@@ -520,13 +504,13 @@ class NotebookRender {
     searchInput.querySelector("input").addEventListener("keypress", (e) => {
       const keyword = searchInput.querySelector("input");
       if (e.key === "Enter") {
-        this.#filter.keyword = keyword.value;
+        this.#setFilter("keyword", keyword.value);
         this.renderNoteCardCtn(notebookId, renderPage);
       }
     });
     searchInput.querySelector("img").addEventListener("click", () => {
       const keyword = searchInput.querySelector("input");
-      this.#filter.keyword = keyword.value;
+      this.#setFilter("keyword", keyword.value);
       this.renderNoteCardCtn(notebookId, renderPage);
     });
     return searchInput;
@@ -582,9 +566,8 @@ class NotebookRender {
       tagForm.querySelector(".tagCtn").appendChild(tagBtn);
       this.#tagsBtns.push(tagBtn);
       tagBtn.addEventListener("click", () => {
-        this.#filter.tag = tag.name;
+        this.#setFilter("tag", tag.name);
         this.renderNoteCardCtn(notebookId, "myNotebook");
-        this.#renderToolBarSelected();
         this.#renderSelectedTag(tagBtn);
         tagForm.classList.add("display-none");
       });
@@ -797,7 +780,7 @@ class NotebookRender {
     if (notes.length === 0) {
       return noteCardCtn;
     } else {
-      notes.notes.forEach((note) => {
+      notes.forEach((note) => {
         noteCardCtn.appendChild(this.genNoteCard(note, notebookId));
       });
       return noteCardCtn;
@@ -805,22 +788,30 @@ class NotebookRender {
   }
 
   async getNotes(noteboookId) {
-    let path = `/api/notebooks/${noteboookId}/notes?offset=${
-      this.#filter.offset
-    }&limit=${this.#filter.limit}&star=${this.#filter.star}&tag=${
-      this.#filter.tag
-    }&sortDesc=${this.#filter.sortDesc}&keyword=${this.#filter.keyword}
-    `;
-    try {
-      const response = await FetchDataHandler.fetchData(path, "GET");
-      if (!response.ok) {
+    let notes = [];
+    while (true) {
+      let path = `/api/notebooks/${noteboookId}/notes?offset=${
+        this.#filter.offset
+      }&limit=${this.#filter.limit}&star=${this.#filter.star}&tag=${
+        this.#filter.tag
+      }&sortDesc=${this.#filter.sortDesc}&keyword=${this.#filter.keyword}
+      `;
+      try {
+        const response = await FetchDataHandler.fetchData(path, "GET");
+        if (!response.ok) {
+          MessageMaker.failed("Get notes failed");
+        }
+        const data = await response.json();
+        notes.push(...data.notes);
+        if (!data.nextPage) {
+          break;
+        }
+        this.#filter.offset += 20;
+      } catch (e) {
         MessageMaker.failed("Get notes failed");
       }
-      const notes = await response.json();
-      return notes;
-    } catch (e) {
-      MessageMaker.failed("Get notes failed");
     }
+    return notes;
   }
 
   genNoteCard(note, notebookId) {

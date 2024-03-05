@@ -396,13 +396,6 @@ class SideBarRender {
       }
     }
   }
-  #observer(element, offset, limit) {
-    const observe = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        entry.target.classList.toggle("", entry.isIntersecting);
-      });
-    });
-  }
 }
 
 const sideBarRender = new SideBarRender();
