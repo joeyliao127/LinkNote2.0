@@ -1,6 +1,6 @@
 const editor = new toastui.Editor({
   el: document.querySelector("#editor"),
-  height: "600px",
+  height: "93vh",
   initialEditType: "markdown",
   previewStyle: "vertical",
 });
