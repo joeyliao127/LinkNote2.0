@@ -63,7 +63,7 @@ class SideBarRender {
     const response = await FetchDataHandler.fetchData("/api/user/info", "GET");
     const data = await response.json();
     document.querySelector("#username").textContent = data.username;
-    document.querySelector("#email").textContent = data.email;
+    document.querySelector("#userEmail").textContent = data.email;
     localStorage.setItem("email", data.email);
     localStorage.setItem("username", data.username);
   }
@@ -362,8 +362,10 @@ class SideBarRender {
     this.#selectedNotebookBtns[notebook.id] = element;
     element.addEventListener("click", () => {
       if (renderPage === "myNotebooks") {
+        this.#renderSelectBtn("myNotebookBtn");
         this.#notebookRender.renderNotebook(notebook);
       } else {
+        this.#renderSelectBtn("coNotebookBtn");
         this.#notebookRender.renderCoNotebook(notebook);
       }
       this.#renderSelectNotebookBtn(notebook.id);

@@ -57,17 +57,21 @@ class NotebookRender {
   }
 
   async renderNotebook(notebook) {
-    const notebookArea = document.querySelector(".notebookArea");
-    notebookArea.innerHTML = "";
+    const notebookArea = document.createElement("section");
+    notebookArea.classList.add("notebookArea");
+    notebookArea.classList.add("scroll");
     const noteCtn = await this.genNoteCtn(notebook, "myNotebook");
     notebookArea.appendChild(noteCtn);
+    ReRenderElement.reRenderMain(notebookArea);
   }
 
   async renderCoNotebook(notebook) {
-    const notebookArea = document.querySelector(".notebookArea");
-    notebookArea.innerHTML = "";
+    const notebookArea = document.createElement("section");
+    notebookArea.classList.add("notebookArea");
+    notebookArea.classList.add("scroll");
     const noteCtn = await this.genNoteCtn(notebook, "coNotebook");
     notebookArea.appendChild(noteCtn);
+    ReRenderElement.reRenderMain(notebookArea);
   }
 
   async renderNotebookArea(renderPage) {
@@ -110,7 +114,7 @@ class NotebookRender {
 
       searchElemet.addEventListener("keypress", (e) => {
         const keyword = searchElemet.value;
-        if (e.key === "Enter" && keyword) {
+        if (e.key === "Enter") {
           this.renderNotebookCtn(path + `&keyword=${keyword}`);
           return;
         }
