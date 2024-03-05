@@ -33,8 +33,11 @@ class NotebookRender {
   #tagsBtns = [];
 
   #renderSelectedTag(target) {
-    this.#currentTag = target;
-    target.classList.add("selected");
+    if (target) {
+      this.#currentTag = target;
+      target.classList.add("selected");
+    }
+
     for (let i = 0; i < this.#tagsBtns.length; i++) {
       if (this.#tagsBtns[i] !== target) {
         console.log(this.#tagsBtns[i]);
@@ -54,7 +57,8 @@ class NotebookRender {
       tag: [],
       sort: false,
     };
-
+    this.#currentTag = "";
+    this.#renderSelectedTag();
     this.#notebooksOffset = 0;
     this.#notebooksLimit = 20;
   }
@@ -449,6 +453,12 @@ class NotebookRender {
       />
     `;
     sortByTimeBtn.addEventListener("click", () => {
+      if (this.#filter.sortDesc) {
+        this.#filter.sortDesc = false;
+      } else {
+        this.#filter.sortDesc = true;
+      }
+      this.renderNoteCardCtn(notebookId, renderPage);
       // if (this.#toolBarCurrentSelectBtn === "sortBtn") {
       //   return;
       // }
@@ -469,6 +479,12 @@ class NotebookRender {
   />
     `;
     starBtn.addEventListener("click", () => {
+      if (this.#filter.star) {
+        this.#filter.star = false;
+      } else {
+        this.#filter.star = true;
+      }
+      this.renderNoteCardCtn(notebookId, renderPage);
       // if (this.#toolBarCurrentSelectBtn === "starBtn") {
       //   return;
       // }
@@ -493,10 +509,17 @@ class NotebookRender {
     searchInput.classList.add("searchNote");
     searchInput.classList.add("search");
     searchInput.querySelector("input").addEventListener("keypress", (e) => {
+      const keyword = searchInput.querySelector("input");
       if (e.key === "Enter") {
+        this.#filter.keyword = keyword.value;
+        this.renderNoteCardCtn(notebookId, renderPage);
       }
     });
-    searchInput.querySelector("img").addEventListener("click", () => {});
+    searchInput.querySelector("img").addEventListener("click", () => {
+      const keyword = searchInput.querySelector("input");
+      this.#filter.keyword = keyword.value;
+      this.renderNoteCardCtn(notebookId, renderPage);
+    });
     return searchInput;
   }
 
