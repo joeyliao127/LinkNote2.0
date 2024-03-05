@@ -1,29 +1,14 @@
 class NotebookRender {
+  constructor() {}
   #role;
   #filter = {
     offset: 0,
     limit: 20,
     star: false,
     keyword: null,
-    tag: [],
+    tag: null,
     sortDesc: false,
   };
-
-  #renderToolBarSelected(target) {
-    const btns = {
-      allNoteBtn: document.querySelector("#allNoteBtn"),
-      tagBtn: document.querySelector("#tagBtn"),
-      sortBtn: document.querySelector("#sortByTimeBtn"),
-      starBtn: document.querySelector("#starBtn"),
-    };
-    for (let [key, value] of Object.entries(btns)) {
-      if (key === target) {
-        value.classList.add("selected");
-      } else {
-        value.classList.remove("selected");
-      }
-    }
-  }
 
   resetTagFilter() {
     this.#currentTag = "";
@@ -47,6 +32,28 @@ class NotebookRender {
   }
   #notebooksOffset = 0;
   #notebooksLimit = 20;
+  #renderToolBarSelected() {
+    if (this.#filter.star) {
+      document.querySelector("#starBtn").classList.add("selected");
+    } else {
+      document.querySelector("#starBtn").classList.remove("selected");
+    }
+    if (this.#filter.sortDesc) {
+      document.querySelector("#sortByTimeBtn").classList.add("selected");
+    } else {
+      document.querySelector("#sortByTimeBtn").classList.remove("selected");
+    }
+    if (this.#filter.tag) {
+      document.querySelector("#tagBtn").classList.add("selected");
+    } else {
+      document.querySelector("#tagBtn").classList.remove("selected");
+    }
+    if (!this.#filter.star && !this.#filter.sortDesc && !this.#filter.tag) {
+      document.querySelector("#allNoteBtn").classList.add("selected");
+    } else {
+      document.querySelector("#allNoteBtn").classList.remove("selected");
+    }
+  }
 
   resetFilter() {
     this.#filter = {
@@ -54,7 +61,7 @@ class NotebookRender {
       limit: 20,
       star: false,
       keyword: null,
-      tag: [],
+      tag: null,
       sort: false,
     };
     this.#currentTag = "";
@@ -62,7 +69,6 @@ class NotebookRender {
     this.#notebooksOffset = 0;
     this.#notebooksLimit = 20;
   }
-  constructor() {}
 
   async renderMyNotebooks() {
     this.#role = "owner";
@@ -410,6 +416,7 @@ class NotebookRender {
       />`;
     allNoteBtn.addEventListener("click", () => {
       this.resetFilter();
+      this.#renderToolBarSelected();
       this.renderNoteCardCtn(notebookId, renderPage);
       // if (this.#toolBarCurrentSelectBtn === "allNoteBtn") {
       //   return;
@@ -458,6 +465,7 @@ class NotebookRender {
       } else {
         this.#filter.sortDesc = true;
       }
+      this.#renderToolBarSelected();
       this.renderNoteCardCtn(notebookId, renderPage);
       // if (this.#toolBarCurrentSelectBtn === "sortBtn") {
       //   return;
@@ -484,6 +492,7 @@ class NotebookRender {
       } else {
         this.#filter.star = true;
       }
+      this.#renderToolBarSelected();
       this.renderNoteCardCtn(notebookId, renderPage);
       // if (this.#toolBarCurrentSelectBtn === "starBtn") {
       //   return;
@@ -575,6 +584,7 @@ class NotebookRender {
       tagBtn.addEventListener("click", () => {
         this.#filter.tag = tag.name;
         this.renderNoteCardCtn(notebookId, "myNotebook");
+        this.#renderToolBarSelected();
         this.#renderSelectedTag(tagBtn);
         tagForm.classList.add("display-none");
       });
