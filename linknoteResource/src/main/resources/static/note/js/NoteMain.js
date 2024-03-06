@@ -140,6 +140,7 @@ class NoteMain {
     this.#renderNotebookTags();
     tagBtnListener();
     displayFilterBtnListener();
+    signOutBtnListener();
 
     document
       .querySelector(".searchNote input")
@@ -236,6 +237,13 @@ class NoteMain {
     function setUserEmail() {
       document.querySelector(".userEmail p").textContent =
         localStorage.getItem("email");
+    }
+
+    function signOutBtnListener() {
+      document.querySelector(".signoutBtn").addEventListener("click", () => {
+        localStorage.clear();
+        window.location.href = "/";
+      });
     }
   }
 
