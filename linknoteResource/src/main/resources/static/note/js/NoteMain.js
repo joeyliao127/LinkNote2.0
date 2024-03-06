@@ -21,13 +21,71 @@ class NoteMain {
   };
 
   #setFilter(key, value) {
-    this.#filter[key] = value;
+    if (key === null) {
+      this.#filter = {
+        limit: 20,
+        offset: 0,
+        star: false,
+        sortDesc: false,
+        tag: null,
+        keyword: null,
+      };
+    } else {
+      this.#filter[key] = value;
+    }
     this.#renderNoteCtn();
   }
 
+  #renderTagFilter(tagItem) {
+    this.#tags.forEach((tag) => {
+      if (tag !== tagItem) {
+        tag.classList.remove("selected");
+      }
+    });
+    document.querySelector(".notebookTagCtn").classList.add("display-none");
+    this.#renderFilterSelect();
+  }
+
+  #renderFilterSelect() {
+    if (this.#filter.star) {
+      document
+        .querySelector(".starBtn .filterCheck")
+        .classList.remove("display-none");
+    } else {
+      document
+        .querySelector(".starBtn .filterCheck")
+        .classList.add("display-none");
+    }
+
+    if (this.#filter.sortDesc) {
+      document
+        .querySelector(".sortBtn .filterCheck")
+        .classList.remove("display-none");
+    } else {
+      document
+        .querySelector(".sortBtn .filterCheck")
+        .classList.add("display-none");
+    }
+
+    if (!this.#filter.star && !this.#filter.sortDesc) {
+      document
+        .querySelector(".allNoteBtn .filterCheck")
+        .classList.remove("display-none");
+    } else {
+      document
+        .querySelector(".allNoteBtn .filterCheck")
+        .classList.add("display-none");
+    }
+  }
+
+  #hiddenFilterCtn() {
+    document.querySelector(".filterCtn").classList.add("display-none");
+    document.querySelector(".tagCtn").classList.add("display-none");
+  }
   #notebookId;
   #noteId;
   #notes;
+  #tags = [];
   #getId(target) {
     const url = window.location.href.split("/");
 
@@ -50,7 +108,7 @@ class NoteMain {
         this.#filter.limit
       }&offset=${offset}&sortDesc=${this.#filter.sortDesc}&tag=${
         this.#filter.tag
-      }&keyword=${this.#filter.keyword}`;
+      }&keyword=${this.#filter.keyword}&star=${this.#filter.star}`;
 
       const response = await FetchDataHandler.fetchData(path, "GET");
 
@@ -92,9 +150,58 @@ class NoteMain {
         }
       });
 
+    document
+      .querySelector(".searchNote input")
+      .addEventListener("click", (e) => {
+        if (e.key === "Enter") {
+          this.#hiddenFilterCtn();
+        }
+      });
+
     document.querySelector(".searchNote img").addEventListener("click", () => {
       const keyword = document.querySelector(".searchNote input").value;
       this.#setFilter("keyword", keyword);
+    });
+
+    const filterCtn = document.querySelector(".filterCtn");
+    const allNoteBtn = document.querySelector(".allNoteBtn");
+    const starBtn = document.querySelector(".starBtn");
+    const sortBtn = document.querySelector(".sortBtn");
+
+    allNoteBtn.addEventListener("click", () => {
+      this.#setFilter(null);
+      filterCtn.classList.add("display-none");
+      this.#renderFilterSelect();
+    });
+
+    starBtn.addEventListener("click", () => {
+      const hasStar = starBtn
+        .querySelector(".filterCheck")
+        .classList.contains("display-none");
+
+      if (hasStar) {
+        this.#setFilter("star", true);
+      } else {
+        this.#setFilter("star", false);
+      }
+
+      filterCtn.classList.add("display-none");
+      this.#renderFilterSelect();
+    });
+
+    sortBtn.addEventListener("click", () => {
+      const hasSort = sortBtn
+        .querySelector(".filterCheck")
+        .classList.contains("display-none");
+
+      if (hasSort) {
+        this.#setFilter("sortDesc", true);
+      } else {
+        this.#setFilter("sortDesc", false);
+      }
+
+      filterCtn.classList.add("display-none");
+      this.#renderFilterSelect();
     });
 
     function hiddenSideBarBtnListener() {
@@ -136,12 +243,35 @@ class NoteMain {
     const tagArea = document.querySelector(".tagArea");
 
     this.#notes.tags.forEach((tag) => {
-      tagArea.appendChild(genTag(this.#notebookId, tag));
+      const tagItem = genTag(tag);
+      this.#tags.push(tagItem);
+      tagItem.addEventListener("click", () => {
+        tagItem.classList.add("selected");
+        this.#setFilter("tag", tag.name);
+        this.#renderTagFilter(tagItem);
+      });
+
+      tagItem
+        .querySelector(".deleteTagBtn")
+        .addEventListener("click", async () => {
+          const path = `/api/notebooks/${this.#notebookId}/tags?tagId=${
+            tag.tagId
+          }`;
+          const response = await FetchDataHandler.fetchData(path, "DELETE");
+          if (response.ok) {
+            MessageMaker.success(`Remove tag ${tag.name} success!`);
+
+            this.#renderTagFilter();
+            this.#renderFilterSelect(null);
+            tagItem.remove();
+          }
+        });
+      tagArea.appendChild(tagItem);
     });
 
     createTagBtnListener(this.#notebookId);
 
-    function genTag(notebookId, tag) {
+    function genTag(tag) {
       const tagItem = document.createElement("div");
       tagItem.classList.add("tag");
       tagItem.innerHTML = `
@@ -150,16 +280,7 @@ class NoteMain {
           <p>Removev</p>
         </div>
       `;
-      tagItem
-        .querySelector(".deleteTagBtn")
-        .addEventListener("click", async () => {
-          const path = `/api/notebooks/${notebookId}/tags?tagId=${tag.tagId}`;
-          const response = await FetchDataHandler.fetchData(path, "DELETE");
-          if (response.ok) {
-            MessageMaker.success(`Remove tag ${tag.name} success!`);
-            tagItem.remove();
-          }
-        });
+
       return tagItem;
     }
 

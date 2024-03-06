@@ -29,7 +29,7 @@
   user-select: none;
   overflow: hidden;
   &:hover {
-    background-color: #333;
+    background-color: #999;
   }
   img {
     width: 20px;

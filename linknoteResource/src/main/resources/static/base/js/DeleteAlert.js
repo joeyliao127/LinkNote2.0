@@ -25,7 +25,7 @@ class DeleteAlert {
       const deleteBtn = alertBoxWrapper.querySelector("#delete");
       deleteBtn.addEventListener("click", () => {
         FetchDataHandler.fetchData(path, "DELETE");
-        window.location.href = window.location.href;
+        window.location.href = "/notebooks";
       });
     }
 
