@@ -1,6 +1,6 @@
 .sideBar {
   position: fixed;
-  left: 0px;
+  left: -300px;
   top: 0;
   width: 300px;
   background-color: #222;
@@ -14,11 +14,12 @@
   border-bottom-right-radius: 7px;
   height: 100vh;
   gap: 10px;
+  transition: all ease-in-out 0.3s;
   box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
 }
 
 .displaySideBar {
-  left: -300px;
+  left: 0;
 }
 .sideBarWrapper {
   position: fixed;
