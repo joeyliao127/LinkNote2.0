@@ -8,6 +8,7 @@ import com.joeyliao.linknoteresource.notebook.po.GetNotebooksRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.CreateNotebookRequestPo;
 import com.joeyliao.linknoteresource.notebook.po.UpdateNotebookPo;
 import com.joeyliao.linknoteresource.notebook.rowmapper.AllNotebooksRowMapper;
+import com.joeyliao.linknoteresource.notebook.rowmapper.NotebookNameRowMapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,5 +137,19 @@ public class NotebookDAOImpl implements NotebookDAO {
     map.put("notebookId", notebookId);
     List<NotebookOwnerDTO> dtos = namedParameterJdbcTemplate.query(sql, map, new NotebookOwnerRowMapper());
     return dtos.get(0);
+  }
+
+  @Override
+  public String getNotebookName(String notebookId) {
+    String sql = """
+        SELECT name FROM notebooks WHERE id = :id
+        """;
+    Map<String, Object> map = new HashMap<>();
+    map.put("id", notebookId);
+    List<String> list =  namedParameterJdbcTemplate.query(sql, map, new NotebookNameRowMapper());
+    if(list.isEmpty()){
+      return null;
+    }
+    return list.get(0);
   }
 }
