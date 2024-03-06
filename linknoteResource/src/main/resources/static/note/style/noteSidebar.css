@@ -119,7 +119,7 @@
 }
 .filterCtn {
   position: absolute;
-
+  z-index: 20;
   background-color: #292929;
   width: 180px;
   border-radius: 5px;
@@ -184,6 +184,7 @@
   border: 1px solid #666;
   border-radius: 5px;
   background-color: #292929;
+  z-index: 20;
   .title {
     color: #999;
     font-weight: 700;
@@ -233,7 +234,6 @@
 .note .star {
   width: 18px;
   height: 18px;
-  background-image: url(https://cdn.linknote.online/linknote-icons/empty-star.png);
   background-size: cover;
   position: relative;
   right: 5px;
@@ -241,6 +241,15 @@
     background-image: url(https://cdn.linknote.online/linknote-icons/full-star.png);
   }
 }
+
+.star-empty {
+  background-image: url(https://cdn.linknote.online/linknote-icons/empty-star.png);
+}
+
+.star-full {
+  background-image: url(https://cdn.linknote.online/linknote-icons/full-star.png);
+}
+
 .sideBarBottom {
   width: 100%;
   margin-top: 10px;

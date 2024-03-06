@@ -6,6 +6,7 @@ class NoteMain {
     this.#notebookId = this.#getId("notebook");
     this.#noteId = this.#getId("note");
     this.#notes = await this.#getNotes();
+    this.#renderNoteCtn();
     this.#renderSideBar(this.#notes);
     this.#renderTopBar(this.#notes);
   }
@@ -19,7 +20,10 @@ class NoteMain {
     keyword: null,
   };
 
-  #setFilter(key, value) {}
+  #setFilter(key, value) {
+    this.#filter[key] = value;
+    this.#renderNoteCtn();
+  }
 
   #notebookId;
   #noteId;
@@ -72,14 +76,26 @@ class NoteMain {
   }
 
   #renderSideBar() {
-    console.log(this.#notes);
     hiddenSideBarBtnListener();
     setNotebookName(this.#notes.notebookName);
     setUserEmail();
-    searchNoteListener();
     this.#renderNotebookTags();
     tagBtnListener();
     displayFilterBtnListener();
+
+    document
+      .querySelector(".searchNote input")
+      .addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          const keyword = document.querySelector(".searchNote input").value;
+          this.#setFilter("keyword", keyword);
+        }
+      });
+
+    document.querySelector(".searchNote img").addEventListener("click", () => {
+      const keyword = document.querySelector(".searchNote input").value;
+      this.#setFilter("keyword", keyword);
+    });
 
     function hiddenSideBarBtnListener() {
       document
@@ -93,29 +109,10 @@ class NoteMain {
       document.querySelector(".notebookName").textContent = notebookName;
     }
 
-    function searchNoteListener() {
-      document
-        .querySelector(".searchNote input")
-        .addEventListener("keypress", (e) => {
-          if (e.key === "Enter") {
-            const keyword = document.querySelector(".searchNote input").value;
-            this.#setFilter("keyword", keyword);
-            this.#renderNoteCtn();
-          }
-        });
-
-      document
-        .querySelector(".searchNote img")
-        .addEventListener("click", () => {
-          const keyword = document.querySelector(".searchNote input").value;
-          this.#setFilter("keyword", keyword);
-          this.#renderNoteCtn();
-        });
-    }
-
     function displayFilterBtnListener() {
       document.querySelector(".filter").addEventListener("click", () => {
         document.querySelector(".filterCtn").classList.toggle("display-none");
+        document.querySelector(".notebookTagCtn").classList.add("display-none");
       });
     }
 
@@ -126,6 +123,7 @@ class NoteMain {
           document
             .querySelector(".notebookTagCtn")
             .classList.toggle("display-none");
+          document.querySelector(".filterCtn").classList.add("display-none");
         });
     }
     function setUserEmail() {
@@ -206,7 +204,65 @@ class NoteMain {
     }
   }
 
-  #renderNoteCtn(notes) {}
+  async #renderNoteCtn() {
+    const data = await this.#getNotes();
+    const notes = data.notes;
+    const noteArea = document.querySelector(".noteArea");
+    noteArea.innerHTML = "";
+    notes.forEach((note) => {
+      noteArea.appendChild(genNote(note, this.#notebookId));
+    });
+
+    function genNote(note, notebookId) {
+      const noteItem = document.createElement("div");
+      noteItem.classList.add("note");
+      noteItem.innerHTML = `
+        <p>${note.name}</p>
+        <div class="star"></div>
+      `;
+      if (note.star) {
+        noteItem.querySelector(".star").classList.add("star-full");
+      } else {
+        noteItem.querySelector(".star").classList.add("star-empty");
+      }
+      updateStarBtnListener(note.noteId, note.name, notebookId);
+      return noteItem;
+
+      function updateStarBtnListener(noteId, noteName, notebookId) {
+        const starBtn = noteItem.querySelector(".star");
+        let requestBody;
+        starBtn.addEventListener("click", async () => {
+          const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
+
+          if (starBtn.classList.contains("star-full")) {
+            noteItem.querySelector(".star").classList.remove("star-full");
+            noteItem.querySelector(".star").classList.add("star-empty");
+            requestBody = {
+              name: noteName,
+              star: false,
+            };
+          } else {
+            noteItem.querySelector(".star").classList.add("star-full");
+            noteItem.querySelector(".star").classList.remove("star-empty");
+            requestBody = {
+              name: noteName,
+              star: true,
+            };
+          }
+
+          const response = await FetchDataHandler.fetchData(
+            path,
+            "PUT",
+            requestBody
+          );
+          if (!response.ok) {
+            MessageMaker.failed("Error: update star Failed.");
+            return;
+          }
+        });
+      }
+    }
+  }
 
   #renderTopBar(notes) {
     hiddenSideBar();
