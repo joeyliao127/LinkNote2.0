@@ -14,6 +14,7 @@ import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.service.TagService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -34,6 +35,9 @@ public class NotebookServiceImpl implements NotebookService {
 
   @Autowired
   UUIDGeneratorService uuidGeneratorService;
+
+  @Value("${authenticationServer}")
+  String authenticationServer;
 
   @Transactional
   @Override
@@ -103,7 +107,7 @@ public class NotebookServiceImpl implements NotebookService {
     HttpHeaders headers = new HttpHeaders();
     headers.set("Authorization", Authorization);
     HttpEntity<UserInfo> requestEntity = new HttpEntity<>(headers);
-    String url = "http://localhost:8080/api/user/info";
+    String url = "http://"+ authenticationServer +"/api/user/info";
     ResponseEntity<UserInfo> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,UserInfo.class);
     UserInfo body = response.getBody();
     return response.getBody();

@@ -10,7 +10,9 @@ import lombok.NonNull;
 public class UpdateInvitationPo {
  @NotNull
  private Boolean isAccept;
+ private String inviteeEmail;
  private String inviteeId;
+ @NotBlank
  private String notebookId;
  private String Authorization;
 }

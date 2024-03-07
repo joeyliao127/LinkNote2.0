@@ -106,7 +106,7 @@ public class NoteDAOImpl implements NoteDAO {
     map.put("id", po.getNoteId());
 
     if(po.getName() != null){
-      sql += ",name = :name";
+      sql += ",name = :name ";
       map.put("name", po.getName());
     }
     if(po.getQuestion() != null){

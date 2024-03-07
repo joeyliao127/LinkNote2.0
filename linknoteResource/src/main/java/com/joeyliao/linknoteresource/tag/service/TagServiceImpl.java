@@ -11,6 +11,7 @@ import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetTagResponsePo;
 import com.joeyliao.linknoteresource.tag.po.TagPo;
+import com.joeyliao.linknoteresource.tag.po.updateNoteTagRequestPo;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,7 @@ public class TagServiceImpl implements TagService {
     }
     tagDAO.createNotebookTags(po);
   }
+
 
   @Override
   public void createNoteTag(CreateNoteTagRequestPo po) {

@@ -10,6 +10,7 @@ import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetTagResponsePo;
 import com.joeyliao.linknoteresource.tag.po.TagPo;
+import com.joeyliao.linknoteresource.tag.po.updateNoteTagRequestPo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,6 +102,7 @@ public class TagDAOImpl implements TagDAO {
     }
     namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
   }
+
 
   @Override
   public void deleteNoteTag(DeleteNoteTagRequestPo po) {

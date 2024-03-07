@@ -30,9 +30,9 @@ public class UUIDGeneratorDAOImpl implements UUDIGeneratorDAO {
 
   private String targetMap(Target target){
     Map<Target, String > map = new HashMap<>();
-    map.put(Target.NOTEBOOK, "Notebooks");
-    map.put(Target.NOTE, "Notes");
-    map.put(Target.TAG, "Tags");
+    map.put(Target.NOTEBOOK, "notebooks");
+    map.put(Target.NOTE, "notes");
+    map.put(Target.TAG, "tags");
     return map.get(target);
   }
 }

@@ -11,6 +11,7 @@ import com.joeyliao.linknoteresource.note.po.GetNoteResponsePo;
 import com.joeyliao.linknoteresource.note.po.GetNotesRequestPo;
 import com.joeyliao.linknoteresource.note.po.GetNotesResponsePo;
 import com.joeyliao.linknoteresource.note.po.updateNotePo;
+import com.joeyliao.linknoteresource.notebook.dao.NotebookDAO;
 import com.joeyliao.linknoteresource.tag.dao.TagDAO;
 import com.joeyliao.linknoteresource.tag.service.TagService;
 import java.util.List;
@@ -27,6 +28,9 @@ public class NoteServiceImpl implements NoteService {
 
   @Autowired
   TagDAO tagDAO;
+
+  @Autowired
+  NotebookDAO notebookDAO;
 
   @Autowired
   UUIDGeneratorService uuidGeneratorService;
@@ -53,6 +57,7 @@ public class NoteServiceImpl implements NoteService {
     }
     responsePo.setNotes(list);
     responsePo.setTags(tagDAO.getNotebookTags(po.getNotebookId()));
+    responsePo.setNotebookName(notebookDAO.getNotebookName(po.getNotebookId()));
     return responsePo;
   }
 

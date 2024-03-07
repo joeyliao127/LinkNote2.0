@@ -8,6 +8,7 @@ import com.joeyliao.linknoteresource.tag.po.DeleteNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetTagResponsePo;
+import com.joeyliao.linknoteresource.tag.po.updateNoteTagRequestPo;
 import java.util.List;
 
 public interface TagDAO {
@@ -26,4 +27,6 @@ public interface TagDAO {
 
 
   void createNotebookTags(CreateNotebookTagsRequestPo tagPo);
+
+
 }

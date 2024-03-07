@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,6 +24,9 @@ import org.springframework.web.servlet.HandlerMapping;
 @Component
 @Slf4j
 public class AuthorizationHandler {
+
+  @Value("${authenticationServer}")
+  String authenticationServer;
 
   public Boolean checkAccessPermission(HttpServletRequest request, HttpServletResponse response,
       Target target) throws BadRequestException {
@@ -97,9 +101,9 @@ public class AuthorizationHandler {
         response.setStatus(400);
 
       }
-      return "http://localhost:8080/api/auth/user/token";
+      return "http://" + authenticationServer + "/api/auth/user/token";
     } else {
-      return "http://localhost:8080/api/auth/" + target.toString().toLowerCase();
+      return "http://"+ authenticationServer +"/api/auth/" + target.toString().toLowerCase();
     }
   }
 }

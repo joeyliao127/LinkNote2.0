@@ -5,6 +5,7 @@ import com.joeyliao.linknoteresource.tag.po.CreateNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.DeleteNotebookTagRequestPo;
 import com.joeyliao.linknoteresource.tag.po.GetNoteTagsRequestPo;
+import com.joeyliao.linknoteresource.tag.po.updateNoteTagRequestPo;
 import com.joeyliao.linknoteresource.tag.service.TagService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,6 +59,8 @@ public class TagController {
       ) {
     return ResponseEntity.status(200).body(tagService.getNoteTags(noteId));
   }
+
+
   @Validated
   @DeleteMapping("/api/notebooks/{notebookId}/tags")
   public ResponseEntity<Object> deleteNotebookTag(
