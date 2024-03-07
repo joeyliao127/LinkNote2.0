@@ -8,7 +8,7 @@ class NoteMain {
     this.#notes = await this.#getNotes();
     this.#renderNoteCtn();
     this.#renderSideBar(this.#notes);
-    this.#renderTopBar(this.#notes);
+    this.#setNoteId(this.#getId("note"));
   }
 
   #filter = {
@@ -84,8 +84,16 @@ class NoteMain {
   }
   #notebookId;
   #noteId;
+
+  #setNoteId(noteId) {
+    this.#noteId = noteId;
+    this.#renderNote();
+  }
+
   #notes;
   #tags = [];
+  #note;
+  #noteTags = [];
   #getId(target) {
     const url = window.location.href.split("/");
 
@@ -270,7 +278,7 @@ class NoteMain {
             MessageMaker.success(`Remove tag ${tag.name} success!`);
 
             this.#renderTagFilter();
-            this.#renderFilterSelect(null);
+            this.#setFilter(null);
             tagItem.remove();
           }
         });
@@ -294,6 +302,7 @@ class NoteMain {
 
     function createTagBtnListener(notebookId) {
       const input = document.querySelector(".createTagForm input");
+
       document
         .querySelector(".createTagForm input")
         .addEventListener("keypress", (e) => {
@@ -319,16 +328,30 @@ class NoteMain {
         });
         if (response.ok) {
           MessageMaker.success("Create tag Success!");
+        } else if (response.status === 400) {
+          MessageMaker.warning("Duplicate tag.");
+          return;
         } else {
-          MessageMaker.success("Create tag Failed!");
+          MessageMaker.failed("Create tag Failed!");
+          return;
         }
 
         const tagId = await response.json();
         const tag = {
           name: tagName,
-          tagId: tagId,
+          tagId: tagId.tagId,
         };
-        tagArea.appendChild(genTag(notebookId, tag));
+        const tagItem = tagArea.appendChild(genTag(tag));
+        tagItem
+          .querySelector(".deleteTagBtn")
+          .addEventListener("click", async () => {
+            const path = `/api/notebooks/${notebookId}/tags?tagId=${tag.tagId}`;
+            const response = await FetchDataHandler.fetchData(path, "DELETE");
+            if (response.ok) {
+              MessageMaker.success(`Remove tag ${tag.name} success!`);
+              tagItem.remove();
+            }
+          });
       }
     }
   }
@@ -393,12 +416,43 @@ class NoteMain {
     }
   }
 
-  #renderTopBar(notes) {
+  #renderNote() {
+    this.#getNote();
     hiddenSideBar();
+    this.#renderNoteTags();
+    noteTagBtnListener();
+
     function hiddenSideBar() {
       document.querySelector("#hamburger").addEventListener("click", () => {
         document.querySelector(".sideBar").classList.add("displaySideBar");
       });
+    }
+
+    function noteTagBtnListener() {
+      document.querySelector(".noteTagBtn").addEventListener("click", () => {
+        document.querySelector(".tagForm").classList.toggle("display-none");
+      });
+    }
+  }
+
+  #renderNoteTags() {
+    const notebookTags = this.#notes.tags;
+  }
+
+  async #getNote() {
+    try {
+      const path = `/api/notebooks/${this.#notebookId}/notes/${this.#noteId}`;
+      const response = await FetchDataHandler.fetchData(path, "GET");
+      if (!response.ok) {
+        throw new Error("Get note failed.");
+      }
+      const note = await response.json();
+
+      this.#note = note.note;
+      this.#noteTags.push(...note.tags);
+    } catch (e) {
+      console.log(e);
+      MessageMaker.failed("Get note failed.");
     }
   }
 }
