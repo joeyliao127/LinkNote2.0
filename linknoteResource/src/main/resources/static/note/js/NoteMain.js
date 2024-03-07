@@ -37,7 +37,7 @@ class NoteMain {
   }
 
   #renderTagFilter(tagItem) {
-    this.#tags.forEach((tag) => {
+    this.#notebookTags.forEach((tag) => {
       if (tag !== tagItem) {
         tag.classList.remove("selected");
       }
@@ -91,7 +91,7 @@ class NoteMain {
   }
 
   #notes;
-  #tags = [];
+  #notebookTags = [];
   #note;
   #noteTags = [];
   #getId(target) {
@@ -260,7 +260,7 @@ class NoteMain {
 
     this.#notes.tags.forEach((tag) => {
       const tagItem = genTag(tag);
-      this.#tags.push(tagItem);
+      this.#notebookTags.push(tag);
       tagItem.addEventListener("click", () => {
         tagItem.classList.add("selected");
         this.#setFilter("tag", tag.name);
@@ -416,16 +416,20 @@ class NoteMain {
     }
   }
 
-  #renderNote() {
-    this.#getNote();
+  async #renderNote() {
+    await this.#getNote();
     hiddenSideBar();
     this.#renderNoteTags();
     noteTagBtnListener();
-
+    setNoteName(this.#note.name);
     function hiddenSideBar() {
       document.querySelector("#hamburger").addEventListener("click", () => {
         document.querySelector(".sideBar").classList.add("displaySideBar");
       });
+    }
+
+    function setNoteName(name) {
+      document.querySelector("h1").textContent = name;
     }
 
     function noteTagBtnListener() {
@@ -436,7 +440,60 @@ class NoteMain {
   }
 
   #renderNoteTags() {
-    const notebookTags = this.#notes.tags;
+    const noteTagForm = document.querySelector(".tagForm");
+    if (this.#notebookTags) {
+      document.querySelector(".noTag").remove();
+    }
+    this.#notebookTags.forEach((tag) => {
+      const tagItem = document.createElement("div");
+      tagItem.classList.add("tag");
+      tagItem.innerHTML = `
+      <img
+        class="checked"
+        src="https://cdn.linknote.online/linknote-icons/check.png"
+        alt="check"
+      />
+      <p>${tag.name}</p>
+      `;
+      if (!this.#noteTags.includes(tag.name)) {
+        tagItem.querySelector(".checked").classList.add("display-none");
+      }
+
+      tagItem.addEventListener("click", async () => {
+        const isCreate = tagItem
+          .querySelector(".checked")
+          .classList.contains("display-none");
+
+        let response;
+
+        if (isCreate) {
+          const path = `/api/notebooks/${this.#notebookId}/notes/${
+            this.#noteId
+          }/tags`;
+          const requestBody = {
+            tagId: tag.tagId,
+          };
+          response = await FetchDataHandler.fetchData(
+            path,
+            "POST",
+            requestBody
+          );
+        } else {
+          const path = `/api/notebooks/${this.#notebookId}/notes/${
+            this.#noteId
+          }/tags?tagId=${tag.tagId}`;
+          response = await FetchDataHandler.fetchData(path, "DELETE");
+          if (!response.ok) {
+            MessageMaker.failed("Update note tag failed");
+            return;
+          }
+        }
+
+        tagItem.querySelector(".checked").classList.toggle("display-none");
+      });
+
+      noteTagForm.appendChild(tagItem);
+    });
   }
 
   async #getNote() {
@@ -449,7 +506,9 @@ class NoteMain {
       const note = await response.json();
 
       this.#note = note.note;
-      this.#noteTags.push(...note.tags);
+      note.tags.forEach((tag) => {
+        this.#noteTags.push(tag.name);
+      });
     } catch (e) {
       console.log(e);
       MessageMaker.failed("Get note failed.");
