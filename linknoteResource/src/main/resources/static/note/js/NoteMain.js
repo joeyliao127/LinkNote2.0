@@ -218,6 +218,10 @@ class NoteMain {
         .querySelector("#hiddenSideBarBtn")
         .addEventListener("click", () => {
           document.querySelector(".sideBar").classList.remove("displaySideBar");
+          document.querySelector(".filterCtn").classList.add("display-none");
+          document
+            .querySelector(".notebookTagCtn")
+            .classList.add("display-none");
         });
     }
 
@@ -417,12 +421,16 @@ class NoteMain {
   }
 
   async #renderNote() {
+    this.#renderCollaborators();
     await this.#getNote();
-    hiddenSideBar();
     this.#renderNoteTags();
+    this.#deleteNoteBtnListener();
+    hiddenSideBarBtnListener();
     noteTagBtnListener();
+    collaboratorBtnListener();
+    editNoteName();
     setNoteName(this.#note.name);
-    function hiddenSideBar() {
+    function hiddenSideBarBtnListener() {
       document.querySelector("#hamburger").addEventListener("click", () => {
         document.querySelector(".sideBar").classList.add("displaySideBar");
       });
@@ -435,6 +443,26 @@ class NoteMain {
     function noteTagBtnListener() {
       document.querySelector(".noteTagBtn").addEventListener("click", () => {
         document.querySelector(".tagForm").classList.toggle("display-none");
+      });
+    }
+
+    function collaboratorBtnListener() {
+      document
+        .querySelector(".collaboratorBtn")
+        .addEventListener("click", () => {
+          document
+            .querySelector(".collaboratorCtn")
+            .classList.toggle("display-none");
+        });
+    }
+
+    function editNoteName() {
+      const noteName = document.querySelector("h1");
+      noteName.addEventListener("click", () => {
+        noteName.classList.add("editNoteName");
+      });
+      noteName.addEventListener("blur", () => {
+        noteName.classList.remove("editNoteName");
       });
     }
   }
@@ -513,6 +541,33 @@ class NoteMain {
       console.log(e);
       MessageMaker.failed("Get note failed.");
     }
+  }
+
+  async #renderCollaborators() {
+    try {
+      const path = `/api/notebooks/${this.#notebookId}/collaborators`;
+      const response = await FetchDataHandler.fetchData(path, "GET");
+      const data = await response.json();
+      document.querySelector(".owner .user").textContent = data.owner.ownerName;
+      const collaboratorsCtn = document.querySelector(".collaborators");
+      data.collaborators.forEach((collaborator) => {
+        const name = document.createElement("p");
+        name.textContent = collaborator.name;
+        name.classList.add("user");
+        collaboratorsCtn.appendChild(name);
+      });
+    } catch (e) {
+      console.log(e);
+      MessageMaker.failed("Error: collaborator error.");
+    }
+  }
+
+  #deleteNoteBtnListener() {
+    document.querySelector(".deleteNoteBtn").addEventListener("click", () => {
+      const name = document.querySelector("h1").textContent;
+      const path = `/api/notebooks/${this.#notebookId}/notes/${this.#noteId}`;
+      DeleteAlert.renderDeleteAletBox("Note", name, path);
+    });
   }
 }
 

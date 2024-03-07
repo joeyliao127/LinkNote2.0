@@ -7,6 +7,10 @@
   line-height: 1.5;
 }
 
+.alertBox {
+  color: white;
+}
+
 .scroll {
   &::-webkit-scrollbar {
     background-color: transparent;
