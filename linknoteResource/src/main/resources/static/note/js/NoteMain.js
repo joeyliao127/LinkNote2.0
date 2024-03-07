@@ -8,9 +8,8 @@ class NoteMain {
     this.#notes = await this.#getNotes();
     this.#renderNoteCtn();
     this.#renderSideBar(this.#notes);
-    this.#setNoteId(this.#getId("note"));
+    await this.#setNoteId(this.#getId("note"));
     this.#renderMain();
-    this.#saveNote(this.#notebookId, this.#noteId);
   }
 
   #filter = {
@@ -90,7 +89,7 @@ class NoteMain {
   #notebookId;
   #noteId;
 
-  #setNoteId(noteId) {
+  async #setNoteId(noteId) {
     const url = `/notebooks/${this.#notebookId}/notes/${noteId}`;
     window.history.pushState(null, null, url);
     this.#noteId = noteId;
@@ -576,11 +575,11 @@ class NoteMain {
       if (!response.ok) {
         throw new Error("Get note failed.");
       }
-      const note = await response.json();
+      const data = await response.json();
 
-      this.#note = note.note;
-      this.#noteContent = note.content;
-      note.tags.forEach((tag) => {
+      this.#note = data.note;
+      this.#noteContent = data.note.content;
+      data.tags.forEach((tag) => {
         this.#noteTags.push(tag.name);
       });
     } catch (e) {
@@ -616,11 +615,13 @@ class NoteMain {
     });
   }
 
-  #renderMain() {
+  async #renderMain() {
     const tuiEditor = document.createElement("div");
     tuiEditor.id = "editor";
     document.querySelector("main").appendChild(tuiEditor);
-    const content = this.#noteContent;
+    await this.#getNote();
+    console.log();
+    const initContent = this.#noteContent;
     // const editor = new toastui.Editor({
     //   el: document.querySelector("#editor"),
     //   height: "93vh",
@@ -634,29 +635,27 @@ class NoteMain {
       el: document.querySelector("#editor"),
       previewStyle: "vertical",
       height: "500px",
-      initialValue: content,
+      initialValue: initContent,
       theme: "dark",
     });
-  }
 
-  async #saveNote(notebookId, noteId) {
     setInterval(async () => {
+      const content = editor.getMarkdown();
       const name = document.querySelector(".noteName").textContent;
       const resquestBody = {
         name,
+        content,
       };
-      const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
+      const path = `/api/notebooks/${this.#notebookId}/notes/${this.#noteId}`;
       const response = await FetchDataHandler.fetchData(
         path,
         "PUT",
         resquestBody
       );
-      if (response.ok) {
-        MessageMaker.success("成功！");
-      } else {
-        MessageMaker.failed("失敗.");
+      if (!response.ok) {
+        MessageMaker.failed("Error: Update note Failed");
       }
-    }, 1000);
+    }, 5000);
   }
 }
 
