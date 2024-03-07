@@ -27,7 +27,7 @@ header {
   overflow: hidden;
   margin: auto;
 }
-.topBarMid h1 {
+.topBarMid .noteName {
   max-width: 50%;
   color: white;
   font-size: 20px;

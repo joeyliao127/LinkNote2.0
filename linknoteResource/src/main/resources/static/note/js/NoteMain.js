@@ -9,9 +9,8 @@ class NoteMain {
     this.#renderNoteCtn();
     this.#renderSideBar(this.#notes);
     this.#setNoteId(this.#getId("note"));
-    setTimeout(() => {
-      this.#saveNote(this.#notebookId, this.#noteId);
-    }, 2000);
+    this.#renderMain();
+    this.#saveNote(this.#notebookId, this.#noteId);
   }
 
   #filter = {
@@ -40,9 +39,12 @@ class NoteMain {
   }
 
   #renderTagFilter(tagItem) {
-    this.#notebookTags.forEach((tag) => {
-      if (tag !== tagItem) {
-        tag.classList.remove("selected");
+    const tags = document.querySelectorAll(".notebookTagCtn .tag");
+    tags.forEach((tagBtn) => {
+      if (tagBtn.querySelector("p") !== tagItem.querySelector("p")) {
+        tagBtn.classList.remove("selected");
+      } else {
+        tagItem.classList.add("selected");
       }
     });
     document.querySelector(".notebookTagCtn").classList.add("display-none");
@@ -98,6 +100,7 @@ class NoteMain {
   #notes;
   #notebookTags = [];
   #note;
+  #noteContent;
   #noteTags = [];
   #getId(target) {
     const url = window.location.href.split("/");
@@ -407,7 +410,7 @@ class NoteMain {
 
   #genNote(note, notebookId) {
     const noteItem = document.createElement("a");
-    noteItem.href = `/notebooks/${this.#notebookId}/notes/${this.#noteId}`;
+    noteItem.href = `/notebooks/${this.#notebookId}/notes/${note.noteId}`;
     noteItem.classList.add("note");
     if (note.id === this.#noteId) {
       noteItem.classList.add("selected");
@@ -476,7 +479,7 @@ class NoteMain {
     }
 
     function setNoteName(name) {
-      document.querySelector("h1").textContent = name;
+      document.querySelector(".noteName").textContent = name;
     }
 
     function noteTagBtnListener() {
@@ -496,7 +499,7 @@ class NoteMain {
     }
 
     function editNoteName() {
-      const noteName = document.querySelector("h1");
+      const noteName = document.querySelector(".noteName");
       noteName.addEventListener("click", () => {
         noteName.classList.add("editNoteName");
       });
@@ -511,7 +514,7 @@ class NoteMain {
     if (this.#notebookTags) {
       const noTag = document.querySelector(".noTag");
       if (noTag) {
-        noTag.classList.remove();
+        noTag.remove();
       }
     }
     this.#notebookTags.forEach((tag) => {
@@ -576,6 +579,7 @@ class NoteMain {
       const note = await response.json();
 
       this.#note = note.note;
+      this.#noteContent = note.content;
       note.tags.forEach((tag) => {
         this.#noteTags.push(tag.name);
       });
@@ -606,28 +610,53 @@ class NoteMain {
 
   #deleteNoteBtnListener() {
     document.querySelector(".deleteNoteBtn").addEventListener("click", () => {
-      const name = document.querySelector("h1").textContent;
+      const name = document.querySelector(".noteName").textContent;
       const path = `/api/notebooks/${this.#notebookId}/notes/${this.#noteId}`;
       DeleteAlert.renderDeleteAletBox("Note", name, path);
     });
   }
 
+  #renderMain() {
+    const tuiEditor = document.createElement("div");
+    tuiEditor.id = "editor";
+    document.querySelector("main").appendChild(tuiEditor);
+    const content = this.#noteContent;
+    // const editor = new toastui.Editor({
+    //   el: document.querySelector("#editor"),
+    //   height: "93vh",
+    //   initialEditType: "markdown",
+    //   previewStyle: "vertical",
+    //   initialValue: content,
+    // });
+    const { Editor } = toastui;
+
+    const editor = new Editor({
+      el: document.querySelector("#editor"),
+      previewStyle: "vertical",
+      height: "500px",
+      initialValue: content,
+      theme: "dark",
+    });
+  }
+
   async #saveNote(notebookId, noteId) {
-    const name = document.querySelector("h1").textContent;
-    const resquestBody = {
-      name,
-    };
-    const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
-    const response = await FetchDataHandler.fetchData(
-      path,
-      "PUT",
-      resquestBody
-    );
-    if (response.ok) {
-      MessageMaker.success("成功！");
-    } else {
-      MessageMaker.failed("失敗.");
-    }
+    setInterval(async () => {
+      const name = document.querySelector(".noteName").textContent;
+      const resquestBody = {
+        name,
+      };
+      const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
+      const response = await FetchDataHandler.fetchData(
+        path,
+        "PUT",
+        resquestBody
+      );
+      if (response.ok) {
+        MessageMaker.success("成功！");
+      } else {
+        MessageMaker.failed("失敗.");
+      }
+    }, 1000);
   }
 }
 
