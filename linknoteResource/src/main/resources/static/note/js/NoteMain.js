@@ -9,6 +9,9 @@ class NoteMain {
     this.#renderNoteCtn();
     this.#renderSideBar(this.#notes);
     this.#setNoteId(this.#getId("note"));
+    setTimeout(() => {
+      this.#saveNote(this.#notebookId, this.#noteId);
+    }, 2000);
   }
 
   #filter = {
@@ -86,6 +89,8 @@ class NoteMain {
   #noteId;
 
   #setNoteId(noteId) {
+    const url = `/notebooks/${this.#notebookId}/notes/${noteId}`;
+    window.history.pushState(null, null, url);
     this.#noteId = noteId;
     this.#renderNote();
   }
@@ -146,10 +151,10 @@ class NoteMain {
     setNotebookName(this.#notes.notebookName);
     setUserEmail();
     this.#renderNotebookTags();
+    this.#createNoteBntListener();
     tagBtnListener();
     displayFilterBtnListener();
     signOutBtnListener();
-
     document
       .querySelector(".searchNote input")
       .addEventListener("keypress", (e) => {
@@ -259,6 +264,36 @@ class NoteMain {
     }
   }
 
+  #createNoteBntListener() {
+    document
+      .querySelector(".createNoteBtn")
+      .addEventListener("click", async () => {
+        try {
+          const notebookId = this.#notebookId;
+          const path = `/api/notebooks/${notebookId}/notes`;
+          const response = await FetchDataHandler.fetchData(path, "POST", {
+            notebookId,
+          });
+          if (!response.ok) {
+            throw new Error("Error: create note error.");
+          }
+          const data = await response.json();
+          const noteId = data.noteId;
+          const note = {
+            noteId,
+            name: "new note",
+          };
+          this.#setNoteId(noteId);
+          window.location.href = `/notebooks/${
+            this.#notebookId
+          }/notes/${noteId}`;
+        } catch (e) {
+          console.log(e);
+          MessageMaker.failed("Error: create note error.");
+        }
+      });
+  }
+
   #renderNotebookTags() {
     const tagArea = document.querySelector(".tagArea");
 
@@ -366,57 +401,61 @@ class NoteMain {
     const noteArea = document.querySelector(".noteArea");
     noteArea.innerHTML = "";
     notes.forEach((note) => {
-      noteArea.appendChild(genNote(note, this.#notebookId));
+      noteArea.appendChild(this.#genNote(note, this.#notebookId));
     });
+  }
 
-    function genNote(note, notebookId) {
-      const noteItem = document.createElement("div");
-      noteItem.classList.add("note");
-      noteItem.innerHTML = `
-        <p>${note.name}</p>
-        <div class="star"></div>
-      `;
-      if (note.star) {
-        noteItem.querySelector(".star").classList.add("star-full");
-      } else {
-        noteItem.querySelector(".star").classList.add("star-empty");
-      }
-      updateStarBtnListener(note.noteId, note.name, notebookId);
-      return noteItem;
+  #genNote(note, notebookId) {
+    const noteItem = document.createElement("a");
+    noteItem.href = `/notebooks/${this.#notebookId}/notes/${this.#noteId}`;
+    noteItem.classList.add("note");
+    if (note.id === this.#noteId) {
+      noteItem.classList.add("selected");
+    }
+    noteItem.innerHTML = `
+      <p>${note.name}</p>
+      <div class="star"></div>
+    `;
+    if (note.star) {
+      noteItem.querySelector(".star").classList.add("star-full");
+    } else {
+      noteItem.querySelector(".star").classList.add("star-empty");
+    }
+    updateStarBtnListener(note.noteId, note.name, notebookId);
+    return noteItem;
 
-      function updateStarBtnListener(noteId, noteName, notebookId) {
-        const starBtn = noteItem.querySelector(".star");
-        let requestBody;
-        starBtn.addEventListener("click", async () => {
-          const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
+    function updateStarBtnListener(noteId, noteName, notebookId) {
+      const starBtn = noteItem.querySelector(".star");
+      let requestBody;
+      starBtn.addEventListener("click", async () => {
+        const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
 
-          if (starBtn.classList.contains("star-full")) {
-            noteItem.querySelector(".star").classList.remove("star-full");
-            noteItem.querySelector(".star").classList.add("star-empty");
-            requestBody = {
-              name: noteName,
-              star: false,
-            };
-          } else {
-            noteItem.querySelector(".star").classList.add("star-full");
-            noteItem.querySelector(".star").classList.remove("star-empty");
-            requestBody = {
-              name: noteName,
-              star: true,
-            };
-          }
+        if (starBtn.classList.contains("star-full")) {
+          noteItem.querySelector(".star").classList.remove("star-full");
+          noteItem.querySelector(".star").classList.add("star-empty");
+          requestBody = {
+            name: noteName,
+            star: false,
+          };
+        } else {
+          noteItem.querySelector(".star").classList.add("star-full");
+          noteItem.querySelector(".star").classList.remove("star-empty");
+          requestBody = {
+            name: noteName,
+            star: true,
+          };
+        }
 
-          const response = await FetchDataHandler.fetchData(
-            path,
-            "PUT",
-            requestBody
-          );
-          if (!response.ok) {
-            MessageMaker.failed("Error: update star Failed.");
-            return;
-          }
-        });
-      }
+        const response = await FetchDataHandler.fetchData(
+          path,
+          "PUT",
+          requestBody
+        );
+        if (!response.ok) {
+          MessageMaker.failed("Error: update star Failed.");
+          return;
+        }
+      });
     }
   }
 
@@ -470,7 +509,10 @@ class NoteMain {
   #renderNoteTags() {
     const noteTagForm = document.querySelector(".tagForm");
     if (this.#notebookTags) {
-      document.querySelector(".noTag").remove();
+      const noTag = document.querySelector(".noTag");
+      if (noTag) {
+        noTag.classList.remove();
+      }
     }
     this.#notebookTags.forEach((tag) => {
       const tagItem = document.createElement("div");
@@ -568,6 +610,24 @@ class NoteMain {
       const path = `/api/notebooks/${this.#notebookId}/notes/${this.#noteId}`;
       DeleteAlert.renderDeleteAletBox("Note", name, path);
     });
+  }
+
+  async #saveNote(notebookId, noteId) {
+    const name = document.querySelector("h1").textContent;
+    const resquestBody = {
+      name,
+    };
+    const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
+    const response = await FetchDataHandler.fetchData(
+      path,
+      "PUT",
+      resquestBody
+    );
+    if (response.ok) {
+      MessageMaker.success("成功！");
+    } else {
+      MessageMaker.failed("失敗.");
+    }
   }
 }
 
