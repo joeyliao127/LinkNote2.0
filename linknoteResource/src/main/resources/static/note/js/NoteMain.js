@@ -621,39 +621,60 @@ class NoteMain {
     document.querySelector("main").appendChild(tuiEditor);
     await this.#getNote();
     console.log();
-    const initContent = this.#noteContent;
-    // const editor = new toastui.Editor({
-    //   el: document.querySelector("#editor"),
-    //   height: "93vh",
-    //   initialEditType: "markdown",
-    //   previewStyle: "vertical",
-    //   initialValue: content,
-    // });
-    const { Editor } = toastui;
-
-    const editor = new Editor({
+    let initContent = this.#noteContent;
+    if (!initContent) {
+      initContent = `# Title\n\n## Question\n\n## Keypoint
+      `;
+    }
+    const editor = new toastui.Editor({
       el: document.querySelector("#editor"),
+      height: "94vh",
+      initialEditType: "markdown",
       previewStyle: "vertical",
-      height: "500px",
       initialValue: initContent,
-      theme: "dark",
     });
+
+    // const { Editor } = toastui;
+    // const editor = new Editor({
+    //   el: document.querySelector("#editor"),
+    //   previewStyle: "vertical",
+    //   height: "95vh",
+    //   initialValue: initContent,
+    //   theme: "dark",
+    // });
 
     setInterval(async () => {
       const content = editor.getMarkdown();
       const name = document.querySelector(".noteName").textContent;
-      const resquestBody = {
+      const h2s = document.querySelectorAll("h2");
+      let requestBody = {
         name,
         content,
       };
+      let question;
+      let keypoint;
+      h2s.forEach((h2) => {
+        if (h2.textContent.toLowerCase() === "question") {
+          if (h2.nextElementSibling.tagName === "P") {
+            question = h2.nextElementSibling.textContent;
+            requestBody["question"] = question;
+          }
+        } else if (h2.textContent.toLocaleLowerCase() === "keypoint") {
+          if (h2.nextElementSibling.tagName === "P") {
+            keypoint = h2.nextElementSibling.textContent;
+            requestBody["keypoint"] = keypoint;
+          }
+        }
+      });
+
       const path = `/api/notebooks/${this.#notebookId}/notes/${this.#noteId}`;
       const response = await FetchDataHandler.fetchData(
         path,
         "PUT",
-        resquestBody
+        requestBody
       );
       if (!response.ok) {
-        MessageMaker.failed("Error: Update note Failed");
+        MessageMaker.failed("失敗.");
       }
     }, 5000);
   }
