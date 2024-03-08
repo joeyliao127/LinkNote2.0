@@ -411,6 +411,9 @@ class NoteMain {
     const noteItem = document.createElement("a");
     noteItem.href = `/notebooks/${this.#notebookId}/notes/${note.noteId}`;
     noteItem.classList.add("note");
+    if (note.noteId === this.#noteId) {
+      noteItem.classList.add("selected");
+    }
     if (note.id === this.#noteId) {
       noteItem.classList.add("selected");
     }
