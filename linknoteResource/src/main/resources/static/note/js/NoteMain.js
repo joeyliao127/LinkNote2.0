@@ -411,6 +411,9 @@ class NoteMain {
     const noteItem = document.createElement("a");
     noteItem.href = `/notebooks/${this.#notebookId}/notes/${note.noteId}`;
     noteItem.classList.add("note");
+    if (note.noteId === this.#noteId) {
+      noteItem.classList.add("selected");
+    }
     if (note.id === this.#noteId) {
       noteItem.classList.add("selected");
     }
@@ -429,7 +432,9 @@ class NoteMain {
     function updateStarBtnListener(noteId, noteName, notebookId) {
       const starBtn = noteItem.querySelector(".star");
       let requestBody;
-      starBtn.addEventListener("click", async () => {
+      starBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
 
         if (starBtn.classList.contains("star-full")) {
@@ -620,40 +625,58 @@ class NoteMain {
     tuiEditor.id = "editor";
     document.querySelector("main").appendChild(tuiEditor);
     await this.#getNote();
-    console.log();
-    const initContent = this.#noteContent;
-    // const editor = new toastui.Editor({
-    //   el: document.querySelector("#editor"),
-    //   height: "93vh",
-    //   initialEditType: "markdown",
-    //   previewStyle: "vertical",
-    //   initialValue: content,
-    // });
+    let initContent = this.#noteContent;
+    if (!initContent) {
+      initContent = `# Title\n\n## Question\n\n## Keypoint
+      `;
+    }
+
     const { Editor } = toastui;
 
+    const { codeSyntaxHighlight } = Editor.plugin;
     const editor = new Editor({
       el: document.querySelector("#editor"),
       previewStyle: "vertical",
-      height: "500px",
+      height: "94vh",
       initialValue: initContent,
-      theme: "dark",
+      plugins: [codeSyntaxHighlight],
     });
 
     setInterval(async () => {
       const content = editor.getMarkdown();
       const name = document.querySelector(".noteName").textContent;
-      const resquestBody = {
+      const h2s = document.querySelectorAll("h2");
+      let requestBody = {
         name,
         content,
       };
+      let question;
+      let keypoint;
+      h2s.forEach((h2) => {
+        if (h2.textContent.toLowerCase() === "question") {
+          if (h2.nextElementSibling && h2.nextElementSibling.tagName === "P") {
+            question = h2.nextElementSibling.textContent;
+            requestBody["question"] = question;
+          }
+        } else if (
+          h2.nextElementSibling &&
+          h2.textContent.toLocaleLowerCase() === "keypoint"
+        ) {
+          if (h2.nextElementSibling.tagName === "P") {
+            keypoint = h2.nextElementSibling.textContent;
+            requestBody["keypoint"] = keypoint;
+          }
+        }
+      });
+
       const path = `/api/notebooks/${this.#notebookId}/notes/${this.#noteId}`;
       const response = await FetchDataHandler.fetchData(
         path,
         "PUT",
-        resquestBody
+        requestBody
       );
       if (!response.ok) {
-        MessageMaker.failed("Error: Update note Failed");
+        MessageMaker.failed("失敗.");
       }
     }, 5000);
   }

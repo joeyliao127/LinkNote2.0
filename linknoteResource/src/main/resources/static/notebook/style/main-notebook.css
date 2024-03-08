@@ -396,7 +396,7 @@
 
 .noteCard {
   position: relative;
-  height: 120px;
+  aspect-ratio: 2/1;
   padding: 8px 10px;
   border-radius: 8px;
   background-color: #333;
