@@ -1,8 +1,9 @@
 .sideBar {
   position: fixed;
-  left: -340px;
+  left: -21vw;
   top: 0;
-  width: 330px;
+  width: 20vw;
+  min-width: 330px;
   background-color: #222;
   display: flex;
   flex-direction: column;

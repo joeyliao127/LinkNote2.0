@@ -410,6 +410,9 @@ class NoteMain {
   #genNote(note, notebookId) {
     const noteItem = document.createElement("a");
     noteItem.href = `/notebooks/${this.#notebookId}/notes/${note.noteId}`;
+    // noteItem.addEventListener("click",() =>{
+    //   window.location.href = `/notebooks/${this.#notebookId}/notes/${note.noteId}`
+    // })
     noteItem.classList.add("note");
     if (note.id === this.#noteId) {
       noteItem.classList.add("selected");
@@ -429,7 +432,9 @@ class NoteMain {
     function updateStarBtnListener(noteId, noteName, notebookId) {
       const starBtn = noteItem.querySelector(".star");
       let requestBody;
-      starBtn.addEventListener("click", async () => {
+      starBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const path = `/api/notebooks/${notebookId}/notes/${noteId}`;
 
         if (starBtn.classList.contains("star-full")) {
@@ -628,7 +633,7 @@ class NoteMain {
     }
     const editor = new toastui.Editor({
       el: document.querySelector("#editor"),
-      height: "94vh",
+      height: "93vh",
       initialEditType: "markdown",
       previewStyle: "vertical",
       initialValue: initContent,
