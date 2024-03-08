@@ -625,7 +625,6 @@ class NoteMain {
     tuiEditor.id = "editor";
     document.querySelector("main").appendChild(tuiEditor);
     await this.#getNote();
-    console.log();
     let initContent = this.#noteContent;
     if (!initContent) {
       initContent = `# Title\n\n## Question\n\n## Keypoint
@@ -658,7 +657,6 @@ class NoteMain {
           if (h2.nextElementSibling && h2.nextElementSibling.tagName === "P") {
             question = h2.nextElementSibling.textContent;
             requestBody["question"] = question;
-            console.log("更新question");
           }
         } else if (
           h2.nextElementSibling &&
@@ -667,7 +665,6 @@ class NoteMain {
           if (h2.nextElementSibling.tagName === "P") {
             keypoint = h2.nextElementSibling.textContent;
             requestBody["keypoint"] = keypoint;
-            console.log("更新keypoint");
           }
         }
       });

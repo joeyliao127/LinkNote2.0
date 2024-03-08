@@ -775,8 +775,6 @@ class NotebookRender {
     }
 
     const notes = await this.getNotes(notebookId);
-    console.log("notes:");
-    console.log(notes);
     if (notes.length === 0) {
       return noteCardCtn;
     } else {
