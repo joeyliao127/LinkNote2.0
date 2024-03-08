@@ -410,9 +410,6 @@ class NoteMain {
   #genNote(note, notebookId) {
     const noteItem = document.createElement("a");
     noteItem.href = `/notebooks/${this.#notebookId}/notes/${note.noteId}`;
-    // noteItem.addEventListener("click",() =>{
-    //   window.location.href = `/notebooks/${this.#notebookId}/notes/${note.noteId}`
-    // })
     noteItem.classList.add("note");
     if (note.id === this.#noteId) {
       noteItem.classList.add("selected");
@@ -631,22 +628,17 @@ class NoteMain {
       initContent = `# Title\n\n## Question\n\n## Keypoint
       `;
     }
-    const editor = new toastui.Editor({
-      el: document.querySelector("#editor"),
-      height: "93vh",
-      initialEditType: "markdown",
-      previewStyle: "vertical",
-      initialValue: initContent,
-    });
 
-    // const { Editor } = toastui;
-    // const editor = new Editor({
-    //   el: document.querySelector("#editor"),
-    //   previewStyle: "vertical",
-    //   height: "95vh",
-    //   initialValue: initContent,
-    //   theme: "dark",
-    // });
+    const { Editor } = toastui;
+
+    const { codeSyntaxHighlight } = Editor.plugin;
+    const editor = new Editor({
+      el: document.querySelector("#editor"),
+      previewStyle: "vertical",
+      height: "94vh",
+      initialValue: initContent,
+      plugins: [codeSyntaxHighlight],
+    });
 
     setInterval(async () => {
       const content = editor.getMarkdown();
@@ -660,14 +652,19 @@ class NoteMain {
       let keypoint;
       h2s.forEach((h2) => {
         if (h2.textContent.toLowerCase() === "question") {
-          if (h2.nextElementSibling.tagName === "P") {
+          if (h2.nextElementSibling && h2.nextElementSibling.tagName === "P") {
             question = h2.nextElementSibling.textContent;
             requestBody["question"] = question;
+            console.log("更新question");
           }
-        } else if (h2.textContent.toLocaleLowerCase() === "keypoint") {
+        } else if (
+          h2.nextElementSibling &&
+          h2.textContent.toLocaleLowerCase() === "keypoint"
+        ) {
           if (h2.nextElementSibling.tagName === "P") {
             keypoint = h2.nextElementSibling.textContent;
             requestBody["keypoint"] = keypoint;
+            console.log("更新keypoint");
           }
         }
       });
