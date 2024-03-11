@@ -1,5 +1,4 @@
 class FetchDataHandler {
-  static fetchPath = "http://127.0.0.1";
   constructor() {}
 
   static setRequestHeader = function (method, requestBody) {
@@ -24,12 +23,23 @@ class FetchDataHandler {
   };
 
   static async fetchData(path, method, requestBody) {
-    let fullPath = this.fetchPath + path;
-
     if (requestBody) {
-      return await fetch(fullPath, this.setRequestHeader(method, requestBody));
+      return await fetch(path, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        method: method,
+        body: JSON.stringify(requestBody),
+      });
     } else {
-      return await fetch(fullPath, this.setRequestHeader(method));
+      return await fetch(path, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        method: method,
+      });
     }
   }
 }

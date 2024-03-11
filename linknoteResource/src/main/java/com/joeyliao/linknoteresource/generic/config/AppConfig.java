@@ -38,7 +38,7 @@ public class AppConfig implements WebMvcConfigurer {
     registry.addInterceptor(tagInterceptor)
         .addPathPatterns(
             "/api/notebooks/*/notes/**/tags"
-            ,"/api/notebooks/*/tags");
+            , "/api/notebooks/*/tags");
 
     registry.addInterceptor(noteInterceptor)
         .addPathPatterns("/api/notebooks/*/notes/**")
@@ -52,7 +52,8 @@ public class AppConfig implements WebMvcConfigurer {
     registry.addInterceptor(collaboratorInterceptor)
         .addPathPatterns("/api/notebooks/*/collaborators");
 
-    registry.addInterceptor(notebookInterceptor).addPathPatterns("/api/notebooks/**", "/api/coNotebooks")
+    registry.addInterceptor(notebookInterceptor)
+        .addPathPatterns("/api/notebooks/**", "/api/coNotebooks")
         .excludePathPatterns(
             "/api/notebooks/*/invitations",
             "/api/notebooks/*/notes/**/",
@@ -70,9 +71,13 @@ public class AppConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/api/**")
         .allowedOrigins(
-            "http://127.0.0.1:8082",
-            "http://localhost:8082",
-            "http://127.0.0.1:80"
+            "http://linknote.online",
+            "https://linknote.online",
+            "http://192.168.0.201",
+            "https://192.168.0.201",
+            "http://192.168.0.203",
+            "https://192.168.0.203",
+            "http://172.17.0.2"
         )
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders("*");

@@ -75,8 +75,6 @@ public class NoteDAOImpl implements NoteDAO {
     map.put("limit", po.getLimit());
     map.put("tag", po.getTag());
     map.put("keyword", "%" + po.getKeyword() + "%");
-    log.info("拼接完的sql:\n" + sql);
-    log.info("%" + po.getKeyword() + "%");
     return namedParameterJdbcTemplate.query(sql, map, new NotesRowMapper());
   }
 
