@@ -73,7 +73,6 @@ class CreateNotebookFormRender {
     );
 
     if (response.status == 200) {
-      MessageMaker.success("create notebook success!");
       window.location.href = window.location.href;
     }
   }

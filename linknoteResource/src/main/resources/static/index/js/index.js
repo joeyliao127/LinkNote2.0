@@ -89,7 +89,6 @@ function signInBtnListener() {
   document
     .querySelector("#signin-password")
     .addEventListener("keypress", async (e) => {
-      console.log(`input輸入...`);
       if (e.key === "Enter") {
         signinBtnCallback();
       }
@@ -109,9 +108,9 @@ function signInBtnListener() {
     }
 
     //開發環境path
-    const path = "http://127.0.0.1/api/auth/user/signin";
+    // const path = "http://127.0.0.1/api/auth/user/signin";
     //正式環境path
-    // const path = "/api/auth/user/signin";
+    const path = "/api/auth/user/signin";
     const response = await fetch(path, {
       headers: {
         "Content-Type": "application/json",
@@ -121,7 +120,6 @@ function signInBtnListener() {
     });
 
     const data = await response.json();
-    console.log(data);
     if (data.result) {
       localStorage.setItem("token", data.token);
       window.location.href = "/notebooks";
@@ -133,7 +131,6 @@ function signInBtnListener() {
 
 //return boolean
 function validateEmailFormatAndPasswordNotNull(email, password) {
-  console.log(`email: ${email}\npassowrd: ${password}`);
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email) && password;
 }
