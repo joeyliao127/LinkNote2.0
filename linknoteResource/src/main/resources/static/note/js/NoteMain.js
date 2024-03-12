@@ -637,7 +637,7 @@ class NoteMain {
     const editor = new Editor({
       el: document.querySelector("#editor"),
       previewStyle: "vertical",
-      height: "94vh",
+      height: "93vh",
       initialValue: initContent,
       plugins: [codeSyntaxHighlight],
     });
